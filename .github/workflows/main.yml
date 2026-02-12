@@ -1,5 +1,6 @@
 name: Generate Cricket M3U
-
+permissions:
+  contents: write
 on:
   schedule:
     - cron: "0 * * * *"   # every 1 hour
