@@ -19,18 +19,20 @@ jobs:
           python-version: "3.x"
 
       - name: Install dependencies
-        run: |
-          pip install requests
+        run: pip install requests
 
       - name: Fetch secret JSON and convert to M3U
         env:
           JSON_URL: ${{ secrets.ALTERNATE_JSON_URL }}
         run: |
-          python << 'EOF'
-          import requests
+          python << EOF
+          import requests, os
+
+          url = os.environ.get("JSON_URL")
+          if not url:
+              raise RuntimeError("JSON_URL secret is missing")
 
           OUTPUT = "Cricket.m3u"
-          url = "${JSON_URL}"
 
           data = requests.get(url, timeout=30).json()
 
@@ -38,10 +40,10 @@ jobs:
 
           for category, channels in data.items():
               for name, info in channels.items():
-                  if "url" not in info:
+                  mpd = info.get("url")
+                  if not mpd:
                       continue
 
-                  mpd = info.get("url")
                   key_id = info.get("keyId")
                   key = info.get("key")
 
