@@ -1,0 +1,71 @@
+name: Generate Cricket M3U
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # every 1 hour
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Fetch secret JSON and convert to M3U
+        env:
+          JSON_URL: ${{ secrets.ALTERNATE_JSON_URL }}
+        run: |
+          python << 'EOF'
+          import requests
+
+          OUTPUT = "Cricket.m3u"
+          url = "${JSON_URL}"
+
+          data = requests.get(url, timeout=30).json()
+
+          lines = ["#EXTM3U"]
+
+          for category, channels in data.items():
+              for name, info in channels.items():
+                  if "url" not in info:
+                      continue
+
+                  mpd = info.get("url")
+                  key_id = info.get("keyId")
+                  key = info.get("key")
+
+                  lines.append(f'#EXTINF:-1 group-title="Cricket",{name}')
+
+                  if key_id and key:
+                      lines.append("#KODIPROP:inputstream.adaptive.license_type=clearkey")
+                      lines.append(
+                          f"#KODIPROP:inputstream.adaptive.license_key={key_id}:{key}"
+                      )
+
+                  lines.append(mpd)
+                  lines.append("")
+
+          with open(OUTPUT, "w", encoding="utf-8") as f:
+              f.write("\n".join(lines))
+
+          print("Cricket.m3u generated successfully")
+          EOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add Cricket.m3u
+          git diff --cached --quiet || git commit -m "Auto-update Cricket.m3u"
+          git push
