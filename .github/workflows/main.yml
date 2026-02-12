@@ -1,6 +1,8 @@
 name: Generate Cricket M3U
+
 permissions:
   contents: write
+
 on:
   schedule:
     - cron: "0 * * * *"   # every 1 hour
@@ -35,12 +37,24 @@ jobs:
 
           OUTPUT = "Cricket.m3u"
 
-          data = requests.get(url, timeout=30).json()
+          response = requests.get(url, timeout=30)
+          response.raise_for_status()
+          data = response.json()
+
+          USER_AGENT = "StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0"
 
           lines = ["#EXTM3U"]
 
+          tvg_id = 1
+
           for category, channels in data.items():
+              if not isinstance(channels, dict):
+                  continue
+
               for name, info in channels.items():
+                  if not isinstance(info, dict):
+                      continue
+
                   mpd = info.get("url")
                   if not mpd:
                       continue
@@ -48,7 +62,13 @@ jobs:
                   key_id = info.get("keyId")
                   key = info.get("key")
 
-                  lines.append(f'#EXTINF:-1 group-title="Cricket",{name}')
+                  logo = info.get("logo")
+                  if not logo:
+                      logo = "null"
+
+                  lines.append(
+                      f'#EXTINF:-1 tvg-logo="{logo}" tvg-id="{tvg_id}" group-title="Cricket",{name}'
+                  )
 
                   if key_id and key:
                       lines.append("#KODIPROP:inputstream.adaptive.license_type=clearkey")
@@ -56,8 +76,12 @@ jobs:
                           f"#KODIPROP:inputstream.adaptive.license_key={key_id}:{key}"
                       )
 
+                  lines.append(f"#EXTVLCOPT:http-user-agent={USER_AGENT}")
+                  lines.append('#EXTHTTP:{"cookie":""}')
                   lines.append(mpd)
                   lines.append("")
+
+                  tvg_id += 1
 
           with open(OUTPUT, "w", encoding="utf-8") as f:
               f.write("\n".join(lines))
