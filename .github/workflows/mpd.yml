@@ -1,9 +1,7 @@
-name: Convert MPD Repo to M3U
+name: Convert MPD Repo to M3U (No Duplicates)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */6 * * *"
 
 permissions:
   contents: write
@@ -13,16 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Download source file
         env:
-          SRC_URL: ${{ secrets.SOURCE_RAW_URL }}
+          SRC: ${{ secrets.MPD_SOURCE_URL }}
         run: |
-          curl -L "$SRC_URL" -o source.txt
+          curl -L "$SRC" -o source.txt
 
-      - name: Convert to M3U (dedupe + DRM rules)
+      - name: Convert to M3U (strict rules)
         run: |
           echo "#EXTM3U" > final.m3u
 
@@ -31,11 +28,8 @@ jobs:
             channel=""
             url=""
             key=""
-            seen_count=0
-          }
-
-          function is_m3u8(u) {
-            return (u ~ /^https:\/\// && u ~ /\.m3u8$/)
+            logo=""
+            cookie=""
           }
 
           /^#EXTINF/ {
@@ -44,54 +38,69 @@ jobs:
             next
           }
 
-          /^#KODIPROP:inputstream.adaptive.license_key/ {
+          /tvg-logo=/ {
+            if (match($0, /tvg-logo="[^"]+"/)) {
+              logo=substr($0, RSTART+10, RLENGTH-11)
+            }
+            next
+          }
+
+          /license_key=/ {
             key=$0
             sub(/.*=/, "", key)
+            next
+          }
+
+          /^#EXTHTTP/ {
+            cookie=$0
             next
           }
 
           /^https?:\/\// {
             url=$0
 
-            # default channel
-            if (channel == "") channel="null"
-
-            # dedupe by channel name
+            # dedupe
             if (seen[channel]++) {
-              channel=""; key=""; next
-            }
-
-            # rule: keep https + m3u8 even without DRM
-            if (is_m3u8(url)) {
-              print "#EXTINF:-1 tvg-id=\"1069\" group-title=\"Education\" tvg-logo=\"https://jiotv.catchup.cdn.jio.com/dare_images/images/Vande_Gujarat_1.png\"," channel >> "final.m3u"
-              print "#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0" >> "final.m3u"
-              print "#EXTHTTP:{\"cookie\":\"\"}" >> "final.m3u"
-              print url "\n" >> "final.m3u"
-              channel=""; key=""
+              channel=""; key=""; logo=""; cookie=""
               next
             }
 
-            # rule: DRM must exist
-            if (key == "") {
-              channel=""; next
+            # DRM logic
+            is_m3u8 = (url ~ /^https:.*\.m3u8$/)
+
+            if (key == "" && !is_m3u8) {
+              channel=""; key=""; logo=""; cookie=""
+              next
             }
 
-            print "#EXTINF:-1 tvg-id=\"1069\" group-title=\"Education\" tvg-logo=\"https://jiotv.catchup.cdn.jio.com/dare_images/images/Vande_Gujarat_1.png\"," channel >> "final.m3u"
+            if (channel == "") channel="null"
+            if (logo == "") logo="null"
+
+            print "#EXTINF:-1 tvg-id=\"\" group-title=\"Education\" tvg-logo=\"" logo "\"," channel >> "final.m3u"
             print "#KODIPROP:inputstream.adaptive.license_type=clearkey" >> "final.m3u"
-            print "#KODIPROP:inputstream.adaptive.license_key=" key >> "final.m3u"
+
+            if (key != "") {
+              print "#KODIPROP:inputstream.adaptive.license_key=" key >> "final.m3u"
+            }
+
             print "#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0" >> "final.m3u"
-            print "#EXTHTTP:{\"cookie\":\"__hdnea__=st=1771011362~exp=1771097762~acl=/*\"}" >> "final.m3u"
+
+            if (is_m3u8) {
+              print "#EXTHTTP:{\"cookie\":\"\"}" >> "final.m3u"
+            } else if (cookie != "") {
+              print cookie >> "final.m3u"
+            }
+
             print url "\n" >> "final.m3u"
 
-            channel=""
-            key=""
+            channel=""; url=""; key=""; logo=""; cookie=""
           }
           ' source.txt
 
-      - name: Commit output
+      - name: Commit final playlist
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add final.m3u
-          git commit -m "Auto convert MPD repo to M3U (deduped + DRM rules)" || echo "No changes"
+          git commit -m "Auto convert MPD repo to M3U (deduped)" || echo "No changes"
           git push
