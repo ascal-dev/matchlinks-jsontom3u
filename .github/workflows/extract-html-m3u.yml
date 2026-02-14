@@ -1,0 +1,55 @@
+name: Extract Clean M3U from HTML Page
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"   # ⏱ runs every 1 hour
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch HTML page
+        run: |
+          curl -L "http://0x53c864d63c8bf13220a345693505.whf.bz/Playlists/kashurflix/rebandingx/" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            -H "Accept: text/html" \
+            -o response.html
+
+      - name: Extract & clean M3U (strip ALL HTML)
+        run: |
+          awk '
+          BEGIN { in_block=0 }
+
+          /<!--/ { in_block=1; next }
+          /-->/ { in_block=0; next }
+
+          in_block {
+            # remove any html tags
+            gsub(/<[^>]*>/, "")
+
+            # keep only valid M3U lines
+            if ($0 ~ /^#EXT/ || $0 ~ /^https?:\/\//) {
+              print
+            }
+          }
+          ' response.html > final.m3u
+
+      - name: Ensure playlist is valid
+        run: |
+          grep -q "^#EXTM3U" final.m3u || (echo "❌ No valid M3U found" && exit 1)
+
+      - name: Commit updated M3U
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add final.m3u
+          git commit -m "Hourly update: extracted clean M3U" || echo "No changes"
+          git push
