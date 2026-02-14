@@ -6,7 +6,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 */6 * * *"   # runs every 6 hours (change if needed)
+    - cron: "0 */6 * * *"   # every 6 hours
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
         run: |
           curl -L "$SRC_URL" -o source.m3u
 
-      - name: Convert M3U to required format (null-safe)
+      - name: Convert M3U (ONLY entries with DRM key)
         run: |
           echo '#EXTM3U' > final.m3u
 
@@ -50,6 +50,12 @@ jobs:
           /^https?:\/\// {
             url=$0
 
+            # 🔒 SKIP if DRM license key is missing
+            if (key == "") {
+              channel="null"
+              next
+            }
+
             if (channel == "" || channel ~ /^#/) {
               channel="null"
             }
@@ -71,5 +77,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add final.m3u
-          git commit -m "Auto update formatted M3U" || echo "No changes"
+          git commit -m "Auto update DRM-only formatted M3U" || echo "No changes"
           git push
