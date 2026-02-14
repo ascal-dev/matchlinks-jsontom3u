@@ -1,4 +1,4 @@
-name: Extract Clean M3U from HTML Page
+name: jtv2
 
 on:
   workflow_dispatch:
