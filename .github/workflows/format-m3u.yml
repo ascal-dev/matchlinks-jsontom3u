@@ -5,6 +5,11 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "0 */6 * * *"   # runs every 6 hours (change if needed)
+
+permissions:
+  contents: write
 
 jobs:
   format:
@@ -20,7 +25,7 @@ jobs:
         run: |
           curl -L "$SRC_URL" -o source.m3u
 
-      - name: Convert M3U to required format (safe null fallback)
+      - name: Convert M3U to required format (null-safe)
         run: |
           echo '#EXTM3U' > final.m3u
 
@@ -61,8 +66,10 @@ jobs:
           }
           ' source.m3u
 
-      - name: Upload final playlist
-        uses: actions/upload-artifact@v4
-        with:
-          name: formatted-m3u
-          path: final.m3u
+      - name: Commit updated playlist
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add final.m3u
+          git commit -m "Auto update formatted M3U" || echo "No changes"
+          git push
