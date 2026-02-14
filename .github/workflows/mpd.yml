@@ -15,7 +15,7 @@ jobs:
 
       - name: Download source file
         env:
-          SRC: ${{ secrets.MPD_SOURCE_URL }}
+          SRC: ${{ secrets.SOURCE_RAW_URL }}
         run: |
           curl -L "$SRC" -o source.txt
 
