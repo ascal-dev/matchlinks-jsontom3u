@@ -1,0 +1,68 @@
+name: Build Formatted M3U
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download source M3U from secret URL
+        env:
+          SRC_URL: ${{ secrets.M3U_RAW_URL }}
+        run: |
+          curl -L "$SRC_URL" -o source.m3u
+
+      - name: Convert M3U to required format (safe null fallback)
+        run: |
+          echo '#EXTM3U' > final.m3u
+
+          awk '
+          BEGIN {
+            channel="null"
+            key=""
+          }
+
+          /^#EXTINF/ {
+            channel=$0
+            sub(/.*?,/, "", channel)
+            next
+          }
+
+          /^#KODIPROP:inputstream.adaptive.license_key/ {
+            key=$0
+            sub(/.*=/, "", key)
+            next
+          }
+
+          /^https?:\/\// {
+            url=$0
+
+            if (channel == "" || channel ~ /^#/) {
+              channel="null"
+            }
+
+            print "#EXTINF:-1 tvg-logo=\"null\" tvg-id=\"1\" group-title=\"Cricket\"," channel >> "final.m3u"
+            print "#KODIPROP:inputstream.adaptive.license_type=clearkey" >> "final.m3u"
+            print "#KODIPROP:inputstream.adaptive.license_key=" key >> "final.m3u"
+            print "#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0" >> "final.m3u"
+            print "#EXTHTTP:{\"cookie\":\"\"}" >> "final.m3u"
+            print url "\n" >> "final.m3u"
+
+            channel="null"
+            key=""
+          }
+          ' source.m3u
+
+      - name: Upload final playlist
+        uses: actions/upload-artifact@v4
+        with:
+          name: formatted-m3u
+          path: final.m3u
