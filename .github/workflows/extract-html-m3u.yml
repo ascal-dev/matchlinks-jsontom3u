@@ -40,16 +40,16 @@ jobs:
               print
             }
           }
-          ' response.html > final.m3u
+          ' response.html > JTV1.m3u
 
       - name: Ensure playlist is valid
         run: |
-          grep -q "^#EXTM3U" final.m3u || (echo "❌ No valid M3U found" && exit 1)
+          grep -q "^#EXTM3U" JTV1.m3u || (echo "❌ No valid M3U found" && exit 1)
 
       - name: Commit updated M3U
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add final.m3u
+          git add JTV1.m3u
           git commit -m "Hourly update: extracted clean M3U" || echo "No changes"
           git push
