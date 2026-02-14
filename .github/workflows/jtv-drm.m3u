@@ -1,0 +1,63 @@
+name: Extract Clean M3U from HTML Page
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"   # runs every 1 hour
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch HTML page
+        run: |
+          curl -L "http://0x53c864d63c8bf13220a345693505.whf.bz/Playlists/kashurflix/rebandingx" \
+            -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)" \
+            -H "Accept: text/html" \
+            -o response.html
+
+      - name: Extract content AFTER </html> (one-line separation)
+        run: |
+          awk '
+          BEGIN {
+            printed_sep = 0
+          }
+
+          found_html_end {
+            # print ONE blank line before first content
+            if (!printed_sep) {
+              print ""
+              printed_sep = 1
+            }
+
+            # remove comment markers
+            gsub(/<!--|-->/, "")
+            # strip any html tags
+            gsub(/<[^>]*>/, "")
+            if (NF) print
+          }
+
+          /<\/html>/ {
+            found_html_end = 1
+            next
+          }
+          ' response.html > JTV-drm.m3u
+
+      - name: Validate M3U
+        run: |
+          grep -q "^#EXTM3U" JTV-drm.m3u || (echo "❌ No valid M3U found" && exit 1)
+
+      - name: Commit updated playlist
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add JTV-drm.m3u
+          git commit -m "Hourly update: extracted JTV DRM M3U (with separation)" || echo "No changes"
+          git push
