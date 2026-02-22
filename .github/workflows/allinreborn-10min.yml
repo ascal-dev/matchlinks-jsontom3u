@@ -2,8 +2,18 @@ name: allinreborn-10min
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "0 * * * *"   # runs every 1 hour
   workflow_dispatch:
+
+permissions:
+  contents: write        # allow push to repository
+  actions: write
+  checks: write
+  pull-requests: write
+  issues: write
+  deployments: write
+  packages: write
+  statuses: write
 
 jobs:
   update-playlist:
@@ -24,7 +34,6 @@ jobs:
             exit 0
           fi
 
-          # Count channel entries
           CHANNEL_COUNT=$(grep -c "#EXTINF:" "$SOURCE")
 
           echo "Channel count: $CHANNEL_COUNT"
