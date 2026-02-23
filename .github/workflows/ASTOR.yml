@@ -1,0 +1,70 @@
+name: Generate Sports Playlist
+
+on:
+  schedule:
+    - cron: "0 * * * *" # Runs every 1 hour
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    # All necessary permissions for automated updates
+    permissions:
+      contents: write
+      actions: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Process Sports Channels
+        env:
+          ASTOR_URL: ${{ secrets.ASTOR }}
+        run: |
+          # 1. Fetch JSON from Secret API
+          RESPONSE=$(curl -s -L "$ASTOR_URL")
+
+          # 2. Check if JSON is empty or invalid
+          if [ -z "$RESPONSE" ] || [ "$RESPONSE" == "[]" ] || [ "$RESPONSE" == "null" ]; then
+            echo "JSON source is empty. Skipping regeneration to protect old file."
+            exit 0
+          fi
+
+          # 3. Start fresh temporary file with your required header
+          echo "#EXTM3U x-tvg-url=\"https://avkb.short.gy/jioepg.xml.gz\"" > ascaljstar.m3u.tmp
+          echo "" >> ascaljstar.m3u.tmp
+
+          # 4. Filter for Sports only and format to your specifications
+          # Using jq to map JSON keys to your specific M3U structure
+          echo "$RESPONSE" | jq -r '.[] | select(.group_title | test("Sports"; "i")) | 
+            "#EXTINF:-1 tvg-logo=\"" + .tvg_logo + "\" tvg-id=\"" + .tvg_id + "\" group-title=\"Sports\"," + .tvg_name + "\n" +
+            "#KODIPROP:inputstream.adaptive.license_type=clearkey\n" +
+            "#KODIPROP:inputstream.adaptive.license_key=" + .license_key + "\n" +
+            "#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0\n" +
+            .stream_url + "\n"' >> ascaljstar.m3u.tmp
+
+          # 5. Guardrail: Only overwrite the main file if channels were actually found
+          if grep -q "EXTINF" ascaljstar.m3u.tmp; then
+            mv ascaljstar.m3u.tmp ascaljstar.m3u
+            echo "Playlist updated successfully."
+          else
+            echo "No Sports channels detected in JSON. Keeping old file."
+            rm ascaljstar.m3u.tmp
+          fi
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Only commit if the file actually changed
+          git add ascaljstar.m3u
+          if git diff --staged --quiet; then
+            echo "No changes in sports channels. Nothing to commit."
+          else
+            git commit -m "Automated Sports Refresh: $(date +'%Y-%m-%d %H:%M')"
+            git push
+          fi
