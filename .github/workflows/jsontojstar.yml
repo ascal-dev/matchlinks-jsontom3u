@@ -1,4 +1,4 @@
-name: JSTAR M3U Auto Update
+name: jsontojstar
 
 on:
   schedule:
