@@ -1,1 +1,67 @@
+name: JSTAR M3U Auto Update
 
+on:
+  schedule:
+    - cron: '0 * * * *'   # runs every 1 hour
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch JSON using secret JSTAR
+        run: |
+          curl -L -H "Authorization: Bearer ${{ secrets.JSTAR }}" \
+          -o data.json "YOUR_JSON_URL_HERE"
+
+      - name: Check JSON and Generate M3U
+        run: |
+          if [ ! -s data.json ]; then
+            echo "JSON empty. Skipping update."
+            exit 0
+          fi
+
+          COUNT=$(jq length data.json)
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "No channels in JSON. Skipping update."
+            exit 0
+          fi
+
+          echo "#EXTM3U x-tvg-url=\"https://avkb.short.gy/jioepg.xml.gz\"" > ascaljstar.m3u
+          echo "" >> ascaljstar.m3u
+
+          jq -c '.[]' data.json | while read channel; do
+              id=$(echo $channel | jq -r '.channel_id')
+              name=$(echo $channel | jq -r '.channel_name')
+              logo=$(echo $channel | jq -r '.channel_logo')
+              genre=$(echo $channel | jq -r '.channel_genre')
+              keyid=$(echo $channel | jq -r '.keyId')
+              key=$(echo $channel | jq -r '.key')
+              cookie=$(echo $channel | jq -r '.cookie')
+              url=$(echo $channel | jq -r '.channel_url')
+
+              echo "#EXTINF:-1 tvg-logo=\"$logo\" tvg-id=\"$id\" group-title=\"$genre\",$name" >> ascaljstar.m3u
+              echo "#KODIPROP:inputstream.adaptive.license_type=clearkey" >> ascaljstar.m3u
+              echo "#KODIPROP:inputstream.adaptive.license_key=$keyid:$key" >> ascaljstar.m3u
+              echo "#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0" >> ascaljstar.m3u
+              echo "#EXTHTTP:{\"cookie\":\"$cookie\"}" >> ascaljstar.m3u
+              echo "$url&xxx=%7Ccookie=$cookie" >> ascaljstar.m3u
+              echo "" >> ascaljstar.m3u
+          done
+
+      - name: Commit and Push if Updated
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add ascaljstar.m3u
+          git diff --cached --quiet || git commit -m "Auto update ascaljstar.m3u"
+          git push
