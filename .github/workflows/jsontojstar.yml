@@ -1,7 +1,30 @@
-- name: Install Python Dependencies
+name: jsontojstar
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # Runs every 1 hour
+  workflow_dispatch:      # Allows manual run
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
         run: pip install pycryptodome requests
 
-      - name: Fetch JSON with Auto-Cookie Bypass
+      - name: Fetch JSON with Auto-Bypass
         shell: python
         run: |
           import requests
@@ -9,34 +32,67 @@
           import binascii
           from Crypto.Cipher import AES
 
+          # Target URL from your Secrets
           url = "${{ secrets.JSTAR }}"
-          headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
 
-          # 1. Get the challenge page
+          # 1. Get the challenge HTML
+          print("Fetching challenge page...")
           response = requests.get(url, headers=headers)
           content = response.text
 
-          # 2. Extract hex values (a, b, c) using Regex
-          # Looking for strings like: toNumbers("f655ba9d...")
-          hex_matches = re.findall(r'toNumbers\("([a-f0-9]+)"\)', content)
+          # 2. Extract hex keys (a, b, c) from the script
+          # toNumbers("f655ba9d09a112d4968c63579db590b4")
+          matches = re.findall(r'toNumbers\("([a-f0-9]+)"\)', content)
 
-          if len(hex_matches) < 3:
-              print("Could not find challenge keys. Site might be down or changed.")
-              exit(1)
+          if len(matches) < 3:
+              print("Failed to find security keys. The site might already be open or layout changed.")
+              # Save content anyway to see if it's already the JSON
+              with open("data.json", "w") as f:
+                  f.write(content)
+          else:
+              a_key = binascii.unhexlify(matches[0])
+              b_iv = binascii.unhexlify(matches[1])
+              c_cipher = binascii.unhexlify(matches[2])
 
-          a_key = binascii.unhexlify(hex_matches[0])
-          b_iv = binascii.unhexlify(hex_matches[1])
-          c_data = binascii.unhexlify(hex_matches[2])
+              # 3. Decrypt the cookie value (AES-128-CBC)
+              cipher = AES.new(a_key, AES.MODE_CBC, b_iv)
+              decrypted = cipher.decrypt(c_cipher)
+              # Convert bytes to hex string like JS toHex()
+              cookie_value = binascii.hexlify(decrypted).decode()
 
-          # 3. Solve the AES challenge (Mode: CBC, No Padding in this specific implementation)
-          cipher = AES.new(a_key, AES.MODE_CBC, b_iv)
-          decrypted_hex = binascii.hexlify(cipher.decrypt(c_data)).decode()
+              print(f"Bypass Cookie found: {cookie_value}")
 
-          # 4. Use the solved cookie to get the real JSON
-          cookies = {'__test': decrypted_hex}
-          print(f"Bypassing with cookie: {decrypted_hex}")
-          
-          final_response = requests.get(url, headers=headers, cookies=cookies)
-          
-          with open("data.json", "w") as f:
-              f.write(final_response.text)
+              # 4. Request the actual JSON using the cookie
+              final_response = requests.get(url, headers=headers, cookies={'__test': cookie_value})
+              with open("data.json", "w") as f:
+                  f.write(final_response.text)
+
+      - name: Validate & Generate M3U
+        run: |
+          if [ ! -s data.json ] || ! jq empty data.json 2>/dev/null; then
+            echo "Error: data.json is not valid JSON. Checking file content..."
+            cat data.json
+            exit 1
+          fi
+
+          # Header for M3U
+          echo '#EXTM3U x-tvg-url="https://avkb.short.gy/jioepg.xml.gz"' > ascaljstar.m3u
+          echo "" >> ascaljstar.m3u
+
+          # Process with jq
+          jq -r '.[] | "#EXTINF:-1 tvg-logo=\"" + .channel_logo + "\" tvg-id=\"" + .channel_id + "\" group-title=\"" + .channel_genre + "\"," + .channel_name + "\n#KODIPROP:inputstream.adaptive.license_type=clearkey\n#KODIPROP:inputstream.adaptive.license_key=" + .keyId + ":" + .key + "\n#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0\n#EXTHTTP:{\"cookie\":\"" + .cookie + "\"}\n" + .channel_url + "&xxx=%7Ccookie=" + .cookie + "\n"' data.json >> ascaljstar.m3u
+
+      - name: Commit & Push Changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add ascaljstar.m3u
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Auto-update Playlist: $(date)"
+            git push
+          fi
