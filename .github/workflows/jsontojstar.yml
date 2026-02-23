@@ -1,43 +1,54 @@
-name: jsontojstar
+name: JSTAR Auto M3U Update
 
 on:
   schedule:
-    - cron: '0 * * * *'   # runs every 1 hour
+    - cron: '0 * * * *'   # Every 1 hour
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Fetch JSON using secret JSTAR
-        run: |
-          curl -L -H "Authorization: Bearer ${{ secrets.JSTAR }}" \
-          -o data.json "YOUR_JSON_URL_HERE"
+      - name: Install jq
+        run: sudo apt-get install -y jq
 
-      - name: Check JSON and Generate M3U
+      - name: Fetch JSON from Secret URL (JSTAR)
         run: |
+          curl -L "${{ secrets.JSTAR }}" -o data.json
+
+      - name: Validate JSON & Generate M3U
+        run: |
+          # Check if file exists and not empty
           if [ ! -s data.json ]; then
-            echo "JSON empty. Skipping update."
+            echo "JSON file is empty. Skipping update."
+            exit 0
+          fi
+
+          # Check if valid JSON
+          if ! jq empty data.json 2>/dev/null; then
+            echo "Invalid JSON. Skipping update."
             exit 0
           fi
 
           COUNT=$(jq length data.json)
 
           if [ "$COUNT" -eq 0 ]; then
-            echo "No channels in JSON. Skipping update."
+            echo "No channels found in JSON. Skipping update."
             exit 0
           fi
 
-          echo "#EXTM3U x-tvg-url=\"https://avkb.short.gy/jioepg.xml.gz\"" > ascaljstar.m3u
+          # Clear and recreate M3U
+          echo '#EXTM3U x-tvg-url="https://avkb.short.gy/jioepg.xml.gz"' > ascaljstar.m3u
           echo "" >> ascaljstar.m3u
 
+          # Loop through channels
           jq -c '.[]' data.json | while read channel; do
               id=$(echo $channel | jq -r '.channel_id')
               name=$(echo $channel | jq -r '.channel_name')
@@ -57,11 +68,16 @@ jobs:
               echo "" >> ascaljstar.m3u
           done
 
-      - name: Commit and Push if Updated
+      - name: Commit & Push If Changed
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
           git add ascaljstar.m3u
-          git diff --cached --quiet || git commit -m "Auto update ascaljstar.m3u"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+          else
+            git commit -m "Auto update ascaljstar.m3u"
+            git push
+          fi
