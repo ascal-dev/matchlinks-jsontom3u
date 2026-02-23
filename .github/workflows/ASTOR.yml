@@ -9,12 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    # All necessary permissions for automated updates
     permissions:
       contents: write
       actions: write
-      pages: write
-      id-token: write
 
     steps:
       - name: Checkout Repository
@@ -24,35 +21,30 @@ jobs:
         env:
           ASTOR_URL: ${{ secrets.ASTOR }}
         run: |
-          # 1. Fetch JSON from Secret API
-          RESPONSE=$(curl -s -L "$ASTOR_URL")
+          # 1. Fetch the raw content from the secret link
+          curl -s -L "$ASTOR_URL" > raw_data.txt
 
-          # 2. Check if JSON is empty or invalid
-          if [ -z "$RESPONSE" ] || [ "$RESPONSE" == "[]" ] || [ "$RESPONSE" == "null" ]; then
-            echo "JSON source is empty. Skipping regeneration to protect old file."
+          # 2. Safety Check: If source is empty, stop here
+          if [ ! -s raw_data.txt ]; then
+            echo "Source file is empty. No update performed."
             exit 0
           fi
 
-          # 3. Start fresh temporary file with your required header
-          echo "#EXTM3U x-tvg-url=\"https://avkb.short.gy/jioepg.xml.gz\"" > ascaljstar.m3u.tmp
-          echo "" >> ascaljstar.m3u.tmp
+          # 3. Create the header for the new astor.m3u file
+          echo "#EXTM3U x-tvg-url=\"https://avkb.short.gy/jioepg.xml.gz\"" > astor.m3u.tmp
+          echo "" >> astor.m3u.tmp
 
-          # 4. Filter for Sports only and format to your specifications
-          # Using jq to map JSON keys to your specific M3U structure
-          echo "$RESPONSE" | jq -r '.[] | select(.group_title | test("Sports"; "i")) | 
-            "#EXTINF:-1 tvg-logo=\"" + .tvg_logo + "\" tvg-id=\"" + .tvg_id + "\" group-title=\"Sports\"," + .tvg_name + "\n" +
-            "#KODIPROP:inputstream.adaptive.license_type=clearkey\n" +
-            "#KODIPROP:inputstream.adaptive.license_key=" + .license_key + "\n" +
-            "#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0\n" +
-            .stream_url + "\n"' >> ascaljstar.m3u.tmp
+          # 4. Extract Sports blocks
+          # Grabs the Sports #EXTINF line and the subsequent lines (KODIPROPs, User-Agent, and URL)
+          grep -iA 5 'group-title="Sports"' raw_data.txt | sed '/^--$/d' >> astor.m3u.tmp
 
-          # 5. Guardrail: Only overwrite the main file if channels were actually found
-          if grep -q "EXTINF" ascaljstar.m3u.tmp; then
-            mv ascaljstar.m3u.tmp ascaljstar.m3u
-            echo "Playlist updated successfully."
+          # 5. Only overwrite astor.m3u if we actually found Sports content
+          if grep -q "EXTINF" astor.m3u.tmp; then
+            mv astor.m3u.tmp astor.m3u
+            echo "astor.m3u successfully updated."
           else
-            echo "No Sports channels detected in JSON. Keeping old file."
-            rm ascaljstar.m3u.tmp
+            echo "No Sports channels found. Protecting existing file."
+            rm astor.m3u.tmp
           fi
 
       - name: Commit and Push Changes
@@ -60,11 +52,10 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Only commit if the file actually changed
-          git add ascaljstar.m3u
+          git add astor.m3u
           if git diff --staged --quiet; then
-            echo "No changes in sports channels. Nothing to commit."
+            echo "No changes found in Sports channels."
           else
-            git commit -m "Automated Sports Refresh: $(date +'%Y-%m-%d %H:%M')"
+            git commit -m "Update Sports Playlist: $(date +'%Y-%m-%d %H:%M')"
             git push
           fi
