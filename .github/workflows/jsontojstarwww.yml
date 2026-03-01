@@ -1,0 +1,128 @@
+name: jsontojstarwww
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          pip install pycryptodome requests
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Fetch JSON with Auto-Bypass
+        shell: python
+        run: |
+          import requests
+          import re
+          import binascii
+          from Crypto.Cipher import AES
+
+          url = "${{ secrets.JSTAR }}"
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+          }
+
+          try:
+              response = requests.get(url, headers=headers, timeout=20)
+              content = response.text
+          except Exception as e:
+              print("Initial request failed:", e)
+              exit(1)
+
+          matches = re.findall(r'toNumbers\("([a-f0-9]+)"\)', content)
+
+          if len(matches) < 3:
+              print("No challenge detected. Saving direct content.")
+              with open("data.json", "w") as f:
+                  f.write(content)
+          else:
+              try:
+                  a_key = binascii.unhexlify(matches[0])
+                  b_iv = binascii.unhexlify(matches[1])
+                  c_cipher = binascii.unhexlify(matches[2])
+
+                  cipher = AES.new(a_key, AES.MODE_CBC, b_iv)
+                  decrypted = cipher.decrypt(c_cipher)
+
+                  pad_len = decrypted[-1]
+                  decrypted = decrypted[:-pad_len]
+
+                  cookie_value = binascii.hexlify(decrypted).decode()
+                  print("Bypass cookie generated.")
+
+                  final_response = requests.get(
+                      url,
+                      headers=headers,
+                      cookies={'__test': cookie_value},
+                      timeout=20
+                  )
+
+                  with open("data.json", "w") as f:
+                      f.write(final_response.text)
+
+              except Exception as e:
+                  print("Bypass failed:", e)
+                  exit(1)
+
+      - name: Validate JSON
+        run: |
+          if [ ! -s data.json ] || ! jq empty data.json 2>/dev/null; then
+            echo "Invalid JSON received:"
+            head -n 20 data.json
+            exit 1
+          fi
+
+      - name: Generate M3U Playlist
+        run: |
+          echo '#EXTM3U' > jstarworldwideweb.m3u
+          echo "" >> jstarworldwideweb.m3u
+
+          jq -r '
+          .[]
+          | select(.mpd != "")
+          | . as $channel
+          | (
+              $channel.drm | to_entries[]?
+              | "#EXTINF:-1 tvg-logo=\"" + $channel.logo + "\" group-title=\"" + $channel.category + "\"," + $channel.name + "\n" +
+                "#KODIPROP:inputstream.adaptive.license_type=clearkey\n" +
+                "#KODIPROP:inputstream.adaptive.license_key=" + .key + ":" + .value + "\n" +
+                "#EXTVLCOPT:http-user-agent=" + ($channel.userAgent // "Mozilla/5.0") + "\n" +
+                "#EXTVLCOPT:http-referrer=" + ($channel.referer // "") + "\n" +
+                $channel.mpd +
+                (if $channel.token != "" then "?" + $channel.token else "" end) +
+                "\n"
+            )
+          ' data.json >> jstarworldwideweb.m3u
+
+      - name: Commit & Push Changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add jstarworldwideweb.m3u
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+
+          git commit -m "Auto-update Playlist: $(date)"
+          git push
