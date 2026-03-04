@@ -13,11 +13,11 @@ https://linearjitp-playback.astro.com.my/dash-wv/linear/5057/default_ott.mpd?PID
 
 ###################################################
 #EXTINF:-1 group-logo="" tvg-id="803.astro" tvg-name="ARENA BOLA" group-title="Sports" tvg-logo="https://i.ibb.co/DRvRqg9/Astro-Arena-Bola-1-2024.png" ch-number="803",803 Arena Bola HD 
-http://217.216.110.49:8000/bola1Q
+###http://217.216.110.49:8000/bola1Q
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=499a8f368064b11cc092b7b013db0710:e151bb81468a8426d6ab12860d314aa3
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36
-https://2da559d4c1d24884a735abbc512e6181.mediatailor.ap-southeast-1.amazonaws.com/v1/dash/ceb8322ae2e84c32cb0fce196fdc60100025ab50/MT-CH24-dash/vsg/41mVEQynkPBp0B6xXUwF2UUTVF0kxKRwrwZZm-omgnvzQ=CmUg/dash-wv/jitp-dashisowm/5099/default_ott.mpd?aws.sessionId=cb0e90d7-7f7c-402c-809e-f18e2b52f0a1
+https://2da559d4c1d24884a735abbc512e6181.mediatailor.ap-southeast-1.amazonaws.com/v1/dash/ceb8322ae2e84c32cb0fce196fdc60100025ab50/MT-CH24-dash/vsg/41mVEQynkPBp0B6xXUwF2UUe9PgY1WtBt324lfkZGuN8o=FL1e/dash-wv/jitp-dashisowm/5099/default_ott.mpd?aws.sessionId=2a59d5d2-0b3c-439d-8460-7240eadcaba5
 @#EXTINF:-1 group-logo="" tvg-id="803.astro" tvg-name="ARENA BOLA" group-title="Sports" tvg-logo="https://i.ibb.co/DRvRqg9/Astro-Arena-Bola-1-2024.png" ch-number="803",803 Arena Bola HD 
 #KODIPROP:inputstream.adaptive.license_type=clearkey
 #KODIPROP:inputstream.adaptive.license_key=499a8f368064b11cc092b7b013db0710:e151bb81468a8426d6ab12860d314aa3
@@ -25,7 +25,7 @@ https://2da559d4c1d24884a735abbc512e6181.mediatailor.ap-southeast-1.amazonaws.co
 https://load.perfecttv.net/mpd/bola1/manifest.mpd
 #https://live.aqfadtv.xyz/arenabola/index.mpd
 #EXTINF:-1 tvg-id="AstroArenaBola2" ch-number="804" tvg-logo="https://i.ibb.co/4Wk65pX/Astro-Arena-Bola-2-2024.png" group-title="Sports",804 Arena Bola 2 HD 
-http://217.216.110.49:8000/bola2Q
+###http://217.216.110.49:8000/bola2Q
 #KODIPROP:inputstreamaddon=inputstream.adaptive
 #KODIPROP:inputstream.adaptive.manifest_type=dash
 #KODIPROP:inputstream.adaptive.license_type=clearkey
