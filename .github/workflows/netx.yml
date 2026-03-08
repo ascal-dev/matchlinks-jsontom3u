@@ -1,0 +1,72 @@
+name: Netx Hotstar M3U
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get install jq -y
+
+      - name: Fetch JSON
+        run: |
+          curl -L "$NETX_URL" -o data.json
+        env:
+          NETX_URL: ${{ secrets.NETX_URL }}
+
+      - name: Check JSON Empty
+        id: check
+        run: |
+          COUNT=$(jq length data.json)
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+      - name: Convert JSON to M3U
+        if: steps.check.outputs.count != '0'
+        run: |
+          echo "#EXTM3U" > host.m3u
+
+          jq -c '.[] | select(.id!="sf-top")' data.json | while read item; do
+
+            NAME=$(echo $item | jq -r '.name')
+            GROUP=$(echo $item | jq -r '.group')
+            LOGO=$(echo $item | jq -r '.logo')
+            URL=$(echo $item | jq -r '.m3u8_url')
+            UA=$(echo $item | jq -r '.user_agent // empty')
+            REF=$(echo $item | jq -r '.headers.Referer // empty')
+
+            echo "" >> host.m3u
+            echo "#EXTINF:-1 tvg-logo=\"$LOGO\" group-title=\"$GROUP\",$NAME" >> host.m3u
+
+            if [ ! -z "$UA" ]; then
+              echo "#EXTVLCOPT:http-user-agent=$UA" >> host.m3u
+            fi
+
+            if [ ! -z "$REF" ]; then
+              echo "#EXTVLCOPT:http-referrer=$REF" >> host.m3u
+            fi
+
+            echo "$URL" >> host.m3u
+
+          done
+
+      - name: Commit M3U
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git add host.m3u
+
+          git commit -m "Updated host.m3u" || echo "No changes"
+
+          git push
