@@ -1,4 +1,4 @@
-name: Clean M3U Mirror
+name: Clean M3U Mirror (Strict)
 
 on:
   schedule:
@@ -29,8 +29,6 @@ jobs:
       - name: Create Processing Script
         run: |
           cat << 'EOF' > process.py
-          import os
-
           def is_valid(file):
               try:
                   with open(file, "r") as f:
@@ -55,10 +53,12 @@ jobs:
                           continue
                       if line.startswith("#Generated"):
                           continue
+                      if line.startswith("#EXTM3U x-tvg-url"):
+                          continue
 
                       cleaned_lines.append(line)
 
-              # ✅ Ensure single header
+              # ✅ Ensure ONLY one #EXTM3U at top
               output_content = "#EXTM3U\n\n" + "\n".join(
                   [l for l in cleaned_lines if l != "#EXTM3U"]
               ) + "\n"
@@ -92,6 +92,6 @@ jobs:
 
           git add ascaljstar.m3u ascaljtv.m3u
 
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update clean M3U"
+          git diff --quiet && git diff --staged --quiet || git commit -m "Clean strict M3U update"
 
           git push
