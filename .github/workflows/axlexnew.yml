@@ -1,4 +1,4 @@
-name: axlexnew
+name: Clean M3U Mirror
 
 on:
   schedule:
@@ -16,12 +16,17 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Download Source Files
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Download Source Playlists
         run: |
           curl -L https://raw.githubusercontent.com/alex4528x/m3u/main/jstar.m3u -o jstar.m3u
           curl -L https://raw.githubusercontent.com/alex4528x/m3u/main/jtv.m3u -o jtv.m3u
 
-      - name: Create Processor Script
+      - name: Create Processing Script
         run: |
           cat << 'EOF' > process.py
           import os
@@ -29,41 +34,52 @@ jobs:
           def is_valid(file):
               try:
                   with open(file, "r") as f:
-                      content = f.read().strip()
+                      content = f.read()
                       return "#EXTINF" in content
               except:
                   return False
 
-          def clean_copy(input_file, output_file):
+          def clean_file(input_file, output_file):
               if not is_valid(input_file):
-                  print(f"Skipping {input_file} (empty)")
+                  print(f"Skipping {input_file} (empty or invalid)")
                   return False
 
-              with open(input_file, "r") as f:
-                  content = f.read().strip()
+              cleaned_lines = []
 
-              # Ensure only one #EXTM3U at top
-              if not content.startswith("#EXTM3U"):
-                  content = "#EXTM3U\n\n" + content
-              else:
-                  content = "#EXTM3U\n\n" + "\n".join(content.splitlines()[1:])
+              with open(input_file, "r") as f:
+                  for line in f:
+                      line = line.strip()
+
+                      # ❌ Remove unwanted lines
+                      if line.startswith("#EXTHTTP"):
+                          continue
+                      if line.startswith("#Generated"):
+                          continue
+
+                      cleaned_lines.append(line)
+
+              # ✅ Ensure single header
+              output_content = "#EXTM3U\n\n" + "\n".join(
+                  [l for l in cleaned_lines if l != "#EXTM3U"]
+              ) + "\n"
 
               with open(output_file, "w") as out:
-                  out.write(content + "\n")
+                  out.write(output_content)
 
               print(f"Updated {output_file}")
               return True
 
+
           updated = False
 
-          if clean_copy("jstar.m3u", "ascaljstar.m3u"):
+          if clean_file("jstar.m3u", "ascaljstar.m3u"):
               updated = True
 
-          if clean_copy("jtv.m3u", "ascaljtv.m3u"):
+          if clean_file("jtv.m3u", "ascaljtv.m3u"):
               updated = True
 
           if not updated:
-              print("No valid updates, keeping old files.")
+              print("No valid update, keeping old files.")
           EOF
 
       - name: Run Script
