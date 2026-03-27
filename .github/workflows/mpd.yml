@@ -19,88 +19,14 @@ jobs:
         run: |
           curl -L "$SRC" -o source.txt
 
-      - name: Convert to M3U (strict rules)
+      - name: Copy as-is to M3U
         run: |
-          echo "#EXTM3U" > final.m3u
-
-          awk '
-          BEGIN {
-            channel=""
-            url=""
-            key=""
-            logo=""
-            cookie=""
-          }
-
-          /^#EXTINF/ {
-            channel=$0
-            sub(/.*?,/, "", channel)
-            next
-          }
-
-          /tvg-logo=/ {
-            if (match($0, /tvg-logo="[^"]+"/)) {
-              logo=substr($0, RSTART+10, RLENGTH-11)
-            }
-            next
-          }
-
-          /license_key=/ {
-            key=$0
-            sub(/.*=/, "", key)
-            next
-          }
-
-          /^#EXTHTTP/ {
-            cookie=$0
-            next
-          }
-
-          /^https?:\/\// {
-            url=$0
-
-            # dedupe
-            if (seen[channel]++) {
-              channel=""; key=""; logo=""; cookie=""
-              next
-            }
-
-            # DRM logic
-            is_m3u8 = (url ~ /^https:.*\.m3u8$/)
-
-            if (key == "" && !is_m3u8) {
-              channel=""; key=""; logo=""; cookie=""
-              next
-            }
-
-            if (channel == "") channel="null"
-            if (logo == "") logo="null"
-
-            print "#EXTINF:-1 tvg-id=\"\" group-title=\"Education\" tvg-logo=\"" logo "\"," channel >> "final.m3u"
-            print "#KODIPROP:inputstream.adaptive.license_type=clearkey" >> "final.m3u"
-
-            if (key != "") {
-              print "#KODIPROP:inputstream.adaptive.license_key=" key >> "final.m3u"
-            }
-
-            print "#EXTVLCOPT:http-user-agent=plaYtv/7.1.3 (Linux;Android 13) ygx/824.1 ExoPlayerLib/824.0" >> "final.m3u"
-
-            if (is_m3u8) {
-              print "#EXTHTTP:{\"cookie\":\"\"}" >> "final.m3u"
-            } else if (cookie != "") {
-              print cookie >> "final.m3u"
-            }
-
-            print url "\n" >> "final.m3u"
-
-            channel=""; url=""; key=""; logo=""; cookie=""
-          }
-          ' source.txt
+          cp source.txt mpd-to-m3u.m3u
 
       - name: Commit final playlist
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add final.m3u
-          git commit -m "Auto convert MPD repo to M3U (deduped)" || echo "No changes"
+          git add mpd-to-m3u.m3u
+          git commit -m "Copy MPD to M3U (no changes)" || echo "No changes"
           git push
