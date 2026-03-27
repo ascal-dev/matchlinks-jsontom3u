@@ -1,0 +1,81 @@
+name: axlexnew
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download Source Files
+        run: |
+          curl -L https://raw.githubusercontent.com/alex4528x/m3u/main/jstar.m3u -o jstar.m3u
+          curl -L https://raw.githubusercontent.com/alex4528x/m3u/main/jtv.m3u -o jtv.m3u
+
+      - name: Create Processor Script
+        run: |
+          cat << 'EOF' > process.py
+          import os
+
+          def is_valid(file):
+              try:
+                  with open(file, "r") as f:
+                      content = f.read().strip()
+                      return "#EXTINF" in content
+              except:
+                  return False
+
+          def clean_copy(input_file, output_file):
+              if not is_valid(input_file):
+                  print(f"Skipping {input_file} (empty)")
+                  return False
+
+              with open(input_file, "r") as f:
+                  content = f.read().strip()
+
+              # Ensure only one #EXTM3U at top
+              if not content.startswith("#EXTM3U"):
+                  content = "#EXTM3U\n\n" + content
+              else:
+                  content = "#EXTM3U\n\n" + "\n".join(content.splitlines()[1:])
+
+              with open(output_file, "w") as out:
+                  out.write(content + "\n")
+
+              print(f"Updated {output_file}")
+              return True
+
+          updated = False
+
+          if clean_copy("jstar.m3u", "ascaljstar.m3u"):
+              updated = True
+
+          if clean_copy("jtv.m3u", "ascaljtv.m3u"):
+              updated = True
+
+          if not updated:
+              print("No valid updates, keeping old files.")
+          EOF
+
+      - name: Run Script
+        run: python3 process.py
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add ascaljstar.m3u ascaljtv.m3u
+
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update clean M3U"
+
+          git push
