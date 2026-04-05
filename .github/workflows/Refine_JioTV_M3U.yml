@@ -1,0 +1,77 @@
+name: Refine JioTV M3U
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *' # every 6 hours
+
+permissions:
+  contents: write
+  actions: read
+  checks: read
+  statuses: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure Refined.m3u exists
+        run: |
+          touch Refined.m3u
+
+      - name: Fetch and refine playlist
+        shell: bash
+        run: |
+          URL="https://allinonereborn.online/jiotv-m3u/playlist698.m3u8"
+          TEMP_RAW="raw.m3u"
+          TEMP_NEW="Refined.new.m3u"
+
+          # Download source playlist
+          curl -L --fail --silent --show-error "$URL" -o "$TEMP_RAW" || true
+
+          # If fetch failed or file is empty, keep existing Refined.m3u untouched
+          if [ ! -s "$TEMP_RAW" ]; then
+            echo "Source playlist is empty or fetch failed. Keeping existing Refined.m3u"
+            exit 0
+          fi
+
+          # Build refined playlist
+          {
+            echo "#EXTM3U"
+            echo
+
+            awk '
+              /^# ======= CATEGORY:/ {next}
+              /^#EXTHTTP:/ {next}
+              /^$/ {next}
+              /^#EXTM3U/ {next}
+              {
+                print
+                if ($0 ~ /^#EXTVLCOPT:http-user-agent=/) {
+                  print "#EXTVLCOPT:http-referrer=https://www.jiotv.com/"
+                }
+              }
+            ' "$TEMP_RAW"
+          } > "$TEMP_NEW"
+
+          # Only replace if new refined content has stream entries
+          if grep -q "#EXTINF:" "$TEMP_NEW"; then
+            mv "$TEMP_NEW" Refined.m3u
+            echo "Refined.m3u updated successfully"
+          else
+            echo "No valid channels found in fetched playlist. Keeping old Refined.m3u"
+            rm -f "$TEMP_NEW"
+          fi
+
+      - name: Commit updated Refined.m3u
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add Refined.m3u
+          git diff --cached --quiet || git commit -m "Update Refined.m3u"
+          git push
