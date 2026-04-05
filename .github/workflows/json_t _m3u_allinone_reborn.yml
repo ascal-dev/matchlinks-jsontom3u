@@ -1,0 +1,66 @@
+name: json to m3u allinone reborn
+
+on:
+  schedule:
+    - cron: '0 * * * *' # This runs exactly every 1 hour (at the 0th minute) # Runs automatically every 6 hours
+  workflow_dispatch: # Allows you to run it manually from the Actions tab
+
+permissions:
+  contents: write # Required to allow the bot to push the .m3u file to your repo
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch and Validate JSON
+        id: fetch_data
+        run: |
+          # 1. Download the JSON to a temporary file
+          curl -s -L -o raw_data.json https://allinonereborn-jtv.pages.dev/jstr.json
+          
+          # 2. Check if the file is valid JSON. If not, exit and save previous content.
+          if ! jq -e . raw_data.json >/dev/null 2>&1; then
+            echo "ERROR: Received invalid JSON from source. Aborting to protect tjakhabar.m3u."
+            exit 1
+          fi
+
+          # 3. Check if the JSON has actual channel data (more than 0 entries excluding Telegram)
+          COUNT=$(jq '[.[] | select(.name != "Join Telegram - AllInOne Reborn")] | length' raw_data.json)
+          if [ "$COUNT" -eq 0 ]; then
+            echo "ERROR: JSON contains no channels. Aborting update."
+            exit 1
+          fi
+
+      - name: Process and Overwrite M3U
+        run: |
+          # Create the header and start a fresh file
+          echo "#EXTM3U" > tjakhabar.m3u
+
+          # Use jq to filter, transform URLs, format DRM keys, and set headers
+          jq -r '
+            .[] | 
+            select(.name != "Join Telegram - AllInOne Reborn") | 
+            "\n#EXTINF:-1 tvg-logo=\"" + .logo + "\" group-title=\"" + .category + "\"," + .name + "\n" +
+            (if .drm and (.drm | length > 0) then 
+              "#KODIPROP:inputstream.adaptive.license_type=clearkey\n#KODIPROP:inputstream.adaptive.license_key=" + (.drm | to_entries | map("\(.key):\(.value)") | join(":")) + "\n" 
+            else "" end) +
+            "#EXTVLCOPT:http-user-agent=https://www.jiotv.com/\n" +
+            "#EXTVLCOPT:http-referrer=https://www.jiotv.com/\n" +
+            (.mpd | sub("https://mini.allinonereborn.fun/jtv-plus/jtv.php/"; "https://jiotvioslive.cdn.jio.com/bpk-tv/")) + "?" + .token
+          ' raw_data.json >> tjakhabar.m3u
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add tjakhabar.m3u
+          # Only push if the content has actually changed to avoid spamming history
+          if git diff --staged --quiet; then
+            echo "No changes to tjakhabar.m3u. Skipping push."
+          else
+            git commit -m "Update tjakhabar.m3u: $(date -u +'%Y-%m-%d %H:%M:%S') UTC"
+            git push
+          fi
