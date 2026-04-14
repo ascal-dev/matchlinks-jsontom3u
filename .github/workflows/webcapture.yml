@@ -21,114 +21,110 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm install axios puppeteer
+        run: npm install axios puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
 
       - name: Run Scraper
         run: |
           cat << 'EOF' > scraper.js
-          const puppeteer = require('puppeteer');
+          const puppeteer = require('puppeteer-extra');
+          const StealthPlugin = require('puppeteer-extra-plugin-stealth');
           const axios = require('axios');
           const fs = require('fs');
+
+          puppeteer.use(StealthPlugin());
 
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
           const PHP_BASE = "https://jtvxweb.unaux.com/jtvxweb/pworld.php";
           const SCRAPE_LIMIT = null; 
 
           let currentSession = { cookieStr: '', ua: '' };
-          let consecutiveFailures = 0;
 
           async function solveChallenge() {
-              console.log("--- [SYSTEM] INITIATING STEALH COOKIE CAPTURE ---");
+              console.log("--- [SYSTEM] ATTEMPTING STEALTH BYPASS ---");
               const browser = await puppeteer.launch({ 
                   headless: true, 
-                  args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-blink-features=AutomationControlled'] 
+                  args: [
+                      '--no-sandbox', 
+                      '--disable-setuid-sandbox',
+                      '--disable-dev-shm-usage',
+                      '--disable-accelerated-2d-canvas',
+                      '--disable-gpu'
+                  ] 
               });
               const page = await browser.newPage();
               const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
               
               await page.setUserAgent(realUA);
-              await page.setViewport({ width: 1280, height: 720 });
 
               try {
-                  // Visit the priming URL
-                  await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2', timeout: 45000 });
+                  // Visit the base page (ID 144 is usually the best for priming)
+                  await page.goto(`${PHP_BASE}?id=144`, { waitUntil: 'networkidle2', timeout: 60000 });
                   
-                  // WAIT: Most JS challenges need time to execute and set the cookie
-                  console.log("Waiting 15s for JS challenge to resolve...");
-                  await new Promise(r => setTimeout(r, 15000));
-
-                  const cookies = await page.cookies();
-                  const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
-                  
-                  if (!cookieStr.includes('__test')) {
-                      console.log("Cookie missing, attempting one page reload...");
-                      await page.reload({ waitUntil: 'networkidle2' });
-                      await new Promise(r => setTimeout(r, 10000));
+                  let authenticated = false;
+                  for (let i = 0; i < 15; i++) {
+                      const cookies = await page.cookies();
+                      const testCookie = cookies.find(c => c.name === '__test');
+                      
+                      if (testCookie) {
+                          console.log("✅ Security cookie '__test' detected!");
+                          authenticated = true;
+                          const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+                          currentSession = { cookieStr, ua: realUA };
+                          break;
+                      }
+                      console.log(`Waiting for JS challenge... (${i+1}/15)`);
+                      await new Promise(r => setTimeout(r, 2000));
                   }
 
-                  const finalCookies = await page.cookies();
-                  const finalStr = finalCookies.map(c => `${c.name}=${c.value}`).join('; ');
+                  if (!authenticated) throw new Error("Could not capture __test cookie.");
 
-                  if (!finalStr.includes('__test')) throw new Error("Security challenge failed (No __test cookie)");
-
-                  currentSession = { cookieStr: finalStr, ua: realUA };
-                  console.log("--- [SYSTEM] NEW SESSION SECURED ---");
               } catch (e) {
-                  console.error("--- [CRITICAL] COOKIE CAPTURE FAILED:", e.message);
+                  console.error("--- [CRITICAL] BYPASS FAILED:", e.message);
               } finally {
                   await browser.close();
               }
           }
 
-          async function fetchChannel(item, maxRetries = 3) {
-              for (let attempt = 1; attempt <= maxRetries; attempt++) {
-                  try {
-                      if (!currentSession.cookieStr) throw new Error("No session");
+          async function fetchChannel(item) {
+              try {
+                  if (!currentSession.cookieStr) return null;
 
-                      const headers = {
-                          "User-Agent": currentSession.ua,
-                          "Cookie": currentSession.cookieStr,
-                          "Referer": `${PHP_BASE}?id=${item.id}&i=1`,
-                          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                          "Connection": "keep-alive"
-                      };
+                  const headers = {
+                      "User-Agent": currentSession.ua,
+                      "Cookie": currentSession.cookieStr,
+                      "Referer": "https://jtvxweb.unaux.com/",
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                      "Connection": "keep-alive",
+                      "Upgrade-Insecure-Requests": "1"
+                  };
 
-                      // Step 1: Prime
-                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 20000 });
-                      await new Promise(r => setTimeout(r, 1200));
+                  // STEP 1: Hit base ID URL (No &i=1) to establish session for this specific ID
+                  await axios.get(`${PHP_BASE}?id=${item.id}`, { headers, timeout: 20000 });
+                  await new Promise(r => setTimeout(r, 2500));
 
-                      // Step 2: Extract
-                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 20000 });
-                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
+                  // STEP 2: Use &i=1 with the established cookie to extract the config
+                  const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 20000 });
+                  
+                  // Extracting SERVER_CONFIG
+                  const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
 
-                      if (configMatch) {
-                          consecutiveFailures = 0;
-                          const config = JSON.parse(configMatch[1]);
-                          console.log(`✅ [OK] ${item.name} | KID: ${config.keyId}`);
-                          return config;
-                      } else {
-                          throw new Error("EMPTY_CONFIG_DATA");
-                      }
-                  } catch (err) {
-                      console.log(`⚠️ [RETRY ${attempt}/${maxRetries}] ${item.name} | ${err.message}`);
-                      
-                      if (attempt === maxRetries) {
-                          consecutiveFailures++;
-                          if (consecutiveFailures >= 2) {
-                              console.log("--- [REFRESH] DETECTED DEAD SESSION. RE-SOLVING CHALLENGE... ---");
-                              await solveChallenge();
-                              consecutiveFailures = 0;
-                              return await fetchChannel(item, 1); // Retry with new cookie
-                          }
-                          return null;
-                      }
-                      await new Promise(r => setTimeout(r, 4000 * attempt));
+                  if (configMatch) {
+                      const config = JSON.parse(configMatch[1]);
+                      console.log(`✅ Scraped: ${item.name} | KID: ${config.keyId || 'N/A'}`);
+                      return config;
+                  } else {
+                      console.log(`❌ Config not found for: ${item.name}`);
                   }
+              } catch (err) {
+                  console.log(`⚠️ Error on ${item.name}: ${err.message}`);
               }
+              return null;
           }
 
           async function scrape() {
               await solveChallenge();
+              if (!currentSession.cookieStr) return;
+
               const m3uRes = await axios.get(M3U_URL);
               const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
               let match, allChannels = [];
@@ -138,32 +134,29 @@ jobs:
               }
 
               const channels = SCRAPE_LIMIT ? allChannels.slice(0, SCRAPE_LIMIT) : allChannels;
-              console.log(`--- [START] PROCESSING ${channels.length} CHANNELS ---`);
+              console.log(`\n--- STARTING SCRAPE OF ${channels.length} CHANNELS ---`);
 
               const finalData = [];
-              for (let i = 0; i < channels.length; i += 2) {
-                  const batch = channels.slice(i, i + 2);
-                  const results = await Promise.all(batch.map(item => fetchChannel(item)));
-                  
-                  results.forEach((config, idx) => {
-                      if (config) {
-                          finalData.push({
-                              "name": batch[idx].name,
-                              "id": batch[idx].id,
-                              "logo": batch[idx].logo,
-                              "streamUrl": config.streamUrls?.[0] || "",
-                              "keyId": config.keyId || "",
-                              "key": config.key || "",
-                              "token": config.primaryCookie || "",
-                              "fallbackCookie": config.fallbackCookie || ""
-                          });
-                      }
-                  });
-                  await new Promise(r => setTimeout(r, 4500)); 
+              for (const item of channels) {
+                  const config = await fetchChannel(item);
+                  if (config) {
+                      finalData.push({
+                          "name": item.name,
+                          "id": item.id,
+                          "logo": item.logo,
+                          "streamUrl": config.streamUrls?.[0] || "",
+                          "keyId": config.keyId || "",
+                          "key": config.key || "",
+                          "token": config.primaryCookie || "",
+                          "updated": new Date().toISOString()
+                      });
+                  }
+                  // Respectful delay between channels to avoid detection
+                  await new Promise(r => setTimeout(r, 5000)); 
               }
 
               fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-              console.log(`\n--- [FINISHED] SAVED ${finalData.length} CHANNELS ---`);
+              console.log(`\n--- FINISHED: SAVED ${finalData.length} CHANNELS ---`);
           }
 
           scrape();
@@ -175,5 +168,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Full Human-Mimic Scrape: $(date)" || exit 0
+          git commit -m "Updated Channels: $(date)" || exit 0
           git push
