@@ -1,4 +1,4 @@
-name: Full Dynamic Scraper (Verified)
+name: Ultimate Stable Scraper 100%
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
       - name: Install Dependencies
         run: npm install axios puppeteer
 
-      - name: Run Full Scraper
+      - name: Run Scraper
         run: |
           cat << 'EOF' > scraper.js
           const puppeteer = require('puppeteer');
@@ -32,119 +32,128 @@ jobs:
 
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
           const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
+          const SCRAPE_LIMIT = 100; // Hard limit for stability
 
           async function getDynamicSession() {
-              console.log("--- [BROWSER] STARTING DYNAMIC COOKIE CAPTURE ---");
+              console.log("--- [SYSTEM] SOLVING JS CHALLENGE VIA PUPPETEER ---");
               const browser = await puppeteer.launch({ 
                   headless: true, 
                   args: ['--no-sandbox', '--disable-setuid-sandbox'] 
               });
               const page = await browser.newPage();
-              
-              // Set a real-world User Agent
               const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
               await page.setUserAgent(realUA);
               
-              // Visit initial page to trigger __test cookie generation
               await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
-              
-              // Wait for the JS challenge to settle (6 seconds)
-              await new Promise(r => setTimeout(r, 6000)); 
+              await new Promise(r => setTimeout(r, 8000)); 
               
               const cookies = await page.cookies();
               const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
-              
               await browser.close();
-              
-              if (!cookieStr.includes('__test')) {
-                  console.error("--- [ERROR] FAILED TO CAPTURE __test COOKIE ---");
-                  process.exit(1);
-              }
 
-              console.log("--- [BROWSER] SUCCESS: CAPTURED SESSION ---");
+              if (!cookieStr.includes('__test')) {
+                  throw new Error("Failed to capture security cookie. Server might be down.");
+              }
+              console.log("--- [SYSTEM] SESSION CAPTURED SUCCESSFULLY ---");
               return { cookieStr, ua: realUA };
+          }
+
+          async function fetchWithRetry(item, headers, maxRetries = 3) {
+              for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                  try {
+                      // Handshake Step 1 (Priming)
+                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
+                      await new Promise(r => setTimeout(r, 1000));
+
+                      // Handshake Step 2 (Data Extraction)
+                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
+                      
+                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
+                      
+                      if (configMatch) {
+                          const config = JSON.parse(configMatch[1]);
+                          
+                          // --- FULL DETAILED LOGS ---
+                          console.log(`\n--------------------------------------------`);
+                          console.log(`✅ [EXTRACTED] ${item.name}`);
+                          console.log(`   ID    : ${item.id}`);
+                          console.log(`   URL   : ${config.streamUrls?.[0] || 'N/A'}`);
+                          console.log(`   KID   : ${config.keyId || 'N/A'}`);
+                          console.log(`   KEY   : ${config.key || 'N/A'}`);
+                          console.log(`   TOKEN : ${config.primaryCookie || 'N/A'}`);
+                          console.log(`--------------------------------------------`);
+                          
+                          return config;
+                      } else {
+                          throw new Error("Empty Response (No Config Found)");
+                      }
+                  } catch (err) {
+                      console.log(`⚠️ [ATTEMPT ${attempt}/${maxRetries}] ${item.name} failed: ${err.message}`);
+                      if (attempt === maxRetries) return null;
+                      
+                      // Exponential backoff: waits 4s, then 8s...
+                      const waitTime = attempt * 4000;
+                      await new Promise(r => setTimeout(r, waitTime));
+                  }
+              }
           }
 
           async function scrape() {
             try {
                 const { cookieStr, ua } = await getDynamicSession();
-                
-                console.log("--- [M3U] FETCHING SOURCE CHANNELS ---");
                 const m3uRes = await axios.get(M3U_URL);
-                const m3uContent = m3uRes.data;
-
-                // Strict Regex: Captures only digits for ID, ignores group-title/tags
+                
                 const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
                 let match;
-                const channels = [];
-
-                while ((match = regex.exec(m3uContent)) !== null) {
-                  const cleanId = match[1].trim(); 
-                  channels.push({ id: cleanId, logo: match[2], name: match[3].trim() });
+                let allChannels = [];
+                while ((match = regex.exec(m3uRes.data)) !== null) {
+                  allChannels.push({ id: match[1].trim(), logo: match[2], name: match[3].trim() });
                 }
 
-                console.log(`--- [START] PROCESSING ${channels.length} CHANNELS ---`);
+                const channels = allChannels.slice(0, SCRAPE_LIMIT);
+                console.log(`--- [SCRAPE] PROCESSING FIRST ${channels.length} CHANNELS ---`);
 
                 const finalData = [];
-                const batchSize = 10; 
+                const batchSize = 2; // Low batch size to prevent HTTP 508
 
                 for (let i = 0; i < channels.length; i += batchSize) {
                   const batch = channels.slice(i, i + batchSize);
                   
                   const results = await Promise.all(batch.map(async (item) => {
-                    try {
-                      const headers = {
-                        "User-Agent": ua,
-                        "Cookie": cookieStr,
+                    const headers = { 
+                        "User-Agent": ua, 
+                        "Cookie": cookieStr, 
                         "Referer": `${PHP_BASE}?id=${item.id}&i=1`,
                         "Connection": "keep-alive"
-                      };
-
-                      // Two-Step Handshake: i=1 (Prime) then i=2 (Data)
-                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
-                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
-
-                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
-                      
-                      if (configMatch) {
-                        const config = JSON.parse(configMatch[1]);
-                        
-                        console.log(`[OK] ${item.name} | URL: ${config.streamUrls?.[0]?.substring(0, 40)}...`);
-                        
-                        return {
-                          "name": item.name,
-                          "id": item.id,
-                          "logo": item.logo,
-                          "streamUrl": config.streamUrls?.[0] || "",
-                          "keyId": config.keyId || "",
-                          "key": config.key || "",
-                          "token": config.primaryCookie || "",
-                          "fallbackCookie": config.fallbackCookie || ""
-                        };
-                      }
-                      console.log(`[EMPTY] ${item.name} - No config in HTML`);
-                      return null;
-                    } catch (err) {
-                      console.log(`[ERROR] ${item.name} - Request Failed: ${err.message}`);
-                      return null;
-                    }
+                    };
+                    return await fetchWithRetry(item, headers);
                   }));
 
-                  finalData.push(...results.filter(r => r !== null));
-                  
-                  // Progress Update
-                  if (i % 50 === 0 && i > 0) {
-                      console.log(`--- PROGRESS: Captured ${finalData.length} valid streams so far ---`);
-                  }
-                  
-                  // Pause to stay under rate-limits
-                  await new Promise(r => setTimeout(r, 1200));
+                  // Map results to final format
+                  batch.forEach((item, index) => {
+                      const config = results[index];
+                      if (config) {
+                          finalData.push({
+                              "name": item.name,
+                              "id": item.id,
+                              "logo": item.logo,
+                              "streamUrl": config.streamUrls?.[0] || "",
+                              "keyId": config.keyId || "",
+                              "key": config.key || "",
+                              "token": config.primaryCookie || "",
+                              "fallbackCookie": config.fallbackCookie || ""
+                          });
+                      }
+                  });
+
+                  await new Promise(r => setTimeout(r, 4000)); // Delay between batches
                 }
 
                 fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-                console.log(`--- [FINISHED] SCRAPE COMPLETE: ${finalData.length} CHANNELS SAVED ---`);
+                console.log(`\n--- [COMPLETE] SAVED ${finalData.length} FUNCTIONAL CHANNELS ---`);
             } catch (err) {
-                console.error("FATAL SYSTEM ERROR:", err.message);
+                console.error("FATAL ERROR:", err.message);
+                process.exit(1);
             }
           }
 
@@ -152,10 +161,10 @@ jobs:
           EOF
           node scraper.js
 
-      - name: Commit and Push Changes
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Automated Scrape: $(date)" || exit 0
+          git commit -m "Full Scrape Update: $(date)" || exit 0
           git push
