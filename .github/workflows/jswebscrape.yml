@@ -42,9 +42,8 @@ jobs:
               const page = await browser.newPage();
               await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
               
-              // Visit a sample page to trigger the __test cookie
               await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
-              await new Promise(r => setTimeout(r, 6000)); // Wait for JS to run
+              await new Promise(r => setTimeout(r, 6000)); 
               
               const cookies = await page.cookies();
               const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
@@ -62,18 +61,22 @@ jobs:
                 console.log("[3/3] Fetching M3U List...");
                 const m3uRes = await axios.get(M3U_URL);
                 const m3uContent = m3uRes.data;
-                const regex = /#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)/g;
+
+                // FIXED REGEX: Specifically looks for the ID and ignores extra attributes like group-title
+                const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
                 let match;
                 const channels = [];
 
                 while ((match = regex.exec(m3uContent)) !== null) {
-                  channels.push({ id: match[1], logo: match[2], name: match[3].trim() });
+                  // Clean the ID just in case
+                  const cleanId = match[1].replace(/[^0-9]/g, ''); 
+                  channels.push({ id: cleanId, logo: match[2], name: match[3].trim() });
                 }
 
                 console.log(`Starting Scrape for ${channels.length} channels...`);
 
                 const finalData = [];
-                const batchSize = 8; // Optimal speed vs safety
+                const batchSize = 10; 
 
                 for (let i = 0; i < channels.length; i += batchSize) {
                   const batch = channels.slice(i, i + batchSize);
@@ -86,10 +89,10 @@ jobs:
                         "Referer": `${PHP_BASE}?id=${item.id}&i=1`
                       };
 
-                      // Handshake Step 1 (Prime the session for this specific ID)
+                      // Handshake Step 1
                       await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 12000 });
 
-                      // Handshake Step 2 (Extract the Config)
+                      // Handshake Step 2
                       const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 12000 });
 
                       const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
@@ -97,14 +100,14 @@ jobs:
                         const config = JSON.parse(configMatch[1]);
                         console.log(`[SUCCESS] ${item.name}`);
                         return {
-                          name: item.name,
-                          id: item.id,
-                          logo: item.logo,
-                          streamUrl: config.streamUrls?.[0] || "",
-                          keyId: config.keyId || "",
-                          key: config.key || "",
-                          token: config.primaryCookie || "",
-                          fallbackCookie: config.fallbackCookie || ""
+                          "name": item.name,
+                          "id": item.id,
+                          "logo": item.logo,
+                          "streamUrl": config.streamUrls?.[0] || "",
+                          "keyId": config.keyId || "",
+                          "key": config.key || "",
+                          "token": config.primaryCookie || "",
+                          "fallbackCookie": config.fallbackCookie || ""
                         };
                       }
                       return null;
@@ -114,12 +117,8 @@ jobs:
                   }));
 
                   finalData.push(...results.filter(r => r !== null));
-                  
-                  // Simple progress indicator
-                  if (i % 40 === 0) console.log(`--- Progress: ${finalData.length} channels saved ---`);
-                  
-                  // Anti-blocking pause
-                  await new Promise(r => setTimeout(r, 1200));
+                  if (i % 50 === 0) console.log(`Processed ${i} channels...`);
+                  await new Promise(r => setTimeout(r, 1000));
                 }
 
                 fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
@@ -138,5 +137,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Dynamic Update: $(date)" || exit 0
+          git commit -m "Fixed ID Extraction Update: $(date)" || exit 0
           git push
