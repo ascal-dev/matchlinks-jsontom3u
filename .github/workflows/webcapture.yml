@@ -1,8 +1,7 @@
-name: Ultimate Scraper with Auto-Cookie Refresh
+name: Ultimate Scraper (Security Bypass Fix)
 
 on:
   schedule:
-    # Triggers exactly every 21 hours
     - cron: '0 */21 * * *'
   workflow_dispatch:
 
@@ -33,143 +32,144 @@ jobs:
 
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
           const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
-          
-          // SETTING: Set to null to scrape ALL channels
           const SCRAPE_LIMIT = null; 
 
           let currentSession = { cookieStr: '', ua: '' };
           let failureCounter = 0;
 
           async function getDynamicSession() {
-              console.log("--- [SYSTEM] ACQUIRING/REFRESHING SESSION CREDENTIALS ---");
+              console.log("--- [SYSTEM] SOLVING SECURITY CHALLENGE ---");
               const browser = await puppeteer.launch({ 
                   headless: true, 
-                  args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+                  args: [
+                      '--no-sandbox', 
+                      '--disable-setuid-sandbox',
+                      '--disable-blink-features=AutomationControlled'
+                  ] 
               });
               const page = await browser.newPage();
-              const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
-              await page.setUserAgent(realUA);
+              const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
               
+              await page.setUserAgent(realUA);
+              await page.setViewport({ width: 1280, height: 800 });
+
               try {
-                  // Visit reference ID to trigger security challenge
-                  await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2', timeout: 30000 });
-                  await new Promise(r => setTimeout(r, 8000)); 
-                  
+                  // Navigate and wait for the page to actually settle
+                  await page.goto(`${PHP_BASE}?id=144&i=1`, { 
+                      waitUntil: 'networkidle0', 
+                      timeout: 60000 
+                  });
+
+                  // Critical: Wait longer for the JS challenge to store the cookie
+                  console.log("--- [SYSTEM] WAITING FOR COOKIE GENERATION... ---");
+                  await new Promise(r => setTimeout(r, 15000)); 
+
                   const cookies = await page.cookies();
-                  const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
-                  await browser.close();
+                  const testCookie = cookies.find(c => c.name === '__test');
+
+                  if (!testCookie) {
+                      // Fallback: Try one more refresh if cookie is missing
+                      console.log("--- [RETRYING] REFRESHING BROWSER... ---");
+                      await page.reload({ waitUntil: 'networkidle0' });
+                      await new Promise(r => setTimeout(r, 10000));
+                  }
+
+                  const updatedCookies = await page.cookies();
+                  const cookieStr = updatedCookies.map(c => `${c.name}=${c.value}`).join('; ');
                   
-                  if (!cookieStr.includes('__test')) throw new Error("Security cookie (__test) not found");
-                  
+                  if (!cookieStr.includes('__test')) {
+                      throw new Error("Security cookie (__test) still not found after 25s");
+                  }
+
                   currentSession = { cookieStr, ua: realUA };
-                  console.log("--- [SYSTEM] SESSION VALIDATED: " + cookieStr.substring(0, 30) + "... ---");
+                  console.log("--- [SYSTEM] SESSION ACQUIRED: " + testCookie.value.substring(0, 10) + "... ---");
               } catch (e) {
-                  if (browser) await browser.close();
-                  console.error("--- [SYSTEM] SESSION REFRESH FAILED:", e.message);
+                  console.error("--- [ERROR] BYPASS FAILED:", e.message);
+              } finally {
+                  await browser.close();
               }
           }
 
           async function fetchWithRetry(item, maxRetries = 3) {
               for (let attempt = 1; attempt <= maxRetries; attempt++) {
                   try {
+                      if (!currentSession.cookieStr) throw new Error("No valid session");
+
                       const headers = { 
                           "User-Agent": currentSession.ua, 
                           "Cookie": currentSession.cookieStr, 
                           "Referer": `${PHP_BASE}?id=${item.id}&i=1`,
-                          "Connection": "keep-alive"
+                          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
                       };
 
-                      // Handshake Part 1: Prime Session
-                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
-                      await new Promise(r => setTimeout(r, 1000));
-
-                      // Handshake Part 2: Extract Data
-                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
+                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 20000 });
+                      await new Promise(r => setTimeout(r, 1500));
+                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 20000 });
                       
                       const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
                       if (configMatch) {
-                          failureCounter = 0; // Reset consecutive failure counter on any success
+                          failureCounter = 0;
                           const config = JSON.parse(configMatch[1]);
-                          
-                          // DETAILED LOGGING
-                          console.log(`\n✅ [CHANNEL] ${item.name}`);                        
-                          
+                          console.log(`✅ [OK] ${item.name} (KID: ${config.keyId})`);
                           return config;
                       } else {
-                          throw new Error("EMPTY_OR_INVALID_CONFIG");
+                          throw new Error("INVALID_HTML_RESPONSE");
                       }
                   } catch (err) {
                       console.log(`⚠️ [ATTEMPT ${attempt}/${maxRetries}] ${item.name} | ${err.message}`);
-                      
                       if (attempt === maxRetries) {
                           failureCounter++;
-                          // AUTOMATIC RECOVERY: If 2 channels in a row fail, refresh the cookie
                           if (failureCounter >= 2) {
-                              console.log("--- [CRITICAL] PERSISTENT FAILURES DETECTED. ROTATING COOKIES... ---");
                               await getDynamicSession();
-                              failureCounter = 0; 
-                              // Final recursive attempt for this specific channel with new credentials
-                              return await fetchWithRetry(item, 1); 
+                              failureCounter = 0;
+                              return await fetchWithRetry(item, 1);
                           }
                           return null;
                       }
-                      // Wait longer between each retry
-                      await new Promise(r => setTimeout(r, 4000 * attempt));
+                      await new Promise(r => setTimeout(r, 5000 * attempt));
                   }
               }
           }
 
           async function scrape() {
             try {
-                // Initial login
                 await getDynamicSession();
-                
-                console.log("--- [M3U] FETCHING SOURCE LIST ---");
                 const m3uRes = await axios.get(M3U_URL);
                 const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
                 let match, allChannels = [];
-                
                 while ((match = regex.exec(m3uRes.data)) !== null) {
                   allChannels.push({ id: match[1].trim(), logo: match[2], name: match[3].trim() });
                 }
 
-                // Apply limit if defined, else process all
                 const channels = SCRAPE_LIMIT ? allChannels.slice(0, SCRAPE_LIMIT) : allChannels;
-                console.log(`--- [START] SCRAPING ${channels.length} CHANNELS (ALL) ---`);
+                console.log(`--- [START] PROCESSING ${channels.length} CHANNELS ---`);
 
                 const finalData = [];
-                const batchSize = 2; // Low batch size to prevent Host-side resource blocks (508)
-
-                for (let i = 0; i < channels.length; i += batchSize) {
-                  const batch = channels.slice(i, i + batchSize);
+                for (let i = 0; i < channels.length; i += 2) {
+                  const batch = channels.slice(i, i + 2);
+                  const results = await Promise.all(batch.map(item => fetchWithRetry(item)));
                   
-                  const results = await Promise.all(batch.map(async (item) => {
-                    const config = await fetchWithRetry(item);
-                    if (config) {
-                        return {
-                          "name": item.name,
-                          "id": item.id,
-                          "logo": item.logo,
-                          "streamUrl": config.streamUrls?.[0] || "",
-                          "keyId": config.keyId || "",
-                          "key": config.key || "",
-                          "token": config.primaryCookie || "",
-                          "fallbackCookie": config.fallbackCookie || ""
-                        };
-                    }
-                    return null;
-                  }));
-
-                  finalData.push(...results.filter(r => r !== null));
-                  
-                  // Necessary cooldown delay for server stability
+                  results.forEach((config, idx) => {
+                      if (config) {
+                          finalData.push({
+                              "name": batch[idx].name,
+                              "id": batch[idx].id,
+                              "logo": batch[idx].logo,
+                              "streamUrl": config.streamUrls?.[0] || "",
+                              "keyId": config.keyId || "",
+                              "key": config.key || "",
+                              "token": config.primaryCookie || "",
+                              "fallbackCookie": config.fallbackCookie || ""
+                          });
+                      }
+                  });
                   await new Promise(r => setTimeout(r, 4000)); 
                 }
 
                 fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-                console.log(`\n--- [COMPLETE] FINISHED. SAVED ${finalData.length} ACTIVE STREAMS ---`);
+                console.log(`\n--- [FINISH] SAVED ${finalData.length} CHANNELS ---`);
             } catch (err) {
-                console.error("FATAL ERROR DURING SCRAPE:", err.message);
+                console.error("FATAL:", err.message);
                 process.exit(1);
             }
           }
@@ -178,10 +178,10 @@ jobs:
           EOF
           node scraper.js
 
-      - name: Commit and Push Changes
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "21h Full Scrape with Auto-Recovery: $(date)" || exit 0
+          git commit -m "Bypass Fixed: $(date)" || exit 0
           git push
