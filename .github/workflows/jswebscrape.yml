@@ -11,6 +11,8 @@ permissions:
 jobs:
   scrape:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Future-proofing
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -18,14 +20,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22' # Using a newer version
 
       - name: Install Dependencies
         run: npm install axios
 
       - name: Run Scraper
-        shell: node
         run: |
+          cat << 'EOF' > scraper.js
           const axios = require('axios');
           const fs = require('fs');
 
@@ -41,63 +43,70 @@ jobs:
 
           async function scrape() {
             console.log("--- LOG START: FETCHING M3U ---");
-            const m3uRes = await axios.get(M3U_URL);
-            const m3uContent = m3uRes.data;
+            try {
+                const m3uRes = await axios.get(M3U_URL);
+                const m3uContent = m3uRes.data;
 
-            const regex = /#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)/g;
-            let match;
-            const tasks = [];
+                const regex = /#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)/g;
+                let match;
+                const tasks = [];
 
-            while ((match = regex.exec(m3uContent)) !== null) {
-              const [_, id, logo, name] = match;
-              tasks.push({ id, logo, name: name.trim() });
-            }
-
-            console.log(`--- LOG: FOUND ${tasks.length} CHANNELS. STARTING PARALLEL FETCH ---`);
-
-            // Use Promise.all with a batch limit or direct mapping for speed
-            const results = await Promise.all(tasks.map(async (item) => {
-              try {
-                const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { 
-                  headers: { ...HEADERS, "Referer": `${PHP_BASE}?id=${item.id}&i=1` },
-                  timeout: 8000 
-                });
-
-                const configMatch = res.data.match(/const SERVER_CONFIG = (\{.*?\});/);
-                if (configMatch) {
-                  const config = JSON.parse(configMatch[1]);
-                  console.log(`[SUCCESS] Captured: ${item.name}`);
-                  return {
-                    name: item.name,
-                    id: item.id,
-                    logo: item.logo,
-                    streamUrl: config.streamUrls?.[0] || "",
-                    keyId: config.keyId || "",
-                    key: config.key || "",
-                    token: config.primaryCookie || "",
-                    fallbackCookie: config.fallbackCookie || ""
-                  };
-                } else {
-                  console.log(`[EMPTY] No config found in HTML for: ${item.name}`);
-                  return null;
+                while ((match = regex.exec(m3uContent)) !== null) {
+                  const [_, id, logo, name] = match;
+                  tasks.push({ id, logo, name: name.trim() });
                 }
-              } catch (err) {
-                console.log(`[ERROR] ID ${item.id} (${item.name}): ${err.message}`);
-                return null;
-              }
-            }));
 
-            const finalData = results.filter(r => r !== null);
-            fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-            console.log(`--- LOG: SCRAPE COMPLETE. SAVED ${finalData.length} VALID CHANNELS ---`);
+                console.log(`--- LOG: FOUND ${tasks.length} CHANNELS. STARTING PARALLEL FETCH ---`);
+
+                // Parallel fetching for high speed
+                const results = await Promise.all(tasks.map(async (item) => {
+                  try {
+                    const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { 
+                      headers: { ...HEADERS, "Referer": `${PHP_BASE}?id=${item.id}&i=1` },
+                      timeout: 10000 
+                    });
+
+                    const configMatch = res.data.match(/const SERVER_CONFIG = (\{.*?\});/);
+                    if (configMatch) {
+                      const config = JSON.parse(configMatch[1]);
+                      console.log(`[SUCCESS] Captured: ${item.name}`);
+                      return {
+                        name: item.name,
+                        id: item.id,
+                        logo: item.logo,
+                        streamUrl: config.streamUrls?.[0] || "",
+                        keyId: config.keyId || "",
+                        key: config.key || "",
+                        token: config.primaryCookie || "",
+                        fallbackCookie: config.fallbackCookie || ""
+                      };
+                    } else {
+                      console.log(`[EMPTY] No config found for: ${item.name}`);
+                      return null;
+                    }
+                  } catch (err) {
+                    console.log(`[ERROR] ID ${item.id} (${item.name}): ${err.message}`);
+                    return null;
+                  }
+                }));
+
+                const finalData = results.filter(r => r !== null);
+                fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
+                console.log(`--- LOG: SCRAPE COMPLETE. SAVED ${finalData.length} VALID CHANNELS ---`);
+            } catch (err) {
+                console.error("Critical error fetching M3U:", err.message);
+                process.exit(1);
+            }
           }
 
           scrape();
+          EOF
+          node scraper.js
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Ultra-Fast Update: $(date)" || exit 0
+          git commit -m "Update channels: $(date)" || exit 0
           git push
