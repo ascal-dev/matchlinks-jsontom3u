@@ -1,6 +1,5 @@
 name: webcapture allinonereborn
 
-name: Channel Data Scraper
 
 on:
   schedule:
