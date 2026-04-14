@@ -1,13 +1,14 @@
 name: webcapture allinonereborn
 
+name: Channel Data Scraper
+
 on:
   schedule:
-    - cron: '0 */6 * * *' # Runs every 6 hours
-  workflow_dispatch:      # Manual trigger
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 permissions:
-  contents: write        # Vital: Allows the bot to push the JSON file
-  actions: read
+  contents: write
 
 jobs:
   build:
@@ -36,36 +37,30 @@ jobs:
           M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u"
           PHP_BASE_URL = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id={}&i=2"
           
-          # Headers exactly as requested
-          HEADERS = {
-              "Host": "allinonerebornxjtv.iceiy.com",
-              "Cookie": "__test=bc343951fa31675be002acbfa68b6a51",
-              "Sec-Ch-Ua": '"Not?A_Brand";v="99", "Chromium";v="130"',
-              "Sec-Ch-Ua-Mobile": "?0",
-              "Sec-Ch-Ua-Platform": '"Windows"',
-              "Accept-Language": "en-US,en;q=0.9",
-              "Upgrade-Insecure-Requests": "1",
+          session = requests.Session()
+          session.headers.update({
               "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-              "Sec-Fetch-Site": "same-origin",
-              "Sec-Fetch-Mode": "navigate",
-              "Sec-Fetch-Dest": "document",
-              "Referer": "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id=144&i=1",
-              "Accept-Encoding": "gzip, deflate, br",
+              "Cookie": "__test=bc343951fa31675be002acbfa68b6a51",
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
               "Connection": "keep-alive"
-          }
+          })
 
           print("Step 1: Fetching M3U...")
           try:
-              m3u_res = requests.get(M3U_URL)
+              m3u_res = session.get(M3U_URL)
               m3u_content = m3u_res.text
           except Exception as e:
               print(f"Failed to fetch M3U: {e}")
               exit(1)
 
-          # Parse IDs, Logos, and Names
-          pattern = re.compile(r'#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)')
+          # Improved Regex to catch IDs more reliably
+          pattern = re.compile(r'tvg-id="(\d+)".*?tvg-logo="(.*?)",(.*)')
           matches = pattern.findall(m3u_content)
+
+          if not matches:
+              print("Critical Error: No channels found in M3U. Check your Regex!")
+              # Fallback regex just in case
+              matches = re.findall(r'tvg-id="(.*?)".*?logo="(.*?)",(.*)', m3u_content)
 
           final_list = []
 
@@ -74,48 +69,44 @@ jobs:
               target_url = PHP_BASE_URL.format(tvg_id)
               
               try:
-                  # Update referer dynamically for each ID to look more natural
-                  HEADERS["Referer"] = f"https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id={tvg_id}&i=1"
+                  # Anti-bot measure: dynamically update Referer
+                  headers = {"Referer": f"https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id={tvg_id}&i=1"}
+                  response = session.get(target_url, headers=headers, timeout=15)
                   
-                  response = requests.get(target_url, headers=HEADERS, timeout=15)
-                  
-                  # Search for the SERVER_CONFIG object
-                  json_match = re.search(r'const SERVER_CONFIG = (\{.*?\});', response.text)
+                  # Search for the SERVER_CONFIG
+                  json_match = re.search(r'const SERVER_CONFIG\s*=\s*(\{.*?\});', response.text)
                   
                   if json_match:
                       config = json.loads(json_match.group(1))
                       
-                      # Map to your specific format
-                      channel_data = {
+                      final_list.append({
                           "name": name.strip(),
                           "id": tvg_id,
                           "logo": logo,
-                          "streamUrl": config["streamUrls"][0] if config.get("streamUrls") else "",
+                          "streamUrl": config.get("streamUrls", [""])[0],
                           "keyId": config.get("keyId", ""),
                           "key": config.get("key", ""),
                           "token": config.get("primaryCookie", ""),
                           "fallbackCookie": config.get("fallbackCookie", "")
-                      }
-                      final_list.append(channel_data)
-                      print(f" Successfully captured: {name.strip()}")
+                      })
+                      print(f" Success: {name.strip()}")
                   else:
-                      print(f" No config found for ID: {tvg_id}")
+                      print(f" No Config Found for {name.strip()} (ID: {tvg_id})")
+                      # Optional: Print response.text[:200] here to debug if blocked
                   
-                  # Small delay to avoid aggressive rate limiting
-                  time.sleep(0.5)
+                  time.sleep(1) # Slightly longer delay to be safe
 
               except Exception as e:
                   print(f" Error on ID {tvg_id}: {e}")
 
-          # Save to File
           with open("channels_output.json", "w", encoding="utf-8") as f:
               json.dump(final_list, f, indent=4)
-          print("Step 3: Saved channels_output.json")
+          print(f"Step 3: Finished! Saved {len(final_list)} channels.")
 
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Automated update: $(date)" || exit 0
+          git commit -m "Update channels: $(date)" || exit 0
           git push
