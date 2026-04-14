@@ -1,4 +1,4 @@
-name: Full Dynamic Channel Scraper
+name: Full Dynamic Scraper (Verified)
 
 on:
   schedule:
@@ -34,46 +34,56 @@ jobs:
           const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
 
           async function getDynamicSession() {
-              console.log("[1/3] Launching browser to bypass JS challenge...");
+              console.log("--- [BROWSER] STARTING DYNAMIC COOKIE CAPTURE ---");
               const browser = await puppeteer.launch({ 
                   headless: true, 
                   args: ['--no-sandbox', '--disable-setuid-sandbox'] 
               });
               const page = await browser.newPage();
-              await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
               
+              // Set a real-world User Agent
+              const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
+              await page.setUserAgent(realUA);
+              
+              // Visit initial page to trigger __test cookie generation
               await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
+              
+              // Wait for the JS challenge to settle (6 seconds)
               await new Promise(r => setTimeout(r, 6000)); 
               
               const cookies = await page.cookies();
               const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
-              const ua = await page.evaluate(() => navigator.userAgent);
               
               await browser.close();
-              console.log("[2/3] Dynamic Cookie Obtained:", cookieStr);
-              return { cookieStr, ua };
+              
+              if (!cookieStr.includes('__test')) {
+                  console.error("--- [ERROR] FAILED TO CAPTURE __test COOKIE ---");
+                  process.exit(1);
+              }
+
+              console.log("--- [BROWSER] SUCCESS: CAPTURED SESSION ---");
+              return { cookieStr, ua: realUA };
           }
 
           async function scrape() {
             try {
                 const { cookieStr, ua } = await getDynamicSession();
                 
-                console.log("[3/3] Fetching M3U List...");
+                console.log("--- [M3U] FETCHING SOURCE CHANNELS ---");
                 const m3uRes = await axios.get(M3U_URL);
                 const m3uContent = m3uRes.data;
 
-                // FIXED REGEX: Specifically looks for the ID and ignores extra attributes like group-title
+                // Strict Regex: Captures only digits for ID, ignores group-title/tags
                 const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
                 let match;
                 const channels = [];
 
                 while ((match = regex.exec(m3uContent)) !== null) {
-                  // Clean the ID just in case
-                  const cleanId = match[1].replace(/[^0-9]/g, ''); 
+                  const cleanId = match[1].trim(); 
                   channels.push({ id: cleanId, logo: match[2], name: match[3].trim() });
                 }
 
-                console.log(`Starting Scrape for ${channels.length} channels...`);
+                console.log(`--- [START] PROCESSING ${channels.length} CHANNELS ---`);
 
                 const finalData = [];
                 const batchSize = 10; 
@@ -86,19 +96,21 @@ jobs:
                       const headers = {
                         "User-Agent": ua,
                         "Cookie": cookieStr,
-                        "Referer": `${PHP_BASE}?id=${item.id}&i=1`
+                        "Referer": `${PHP_BASE}?id=${item.id}&i=1`,
+                        "Connection": "keep-alive"
                       };
 
-                      // Handshake Step 1
-                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 12000 });
-
-                      // Handshake Step 2
-                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 12000 });
+                      // Two-Step Handshake: i=1 (Prime) then i=2 (Data)
+                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
+                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
 
                       const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
+                      
                       if (configMatch) {
                         const config = JSON.parse(configMatch[1]);
-                        console.log(`[SUCCESS] ${item.name}`);
+                        
+                        console.log(`[OK] ${item.name} | URL: ${config.streamUrls?.[0]?.substring(0, 40)}...`);
+                        
                         return {
                           "name": item.name,
                           "id": item.id,
@@ -110,21 +122,29 @@ jobs:
                           "fallbackCookie": config.fallbackCookie || ""
                         };
                       }
+                      console.log(`[EMPTY] ${item.name} - No config in HTML`);
                       return null;
                     } catch (err) {
+                      console.log(`[ERROR] ${item.name} - Request Failed: ${err.message}`);
                       return null;
                     }
                   }));
 
                   finalData.push(...results.filter(r => r !== null));
-                  if (i % 50 === 0) console.log(`Processed ${i} channels...`);
-                  await new Promise(r => setTimeout(r, 1000));
+                  
+                  // Progress Update
+                  if (i % 50 === 0 && i > 0) {
+                      console.log(`--- PROGRESS: Captured ${finalData.length} valid streams so far ---`);
+                  }
+                  
+                  // Pause to stay under rate-limits
+                  await new Promise(r => setTimeout(r, 1200));
                 }
 
                 fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-                console.log(`COMPLETED. Final count: ${finalData.length}`);
+                console.log(`--- [FINISHED] SCRAPE COMPLETE: ${finalData.length} CHANNELS SAVED ---`);
             } catch (err) {
-                console.error("FATAL ERROR:", err.message);
+                console.error("FATAL SYSTEM ERROR:", err.message);
             }
           }
 
@@ -137,5 +157,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Fixed ID Extraction Update: $(date)" || exit 0
+          git commit -m "Automated Scrape: $(date)" || exit 0
           git push
