@@ -31,7 +31,7 @@ jobs:
           const fs = require('fs');
 
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
-          const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
+          const PHP_BASE = "https://jtvxweb.unaux.com/jtvxweb/pworld.php";
           const SCRAPE_LIMIT = null; 
 
           let currentSession = { cookieStr: '', ua: '' };
