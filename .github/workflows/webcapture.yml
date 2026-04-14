@@ -1,0 +1,98 @@
+name: webcapture allinonereborn
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # runs every 1 hour
+  workflow_dispatch:
+
+permissions:
+  contents: write        # allow push to repository
+  actions: write
+  checks: write
+  pull-requests: write
+  issues: write
+  deployments: write
+  packages: write
+  statuses: write
+
+jobs:
+  scrape_and_save:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Scraper Script
+        shell: python
+        run: |
+          import requests
+          import re
+          import json
+
+          m3u_url = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u"
+          base_url = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id={}&i=2"
+          
+          headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+              "Cookie": "__test=bc343951fa31675be002acbfa68b6a51",
+              "Referer": "https://allinonerebornxjtv.iceiy.com/"
+          }
+
+          # 1. Get M3U Content
+          print("Fetching M3U file...")
+          m3u_res = requests.get(m3u_url)
+          content = m3u_res.text
+
+          # 2. Parse IDs, Logos, and Names
+          # Regex matches tvg-id, tvg-logo, and the channel name after the comma
+          matches = re.findall(r'#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)', content)
+          
+          results = []
+
+          # 3. Iterate and Fetch Keys
+          for tvg_id, logo, name in matches:
+              clean_name = name.strip()
+              target_url = base_url.format(tvg_id)
+              print(f"Fetching data for: {clean_name}")
+
+              try:
+                  page_res = requests.get(target_url, headers=headers, timeout=15)
+                  # Extract the SERVER_CONFIG JSON object from the script tag
+                  json_match = re.search(r'const SERVER_CONFIG = (\{.*?\});', page_res.text)
+                  
+                  if json_match:
+                      config = json.loads(json_match.group(1))
+                      
+                      entry = {
+                          "name": clean_name,
+                          "id": tvg_id,
+                          "logo": logo,
+                          "streamUrl": config["streamUrls"][0] if config.get("streamUrls") else "",
+                          "keyId": config.get("keyId", ""),
+                          "key": config.get("key", ""),
+                          "token": config.get("primaryCookie", "")
+                      }
+                      results.append(entry)
+              except Exception as e:
+                  print(f"Failed to fetch {tvg_id}: {e}")
+
+          # 4. Write to JSON
+          with open("channels.json", "w", encoding="utf-8") as f:
+              json.dump(results, f, indent=4)
+          print("Saved results to channels.json")
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "actions@github.com"
+          git add channels.json
+          git commit -m "Automated update: $(date)" || exit 0
+          git push
