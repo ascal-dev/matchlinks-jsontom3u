@@ -1,0 +1,103 @@
+name: High-Speed Channel Scraper
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install axios
+
+      - name: Run Scraper
+        shell: node
+        run: |
+          const axios = require('axios');
+          const fs = require('fs');
+
+          const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
+          const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
+          
+          const HEADERS = {
+            "Cookie": "__test=bc343951fa31675be002acbfa68b6a51",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+            "Referer": "https://allinonerebornxjtv.iceiy.com/",
+            "Connection": "keep-alive"
+          };
+
+          async function scrape() {
+            console.log("--- LOG START: FETCHING M3U ---");
+            const m3uRes = await axios.get(M3U_URL);
+            const m3uContent = m3uRes.data;
+
+            const regex = /#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)/g;
+            let match;
+            const tasks = [];
+
+            while ((match = regex.exec(m3uContent)) !== null) {
+              const [_, id, logo, name] = match;
+              tasks.push({ id, logo, name: name.trim() });
+            }
+
+            console.log(`--- LOG: FOUND ${tasks.length} CHANNELS. STARTING PARALLEL FETCH ---`);
+
+            // Use Promise.all with a batch limit or direct mapping for speed
+            const results = await Promise.all(tasks.map(async (item) => {
+              try {
+                const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { 
+                  headers: { ...HEADERS, "Referer": `${PHP_BASE}?id=${item.id}&i=1` },
+                  timeout: 8000 
+                });
+
+                const configMatch = res.data.match(/const SERVER_CONFIG = (\{.*?\});/);
+                if (configMatch) {
+                  const config = JSON.parse(configMatch[1]);
+                  console.log(`[SUCCESS] Captured: ${item.name}`);
+                  return {
+                    name: item.name,
+                    id: item.id,
+                    logo: item.logo,
+                    streamUrl: config.streamUrls?.[0] || "",
+                    keyId: config.keyId || "",
+                    key: config.key || "",
+                    token: config.primaryCookie || "",
+                    fallbackCookie: config.fallbackCookie || ""
+                  };
+                } else {
+                  console.log(`[EMPTY] No config found in HTML for: ${item.name}`);
+                  return null;
+                }
+              } catch (err) {
+                console.log(`[ERROR] ID ${item.id} (${item.name}): ${err.message}`);
+                return null;
+              }
+            }));
+
+            const finalData = results.filter(r => r !== null);
+            fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
+            console.log(`--- LOG: SCRAPE COMPLETE. SAVED ${finalData.length} VALID CHANNELS ---`);
+          }
+
+          scrape();
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add channels_output.json
+          git commit -m "Ultra-Fast Update: $(date)" || exit 0
+          git push
