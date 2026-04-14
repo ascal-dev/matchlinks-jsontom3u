@@ -1,0 +1,81 @@
+name: Cookie Capture Test
+
+on:
+  workflow_dispatch: # Allows you to run this manually from the Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  test-cookie:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Puppeteer
+        run: npm install puppeteer
+
+      - name: Run Cookie Test Script
+        run: |
+          cat << 'EOF' > test-cookie.js
+          const puppeteer = require('puppeteer');
+
+          async function test() {
+              console.log("--- STARTING COOKIE CAPTURE TEST ---");
+              const browser = await puppeteer.launch({ 
+                  headless: true, 
+                  args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+              });
+              
+              const page = await browser.newPage();
+              
+              // Target the priming URL
+              const url = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id=144&i=1";
+              console.log(`Visiting: ${url}`);
+
+              try {
+                  // Navigate and wait for the network to settle (gives JS time to run)
+                  await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+                  
+                  // Wait an extra 5 seconds just in case there is a delayed JS challenge
+                  console.log("Waiting for JavaScript challenge to resolve...");
+                  await new Promise(r => setTimeout(r, 5000));
+
+                  const cookies = await page.cookies();
+                  
+                  if (cookies.length === 0) {
+                      console.log("❌ FAILED: No cookies captured.");
+                  } else {
+                      console.log("✅ SUCCESS: Cookies found!");
+                      cookies.forEach(c => {
+                          console.log(`Name: ${c.name} | Value: ${c.value}`);
+                      });
+                  }
+
+                  // Optional: Take a screenshot to see if the page loaded or showed a block screen
+                  await page.screenshot({ path: 'debug_screen.png' });
+                  console.log("Screenshot saved as debug_screen.png");
+
+              } catch (err) {
+                  console.error("❌ ERROR during navigation:", err.message);
+              } finally {
+                  await browser.close();
+                  console.log("--- TEST COMPLETE ---");
+              }
+          }
+
+          test();
+          EOF
+          node test-cookie.js
+
+      - name: Upload Debug Screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshot
+          path: debug_screen.png
