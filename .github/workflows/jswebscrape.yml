@@ -1,4 +1,4 @@
-name: High-Speed Channel Scraper
+name: Full Dynamic Channel Scraper
 
 on:
   schedule:
@@ -21,62 +21,81 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm install axios
+        run: npm install axios puppeteer
 
-      - name: Run Scraper
+      - name: Run Full Scraper
         run: |
           cat << 'EOF' > scraper.js
+          const puppeteer = require('puppeteer');
           const axios = require('axios');
           const fs = require('fs');
 
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
           const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
-          
-          // IMPORTANT: Update this cookie value frequently!
-          const TEST_COOKIE = "__test=bc343951fa31675be002acbfa68b6a51";
 
-          const HEADERS = {
-            "Cookie": TEST_COOKIE,
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-            "Referer": "https://allinonerebornxjtv.iceiy.com/",
-            "Connection": "keep-alive"
-          };
+          async function getDynamicSession() {
+              console.log("[1/3] Launching browser to bypass JS challenge...");
+              const browser = await puppeteer.launch({ 
+                  headless: true, 
+                  args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+              });
+              const page = await browser.newPage();
+              await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
+              
+              // Visit a sample page to trigger the __test cookie
+              await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
+              await new Promise(r => setTimeout(r, 6000)); // Wait for JS to run
+              
+              const cookies = await page.cookies();
+              const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+              const ua = await page.evaluate(() => navigator.userAgent);
+              
+              await browser.close();
+              console.log("[2/3] Dynamic Cookie Obtained:", cookieStr);
+              return { cookieStr, ua };
+          }
 
           async function scrape() {
-            console.log("--- STARTING SCRAPE ---");
             try {
+                const { cookieStr, ua } = await getDynamicSession();
+                
+                console.log("[3/3] Fetching M3U List...");
                 const m3uRes = await axios.get(M3U_URL);
                 const m3uContent = m3uRes.data;
                 const regex = /#EXTINF:-1 tvg-id="(.*?)" tvg-logo="(.*?)",(.*)/g;
                 let match;
-                const tasks = [];
+                const channels = [];
 
                 while ((match = regex.exec(m3uContent)) !== null) {
-                  tasks.push({ id: match[1], logo: match[2], name: match[3].trim() });
+                  channels.push({ id: match[1], logo: match[2], name: match[3].trim() });
                 }
 
-                console.log(`--- FOUND ${tasks.length} CHANNELS ---`);
+                console.log(`Starting Scrape for ${channels.length} channels...`);
 
                 const finalData = [];
-                const batchSize = 10; // Process 10 at a time to avoid blocking
+                const batchSize = 8; // Optimal speed vs safety
 
-                for (let i = 0; i < tasks.length; i += batchSize) {
-                  const batch = tasks.slice(i, i + batchSize);
-                  console.log(`Processing batch ${i / batchSize + 1}...`);
-
+                for (let i = 0; i < channels.length; i += batchSize) {
+                  const batch = channels.slice(i, i + batchSize);
+                  
                   const results = await Promise.all(batch.map(async (item) => {
                     try {
-                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { 
-                        headers: { ...HEADERS, "Referer": `${PHP_BASE}?id=${item.id}&i=1` },
-                        timeout: 10000 
-                      });
+                      const headers = {
+                        "User-Agent": ua,
+                        "Cookie": cookieStr,
+                        "Referer": `${PHP_BASE}?id=${item.id}&i=1`
+                      };
 
-                      // Look for SERVER_CONFIG
-                      const configMatch = res.data.match(/const SERVER_CONFIG = (\{.*?\});/);
+                      // Handshake Step 1 (Prime the session for this specific ID)
+                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 12000 });
+
+                      // Handshake Step 2 (Extract the Config)
+                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 12000 });
+
+                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
                       if (configMatch) {
                         const config = JSON.parse(configMatch[1]);
-                        console.log(`[OK] ${item.name}`);
+                        console.log(`[SUCCESS] ${item.name}`);
                         return {
                           name: item.name,
                           id: item.id,
@@ -95,14 +114,18 @@ jobs:
                   }));
 
                   finalData.push(...results.filter(r => r !== null));
-                  // Wait 1 second between batches to stay under the radar
-                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  
+                  // Simple progress indicator
+                  if (i % 40 === 0) console.log(`--- Progress: ${finalData.length} channels saved ---`);
+                  
+                  // Anti-blocking pause
+                  await new Promise(r => setTimeout(r, 1200));
                 }
 
                 fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-                console.log(`--- DONE. SAVED ${finalData.length} CHANNELS ---`);
+                console.log(`COMPLETED. Final count: ${finalData.length}`);
             } catch (err) {
-                console.error("Error:", err.message);
+                console.error("FATAL ERROR:", err.message);
             }
           }
 
@@ -110,10 +133,10 @@ jobs:
           EOF
           node scraper.js
 
-      - name: Commit and Push
+      - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Update channels: $(date)" || exit 0
+          git commit -m "Dynamic Update: $(date)" || exit 0
           git push
