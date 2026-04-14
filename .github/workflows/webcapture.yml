@@ -1,111 +1,157 @@
-name: webcapture allinonereborn
-
+name: Ultimate Dynamic Scraper (Full/Limit Toggle)
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+   # Runs exactly every 21 hours
+    - cron: '0 */21 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  scrape:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: '3.10'
+          node-version: '22'
 
       - name: Install Dependencies
-        run: pip install requests
+        run: npm install axios puppeteer
 
-      - name: Scrape Data
-        shell: python
+      - name: Run Scraper
         run: |
-          import requests
-          import re
-          import json
-          import time
+          cat << 'EOF' > scraper.js
+          const puppeteer = require('puppeteer');
+          const axios = require('axios');
+          const fs = require('fs');
 
-          # --- CONFIGURATION ---
-          M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u"
-          PHP_BASE_URL = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id={}&i=2"
+          const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
+          const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
           
-          session = requests.Session()
-          session.headers.update({
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36",
-              "Cookie": "__test=bc343951fa31675be002acbfa68b6a51",
-              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-              "Connection": "keep-alive"
-          })
+          // SETTING: Set to null to scrape ALL channels, or a number (e.g., 100) to limit.
+          const SCRAPE_LIMIT = null; 
 
-          print("Step 1: Fetching M3U...")
-          try:
-              m3u_res = session.get(M3U_URL)
-              m3u_content = m3u_res.text
-          except Exception as e:
-              print(f"Failed to fetch M3U: {e}")
-              exit(1)
+          async function getDynamicSession() {
+              console.log("--- [SYSTEM] SOLVING JS CHALLENGE ---");
+              const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+              const page = await browser.newPage();
+              const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
+              await page.setUserAgent(realUA);
+              await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
+              await new Promise(r => setTimeout(r, 8000)); 
+              const cookies = await page.cookies();
+              const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+              await browser.close();
+              return { cookieStr, ua: realUA };
+          }
 
-          # Improved Regex to catch IDs more reliably
-          pattern = re.compile(r'tvg-id="(\d+)".*?tvg-logo="(.*?)",(.*)')
-          matches = pattern.findall(m3u_content)
+          async function fetchWithRetry(item, headers, maxRetries = 3) {
+              for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                  try {
+                      // Handshake Step 1
+                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
+                      await new Promise(r => setTimeout(r, 1000));
 
-          if not matches:
-              print("Critical Error: No channels found in M3U. Check your Regex!")
-              # Fallback regex just in case
-              matches = re.findall(r'tvg-id="(.*?)".*?logo="(.*?)",(.*)', m3u_content)
-
-          final_list = []
-
-          print(f"Step 2: Processing {len(matches)} channels...")
-          for tvg_id, logo, name in matches:
-              target_url = PHP_BASE_URL.format(tvg_id)
-              
-              try:
-                  # Anti-bot measure: dynamically update Referer
-                  headers = {"Referer": f"https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php?id={tvg_id}&i=1"}
-                  response = session.get(target_url, headers=headers, timeout=15)
-                  
-                  # Search for the SERVER_CONFIG
-                  json_match = re.search(r'const SERVER_CONFIG\s*=\s*(\{.*?\});', response.text)
-                  
-                  if json_match:
-                      config = json.loads(json_match.group(1))
+                      // Handshake Step 2
+                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
+                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
                       
-                      final_list.append({
-                          "name": name.strip(),
-                          "id": tvg_id,
-                          "logo": logo,
-                          "streamUrl": config.get("streamUrls", [""])[0],
-                          "keyId": config.get("keyId", ""),
-                          "key": config.get("key", ""),
-                          "token": config.get("primaryCookie", ""),
-                          "fallbackCookie": config.get("fallbackCookie", "")
-                      })
-                      print(f" Success: {name.strip()}")
-                  else:
-                      print(f" No Config Found for {name.strip()} (ID: {tvg_id})")
-                      # Optional: Print response.text[:200] here to debug if blocked
+                      if (configMatch) {
+                          const config = JSON.parse(configMatch[1]);
+                          
+                          // DETAILED LOGS FOR VERIFICATION
+                          console.log(`\n✅ [SUCCESS] ${item.name}`);
+                          console.log(`   > URL: ${config.streamUrls?.[0] || 'N/A'}`);
+                          console.log(`   > KID: ${config.keyId || 'N/A'}`);
+                          console.log(`   > KEY: ${config.key || 'N/A'}`);
+                          console.log(`   > TOK: ${config.primaryCookie || 'N/A'}`);
+                          
+                          return config;
+                      } else {
+                          throw new Error("CONFIG_NOT_FOUND_IN_HTML");
+                      }
+                  } catch (err) {
+                      console.log(`⚠️ [RETRY ${attempt}/${maxRetries}] ${item.name} | ${err.message}`);
+                      if (attempt === maxRetries) return null;
+                      // Exponential backoff: 4s, 8s, 12s...
+                      await new Promise(r => setTimeout(r, 4000 * attempt));
+                  }
+              }
+          }
+
+          async function scrape() {
+            try {
+                const { cookieStr, ua } = await getDynamicSession();
+                const m3uRes = await axios.get(M3U_URL);
+                
+                const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
+                let match;
+                let allChannels = [];
+                while ((match = regex.exec(m3uRes.data)) !== null) {
+                  allChannels.push({ id: match[1].trim(), logo: match[2], name: match[3].trim() });
+                }
+
+                // DYNAMIC LIMIT LOGIC: If SCRAPE_LIMIT is null, it scrapes the full list.
+                const channels = SCRAPE_LIMIT ? allChannels.slice(0, SCRAPE_LIMIT) : allChannels;
+                console.log(`--- [START] PROCESSING ${channels.length} CHANNELS (LIMIT: ${SCRAPE_LIMIT || 'NONE'}) ---`);
+
+                const finalData = [];
+                const batchSize = 2; // Keep small to prevent 508 Resource Limit Errors
+
+                for (let i = 0; i < channels.length; i += batchSize) {
+                  const batch = channels.slice(i, i + batchSize);
                   
-                  time.sleep(1) # Slightly longer delay to be safe
+                  const results = await Promise.all(batch.map(async (item) => {
+                    const headers = { 
+                        "User-Agent": ua, 
+                        "Cookie": cookieStr, 
+                        "Referer": `${PHP_BASE}?id=${item.id}&i=1` 
+                    };
+                    const config = await fetchWithRetry(item, headers);
+                    
+                    if (config) {
+                        return {
+                          "name": item.name,
+                          "id": item.id,
+                          "logo": item.logo,
+                          "streamUrl": config.streamUrls?.[0] || "",
+                          "keyId": config.keyId || "",
+                          "key": config.key || "",
+                          "token": config.primaryCookie || "",
+                          "fallbackCookie": config.fallbackCookie || ""
+                        };
+                      }
+                    return null;
+                  }));
 
-              except Exception as e:
-                  print(f" Error on ID {tvg_id}: {e}")
+                  finalData.push(...results.filter(r => r !== null));
+                  
+                  // Necessary delay between batches for server stability
+                  await new Promise(r => setTimeout(r, 3500)); 
+                }
 
-          with open("channels_output.json", "w", encoding="utf-8") as f:
-              json.dump(final_list, f, indent=4)
-          print(f"Step 3: Finished! Saved {len(final_list)} channels.")
+                fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
+                console.log(`\n--- [FINISH] SAVED ${finalData.length} CHANNELS TO JSON ---`);
+            } catch (err) {
+                console.error("FATAL ERROR:", err.message);
+                process.exit(1);
+            }
+          }
+
+          scrape();
+          EOF
+          node scraper.js
 
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Update channels: $(date)" || exit 0
+          git commit -m "Full Scrape All Channels: $(date)" || exit 0
           git push
