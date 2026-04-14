@@ -66,11 +66,7 @@ jobs:
                           const config = JSON.parse(configMatch[1]);
                           
                           // DETAILED LOGS FOR VERIFICATION
-                          console.log(`\n✅ [SUCCESS] ${item.name}`);
-                          console.log(`   > URL: ${config.streamUrls?.[0] || 'N/A'}`);
-                          console.log(`   > KID: ${config.keyId || 'N/A'}`);
-                          console.log(`   > KEY: ${config.key || 'N/A'}`);
-                          console.log(`   > TOK: ${config.primaryCookie || 'N/A'}`);
+                          console.log(`\n✅ [SUCCESS] ${item.name}`);                    
                           
                           return config;
                       } else {
