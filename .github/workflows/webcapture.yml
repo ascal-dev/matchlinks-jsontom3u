@@ -1,8 +1,8 @@
-name: Ultimate Dynamic Scraper (Full/Limit Toggle)
+name: Ultimate Scraper with Auto-Cookie Refresh
 
 on:
   schedule:
-   # Runs exactly every 21 hours
+    # Triggers exactly every 21 hours
     - cron: '0 */21 * * *'
   workflow_dispatch:
 
@@ -34,48 +34,86 @@ jobs:
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
           const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
           
-          // SETTING: Set to null to scrape ALL channels, or a number (e.g., 100) to limit.
+          // SETTING: Set to null to scrape ALL channels
           const SCRAPE_LIMIT = null; 
 
+          let currentSession = { cookieStr: '', ua: '' };
+          let failureCounter = 0;
+
           async function getDynamicSession() {
-              console.log("--- [SYSTEM] SOLVING JS CHALLENGE ---");
-              const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+              console.log("--- [SYSTEM] ACQUIRING/REFRESHING SESSION CREDENTIALS ---");
+              const browser = await puppeteer.launch({ 
+                  headless: true, 
+                  args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+              });
               const page = await browser.newPage();
               const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
               await page.setUserAgent(realUA);
-              await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
-              await new Promise(r => setTimeout(r, 8000)); 
-              const cookies = await page.cookies();
-              const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
-              await browser.close();
-              return { cookieStr, ua: realUA };
+              
+              try {
+                  // Visit reference ID to trigger security challenge
+                  await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2', timeout: 30000 });
+                  await new Promise(r => setTimeout(r, 8000)); 
+                  
+                  const cookies = await page.cookies();
+                  const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+                  await browser.close();
+                  
+                  if (!cookieStr.includes('__test')) throw new Error("Security cookie (__test) not found");
+                  
+                  currentSession = { cookieStr, ua: realUA };
+                  console.log("--- [SYSTEM] SESSION VALIDATED: " + cookieStr.substring(0, 30) + "... ---");
+              } catch (e) {
+                  if (browser) await browser.close();
+                  console.error("--- [SYSTEM] SESSION REFRESH FAILED:", e.message);
+              }
           }
 
-          async function fetchWithRetry(item, headers, maxRetries = 3) {
+          async function fetchWithRetry(item, maxRetries = 3) {
               for (let attempt = 1; attempt <= maxRetries; attempt++) {
                   try {
-                      // Handshake Step 1
+                      const headers = { 
+                          "User-Agent": currentSession.ua, 
+                          "Cookie": currentSession.cookieStr, 
+                          "Referer": `${PHP_BASE}?id=${item.id}&i=1`,
+                          "Connection": "keep-alive"
+                      };
+
+                      // Handshake Part 1: Prime Session
                       await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
                       await new Promise(r => setTimeout(r, 1000));
 
-                      // Handshake Step 2
+                      // Handshake Part 2: Extract Data
                       const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
-                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
                       
+                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
                       if (configMatch) {
+                          failureCounter = 0; // Reset consecutive failure counter on any success
                           const config = JSON.parse(configMatch[1]);
                           
-                          // DETAILED LOGS FOR VERIFICATION
-                          console.log(`\n✅ [SUCCESS] ${item.name}`);                    
+                          // DETAILED LOGGING
+                          console.log(`\n✅ [CHANNEL] ${item.name}`);                        
                           
                           return config;
                       } else {
-                          throw new Error("CONFIG_NOT_FOUND_IN_HTML");
+                          throw new Error("EMPTY_OR_INVALID_CONFIG");
                       }
                   } catch (err) {
-                      console.log(`⚠️ [RETRY ${attempt}/${maxRetries}] ${item.name} | ${err.message}`);
-                      if (attempt === maxRetries) return null;
-                      // Exponential backoff: 4s, 8s, 12s...
+                      console.log(`⚠️ [ATTEMPT ${attempt}/${maxRetries}] ${item.name} | ${err.message}`);
+                      
+                      if (attempt === maxRetries) {
+                          failureCounter++;
+                          // AUTOMATIC RECOVERY: If 2 channels in a row fail, refresh the cookie
+                          if (failureCounter >= 2) {
+                              console.log("--- [CRITICAL] PERSISTENT FAILURES DETECTED. ROTATING COOKIES... ---");
+                              await getDynamicSession();
+                              failureCounter = 0; 
+                              // Final recursive attempt for this specific channel with new credentials
+                              return await fetchWithRetry(item, 1); 
+                          }
+                          return null;
+                      }
+                      // Wait longer between each retry
                       await new Promise(r => setTimeout(r, 4000 * attempt));
                   }
               }
@@ -83,34 +121,30 @@ jobs:
 
           async function scrape() {
             try {
-                const { cookieStr, ua } = await getDynamicSession();
-                const m3uRes = await axios.get(M3U_URL);
+                // Initial login
+                await getDynamicSession();
                 
+                console.log("--- [M3U] FETCHING SOURCE LIST ---");
+                const m3uRes = await axios.get(M3U_URL);
                 const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
-                let match;
-                let allChannels = [];
+                let match, allChannels = [];
+                
                 while ((match = regex.exec(m3uRes.data)) !== null) {
                   allChannels.push({ id: match[1].trim(), logo: match[2], name: match[3].trim() });
                 }
 
-                // DYNAMIC LIMIT LOGIC: If SCRAPE_LIMIT is null, it scrapes the full list.
+                // Apply limit if defined, else process all
                 const channels = SCRAPE_LIMIT ? allChannels.slice(0, SCRAPE_LIMIT) : allChannels;
-                console.log(`--- [START] PROCESSING ${channels.length} CHANNELS (LIMIT: ${SCRAPE_LIMIT || 'NONE'}) ---`);
+                console.log(`--- [START] SCRAPING ${channels.length} CHANNELS (ALL) ---`);
 
                 const finalData = [];
-                const batchSize = 2; // Keep small to prevent 508 Resource Limit Errors
+                const batchSize = 2; // Low batch size to prevent Host-side resource blocks (508)
 
                 for (let i = 0; i < channels.length; i += batchSize) {
                   const batch = channels.slice(i, i + batchSize);
                   
                   const results = await Promise.all(batch.map(async (item) => {
-                    const headers = { 
-                        "User-Agent": ua, 
-                        "Cookie": cookieStr, 
-                        "Referer": `${PHP_BASE}?id=${item.id}&i=1` 
-                    };
-                    const config = await fetchWithRetry(item, headers);
-                    
+                    const config = await fetchWithRetry(item);
                     if (config) {
                         return {
                           "name": item.name,
@@ -122,20 +156,20 @@ jobs:
                           "token": config.primaryCookie || "",
                           "fallbackCookie": config.fallbackCookie || ""
                         };
-                      }
+                    }
                     return null;
                   }));
 
                   finalData.push(...results.filter(r => r !== null));
                   
-                  // Necessary delay between batches for server stability
-                  await new Promise(r => setTimeout(r, 3500)); 
+                  // Necessary cooldown delay for server stability
+                  await new Promise(r => setTimeout(r, 4000)); 
                 }
 
                 fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-                console.log(`\n--- [FINISH] SAVED ${finalData.length} CHANNELS TO JSON ---`);
+                console.log(`\n--- [COMPLETE] FINISHED. SAVED ${finalData.length} ACTIVE STREAMS ---`);
             } catch (err) {
-                console.error("FATAL ERROR:", err.message);
+                console.error("FATAL ERROR DURING SCRAPE:", err.message);
                 process.exit(1);
             }
           }
@@ -144,10 +178,10 @@ jobs:
           EOF
           node scraper.js
 
-      - name: Commit and Push
+      - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add channels_output.json
-          git commit -m "Full Scrape All Channels: $(date)" || exit 0
+          git commit -m "21h Full Scrape with Auto-Recovery: $(date)" || exit 0
           git push
