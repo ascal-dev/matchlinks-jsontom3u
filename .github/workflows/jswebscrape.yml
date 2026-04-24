@@ -1,8 +1,8 @@
-name: Ultimate Stable Scraper 100%
+name: ALLIN ONE NEW WDLIVE Scraper
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
+  #schedule:
+    #- cron: '0 */6 * * *' # Runs every 6 hours
   workflow_dispatch:
 
 permissions:
@@ -21,150 +21,144 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm install axios puppeteer
+        run: npm install axios
 
       - name: Run Scraper
         run: |
           cat << 'EOF' > scraper.js
-          const puppeteer = require('puppeteer');
           const axios = require('axios');
           const fs = require('fs');
 
-          const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
-          const PHP_BASE = "https://allinonerebornxjtv.iceiy.com/jtvxweb/pind.php";
-          const SCRAPE_LIMIT = 100; // Hard limit for stability
+          // --- CONFIGURATION ---
+          const M3U_SOURCE = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
+          const BASE_URL = "https://allinonereborn.online/jtvweb/pind.php";
+          
+          /** * PASTE YOUR FRESH COOKIES HERE 
+           * To get these: Open the site in your browser, Press F12, 
+           * go to Network tab, refresh, and copy the 'Cookie' header.
+           **/
+          const MANUAL_COOKIES = "human=1; js_verified=1"; 
+          const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36";
 
-          async function getDynamicSession() {
-              console.log("--- [SYSTEM] SOLVING JS CHALLENGE VIA PUPPETEER ---");
-              const browser = await puppeteer.launch({ 
-                  headless: true, 
-                  args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-              });
-              const page = await browser.newPage();
-              const realUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
-              await page.setUserAgent(realUA);
-              
-              await page.goto(`${PHP_BASE}?id=144&i=1`, { waitUntil: 'networkidle2' });
-              await new Promise(r => setTimeout(r, 8000)); 
-              
-              const cookies = await page.cookies();
-              const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
-              await browser.close();
+          const JSON_OUTPUT = 'wdlive_output.json';
+          const M3U_OUTPUT = 'wdlive.m3u';
+          // ---------------------
 
-              if (!cookieStr.includes('__test')) {
-                  throw new Error("Failed to capture security cookie. Server might be down.");
-              }
-              console.log("--- [SYSTEM] SESSION CAPTURED SUCCESSFULLY ---");
-              return { cookieStr, ua: realUA };
-          }
+          // Initialize files with WDLIVE branding
+          fs.writeFileSync(M3U_OUTPUT, '#EXTM3U x-tvg-url="" url-tvg=""\n\n');
+          fs.writeFileSync(JSON_OUTPUT, '[]');
 
-          async function fetchWithRetry(item, headers, maxRetries = 3) {
-              for (let attempt = 1; attempt <= maxRetries; attempt++) {
-                  try {
-                      // Handshake Step 1 (Priming)
-                      await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 15000 });
-                      await new Promise(r => setTimeout(r, 1000));
+          async function fetchChannel(item) {
+              try {
+                  const headers = {
+                      "User-Agent": USER_AGENT,
+                      "Cookie": MANUAL_COOKIES,
+                      "Referer": `${BASE_URL}?id=${item.id}`,
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+                      "Connection": "keep-alive",
+                      "Upgrade-Insecure-Requests": "1",
+                      "Sec-Fetch-Dest": "document",
+                      "Sec-Fetch-Mode": "navigate",
+                      "Sec-Fetch-Site": "same-origin"
+                  };
 
-                      // Handshake Step 2 (Data Extraction)
-                      const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=2`, { headers, timeout: 15000 });
-                      
-                      const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
-                      
-                      if (configMatch) {
-                          const config = JSON.parse(configMatch[1]);
-                          
-                          // --- FULL DETAILED LOGS ---
-                          console.log(`\n--------------------------------------------`);
-                          console.log(`✅ [EXTRACTED] ${item.name}`);
-                          console.log(`   ID    : ${item.id}`);
-                          console.log(`   URL   : ${config.streamUrls?.[0] || 'N/A'}`);
-                          console.log(`   KID   : ${config.keyId || 'N/A'}`);
-                          console.log(`   KEY   : ${config.key || 'N/A'}`);
-                          console.log(`   TOKEN : ${config.primaryCookie || 'N/A'}`);
-                          console.log(`--------------------------------------------`);
-                          
-                          return config;
-                      } else {
-                          throw new Error("Empty Response (No Config Found)");
-                      }
-                  } catch (err) {
-                      console.log(`⚠️ [ATTEMPT ${attempt}/${maxRetries}] ${item.name} failed: ${err.message}`);
-                      if (attempt === maxRetries) return null;
-                      
-                      // Exponential backoff: waits 4s, then 8s...
-                      const waitTime = attempt * 4000;
-                      await new Promise(r => setTimeout(r, waitTime));
-                  }
-              }
-          }
-
-          async function scrape() {
-            try {
-                const { cookieStr, ua } = await getDynamicSession();
-                const m3uRes = await axios.get(M3U_URL);
-                
-                const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
-                let match;
-                let allChannels = [];
-                while ((match = regex.exec(m3uRes.data)) !== null) {
-                  allChannels.push({ id: match[1].trim(), logo: match[2], name: match[3].trim() });
-                }
-
-                const channels = allChannels.slice(0, SCRAPE_LIMIT);
-                console.log(`--- [SCRAPE] PROCESSING FIRST ${channels.length} CHANNELS ---`);
-
-                const finalData = [];
-                const batchSize = 2; // Low batch size to prevent HTTP 508
-
-                for (let i = 0; i < channels.length; i += batchSize) {
-                  const batch = channels.slice(i, i + batchSize);
+                  // Step 1: Hit the base page to establish the session for this ID
+                  console.log(`[WDLIVE] Priming session for: ${item.name}...`);
+                  await axios.get(`${BASE_URL}?id=${item.id}`, { headers, timeout: 15000 });
                   
-                  const results = await Promise.all(batch.map(async (item) => {
-                    const headers = { 
-                        "User-Agent": ua, 
-                        "Cookie": cookieStr, 
-                        "Referer": `${PHP_BASE}?id=${item.id}&i=1`,
-                        "Connection": "keep-alive"
-                    };
-                    return await fetchWithRetry(item, headers);
-                  }));
+                  // Wait 2 seconds to mimic human reading/loading time
+                  await new Promise(r => setTimeout(r, 2000));
 
-                  // Map results to final format
-                  batch.forEach((item, index) => {
-                      const config = results[index];
-                      if (config) {
-                          finalData.push({
-                              "name": item.name,
-                              "id": item.id,
-                              "logo": item.logo,
-                              "streamUrl": config.streamUrls?.[0] || "",
-                              "keyId": config.keyId || "",
-                              "key": config.key || "",
-                              "token": config.primaryCookie || "",
-                              "fallbackCookie": config.fallbackCookie || ""
-                          });
-                      }
-                  });
+                  // Step 2: Request the specific stream config via &i=1
+                  const res = await axios.get(`${BASE_URL}?id=${item.id}&i=1`, { headers, timeout: 15000 });
+                  
+                  // Regex to extract the SERVER_CONFIG object from script tag
+                  const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
 
-                  await new Promise(r => setTimeout(r, 4000)); // Delay between batches
-                }
-
-                fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-                console.log(`\n--- [COMPLETE] SAVED ${finalData.length} FUNCTIONAL CHANNELS ---`);
-            } catch (err) {
-                console.error("FATAL ERROR:", err.message);
-                process.exit(1);
-            }
+                  if (configMatch) {
+                      return JSON.parse(configMatch[1]);
+                  } else {
+                      console.log(`❌ SERVER_CONFIG not found for: ${item.name}. Check if cookies are expired.`);
+                  }
+              } catch (err) {
+                  console.log(`⚠️ Network Error on ID ${item.id}: ${err.message}`);
+              }
+              return null;
           }
 
-          scrape();
+          function writeToFiles(item, config, allData) {
+              const streamUrl = config.streamUrls?.[0] || "";
+              
+              // 1. Construct JSON entry
+              const entry = {
+                  "name": item.name,
+                  "id": item.id,
+                  "logo": item.logo,
+                  "url": streamUrl,
+                  "clearkey": {
+                      "keyId": config.keyId || "",
+                      "key": config.key || ""
+                  },
+                  "updated_at": new Date().toISOString()
+              };
+              allData.push(entry);
+              
+              // Overwrite JSON file with updated array
+              fs.writeFileSync(JSON_OUTPUT, JSON.stringify(allData, null, 4));
+
+              // 2. Append to M3U immediately for persistence
+              let m3uEntry = `#EXTINF:-1 tvg-id="${item.id}" tvg-logo="${item.logo}" group-title="WDLIVE",${item.name}\n`;
+              if (config.keyId && config.key) {
+                  m3uEntry += `#KODIPROP:inputstream.adaptive.license_type=clearkey\n`;
+                  m3uEntry += `#KODIPROP:inputstream.adaptive.license_key=${config.keyId}:${config.key}\n`;
+              }
+              m3uEntry += `${streamUrl}\n\n`;
+              
+              fs.appendFileSync(M3U_OUTPUT, m3uEntry);
+              console.log(`✅ Successfully Saved: ${item.name}`);
+          }
+
+          async function start() {
+              console.log("--- ALLIN ONE NEW WDLIVE SCRAPER INITIALIZED ---");
+              
+              // Get the source list of channels
+              const source = await axios.get(M3U_SOURCE);
+              const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
+              let match, channelList = [];
+              
+              while ((match = regex.exec(source.data)) !== null) {
+                  channelList.push({ 
+                      id: match[1].trim(), 
+                      logo: match[2], 
+                      name: match[3].trim() 
+                  });
+              }
+
+              console.log(`Total channels found in source: ${channelList.length}`);
+
+              const results = [];
+              for (const channel of channelList) {
+                  const config = await fetchChannel(channel);
+                  if (config) {
+                      writeToFiles(channel, config, results);
+                  }
+                  
+                  // Human-mimic delay (between 3 and 5 seconds)
+                  const randomDelay = 3000 + Math.floor(Math.random() * 2000);
+                  await new Promise(r => setTimeout(r, randomDelay)); 
+              }
+
+              console.log(`\n--- SCRAPE FINISHED: ${results.length} CHANNELS CAPTURED ---`);
+          }
+
+          start();
           EOF
           node scraper.js
 
-      - name: Commit and Push
+      - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add channels_output.json
-          git commit -m "Full Scrape Update: $(date)" || exit 0
+          git add wdlive_output.json wdlive.m3u
+          git commit -m "WDLIVE Auto-Update: $(date)" || exit 0
           git push
