@@ -1,8 +1,8 @@
 name: Ultimate Human-Mimic Scraper
 
 on:
-  schedule:
-   
+#  schedule:
+    #- cron: '0 */6 * * *' # Runs every 6 hours
   workflow_dispatch:
 
 permissions:
@@ -34,21 +34,25 @@ jobs:
           puppeteer.use(StealthPlugin());
 
           const M3U_URL = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
-          const PHP_BASE = "https://jtvxweb.unaux.com/jtvxweb/pworld.php";
+          const PHP_BASE = "https://allinonereborn.online/jtvweb/pind.php";
+          const JSON_FILE = 'channels_output.json';
+          const M3U_FILE = 'channels.m3u';
           const SCRAPE_LIMIT = null; 
 
           let currentSession = { cookieStr: '', ua: '' };
 
+          // Initialize files (overwrite old ones with headers)
+          fs.writeFileSync(M3U_FILE, '#EXTM3U\n');
+          fs.writeFileSync(JSON_FILE, '[]');
+
           async function solveChallenge() {
-              console.log("--- [SYSTEM] ATTEMPTING STEALTH BYPASS ---");
+              console.log("--- [SYSTEM] STARTING STEALTH ENGINE ---");
               const browser = await puppeteer.launch({ 
                   headless: true, 
                   args: [
                       '--no-sandbox', 
                       '--disable-setuid-sandbox',
-                      '--disable-dev-shm-usage',
-                      '--disable-accelerated-2d-canvas',
-                      '--disable-gpu'
+                      '--disable-dev-shm-usage'
                   ] 
               });
               const page = await browser.newPage();
@@ -57,7 +61,7 @@ jobs:
               await page.setUserAgent(realUA);
 
               try {
-                  // Visit the base page (ID 144 is usually the best for priming)
+                  // Prime the session with a known ID
                   await page.goto(`${PHP_BASE}?id=144`, { waitUntil: 'networkidle2', timeout: 60000 });
                   
                   let authenticated = false;
@@ -66,20 +70,20 @@ jobs:
                       const testCookie = cookies.find(c => c.name === '__test');
                       
                       if (testCookie) {
-                          console.log("✅ Security cookie '__test' detected!");
+                          console.log("✅ Cookie '__test' captured!");
                           authenticated = true;
                           const cookieStr = cookies.map(c => `${c.name}=${c.value}`).join('; ');
                           currentSession = { cookieStr, ua: realUA };
                           break;
                       }
-                      console.log(`Waiting for JS challenge... (${i+1}/15)`);
+                      console.log(`Waiting for security challenge... (${i+1}/15)`);
                       await new Promise(r => setTimeout(r, 2000));
                   }
 
-                  if (!authenticated) throw new Error("Could not capture __test cookie.");
+                  if (!authenticated) throw new Error("Security bypass failed.");
 
               } catch (e) {
-                  console.error("--- [CRITICAL] BYPASS FAILED:", e.message);
+                  console.error("--- [CRITICAL] BYPASS ERROR:", e.message);
               } finally {
                   await browser.close();
               }
@@ -93,32 +97,50 @@ jobs:
                       "User-Agent": currentSession.ua,
                       "Cookie": currentSession.cookieStr,
                       "Referer": "https://jtvxweb.unaux.com/",
-                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                      "Connection": "keep-alive",
-                      "Upgrade-Insecure-Requests": "1"
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
                   };
 
-                  // STEP 1: Hit base ID URL (No &i=1) to establish session for this specific ID
+                  // Step 1: Initialize session for this specific ID
                   await axios.get(`${PHP_BASE}?id=${item.id}`, { headers, timeout: 20000 });
                   await new Promise(r => setTimeout(r, 2500));
 
-                  // STEP 2: Use &i=1 with the established cookie to extract the config
+                  // Step 2: Request the config data
                   const res = await axios.get(`${PHP_BASE}?id=${item.id}&i=1`, { headers, timeout: 20000 });
-                  
-                  // Extracting SERVER_CONFIG
                   const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
 
                   if (configMatch) {
-                      const config = JSON.parse(configMatch[1]);
-                      console.log(`✅ Scraped: ${item.name} | KID: ${config.keyId || 'N/A'}`);
-                      return config;
-                  } else {
-                      console.log(`❌ Config not found for: ${item.name}`);
+                      return JSON.parse(configMatch[1]);
                   }
               } catch (err) {
-                  console.log(`⚠️ Error on ${item.name}: ${err.message}`);
+                  console.log(`⚠️ Error on ID ${item.id}: ${err.message}`);
               }
               return null;
+          }
+
+          function saveProgress(item, config, allData) {
+              // 1. Update JSON Array
+              const entry = {
+                  "name": item.name,
+                  "id": item.id,
+                  "logo": item.logo,
+                  "streamUrl": config.streamUrls?.[0] || "",
+                  "keyId": config.keyId || "",
+                  "key": config.key || "",
+                  "updated": new Date().toISOString()
+              };
+              allData.push(entry);
+              fs.writeFileSync(JSON_FILE, JSON.stringify(allData, null, 4));
+
+              // 2. Append to M3U immediately
+              let m3uEntry = `#EXTINF:-1 tvg-id="${item.id}" tvg-logo="${item.logo}",${item.name}\n`;
+              if (config.keyId && config.key) {
+                  m3uEntry += `#KODIPROP:inputstream.adaptive.license_type=clearkey\n`;
+                  m3uEntry += `#KODIPROP:inputstream.adaptive.license_key=${config.keyId}:${config.key}\n`;
+              }
+              m3uEntry += `${config.streamUrls?.[0] || ""}\n\n`;
+              
+              fs.appendFileSync(M3U_FILE, m3uEntry);
+              console.log(`✅ Progress Saved: ${item.name}`);
           }
 
           async function scrape() {
@@ -134,29 +156,19 @@ jobs:
               }
 
               const channels = SCRAPE_LIMIT ? allChannels.slice(0, SCRAPE_LIMIT) : allChannels;
-              console.log(`\n--- STARTING SCRAPE OF ${channels.length} CHANNELS ---`);
+              console.log(`\n--- STARTING SCRAPE: ${channels.length} TARGETS ---`);
 
               const finalData = [];
               for (const item of channels) {
                   const config = await fetchChannel(item);
                   if (config) {
-                      finalData.push({
-                          "name": item.name,
-                          "id": item.id,
-                          "logo": item.logo,
-                          "streamUrl": config.streamUrls?.[0] || "",
-                          "keyId": config.keyId || "",
-                          "key": config.key || "",
-                          "token": config.primaryCookie || "",
-                          "updated": new Date().toISOString()
-                      });
+                      saveProgress(item, config, finalData);
                   }
-                  // Respectful delay between channels to avoid detection
-                  await new Promise(r => setTimeout(r, 5000)); 
+                  // Human-mimic delay
+                  await new Promise(r => setTimeout(r, 4000)); 
               }
 
-              fs.writeFileSync('channels_output.json', JSON.stringify(finalData, null, 4));
-              console.log(`\n--- FINISHED: SAVED ${finalData.length} CHANNELS ---`);
+              console.log(`\n--- WORKFLOW COMPLETE ---`);
           }
 
           scrape();
@@ -167,6 +179,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add channels_output.json
-          git commit -m "Updated Channels: $(date)" || exit 0
+          git add channels_output.json channels.m3u
+          git commit -m "Auto-Update: $(date)" || exit 0
           git push
