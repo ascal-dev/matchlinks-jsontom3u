@@ -1,8 +1,8 @@
 name: ALLIN ONE NEW WDLIVE Scraper
 
 on:
-  #schedule:
-    #- cron: '0 */6 * * *' # Runs every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -21,144 +21,170 @@ jobs:
           node-version: '22'
 
       - name: Install Dependencies
-        run: npm install axios
+        run: npm install axios hpagent
 
       - name: Run Scraper
         run: |
           cat << 'EOF' > scraper.js
           const axios = require('axios');
           const fs = require('fs');
+          const { HttpProxyAgent, HttpsProxyAgent } = require('hpagent');
 
-          // --- CONFIGURATION ---
+          // --- SETTINGS ---
           const M3U_SOURCE = "https://raw.githubusercontent.com/ascal-dev/matchlinks-jsontom3u/main/Refined.m3u";
           const BASE_URL = "https://allinonereborn.online/jtvweb/pind.php";
-          
-          /** * PASTE YOUR FRESH COOKIES HERE 
-           * To get these: Open the site in your browser, Press F12, 
-           * go to Network tab, refresh, and copy the 'Cookie' header.
-           **/
           const MANUAL_COOKIES = "human=1; js_verified=1"; 
           const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36";
+          const JSON_FILE = 'wdlive_output.json';
+          const M3U_FILE = 'wdlive.m3u';
 
-          const JSON_OUTPUT = 'wdlive_output.json';
-          const M3U_OUTPUT = 'wdlive.m3u';
-          // ---------------------
+          let proxies = [];
+          let pIdx = 0;
 
-          // Initialize files with WDLIVE branding
-          fs.writeFileSync(M3U_OUTPUT, '#EXTM3U x-tvg-url="" url-tvg=""\n\n');
-          fs.writeFileSync(JSON_OUTPUT, '[]');
-
-          async function fetchChannel(item) {
+          // 1. Fetch Proxy List
+          async function loadProxies() {
+              console.log("--- FETCHING PROXIES ---");
               try {
-                  const headers = {
-                      "User-Agent": USER_AGENT,
-                      "Cookie": MANUAL_COOKIES,
-                      "Referer": `${BASE_URL}?id=${item.id}`,
-                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-                      "Connection": "keep-alive",
-                      "Upgrade-Insecure-Requests": "1",
-                      "Sec-Fetch-Dest": "document",
-                      "Sec-Fetch-Mode": "navigate",
-                      "Sec-Fetch-Site": "same-origin"
-                  };
+                  const res = await axios.get('https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all');
+                  proxies = res.data.split(/\r?\n/).map(p => p.trim()).filter(p => p.length > 5);
+                  console.log(`Loaded ${proxies.length} proxies.`);
+              } catch (e) {
+                  console.log("Failed to load proxies. Using local IP.");
+              }
+          }
 
-                  // Step 1: Hit the base page to establish the session for this ID
-                  console.log(`[WDLIVE] Priming session for: ${item.name}...`);
-                  await axios.get(`${BASE_URL}?id=${item.id}`, { headers, timeout: 15000 });
-                  
-                  // Wait 2 seconds to mimic human reading/loading time
-                  await new Promise(r => setTimeout(r, 2000));
+          // 2. Create Proxy Agent
+          function getAgent() {
+              if (proxies.length === 0) return {};
+              const proxy = `http://${proxies[pIdx]}`;
+              const options = { proxy, keepAlive: true, timeout: 15000 };
+              return {
+                  httpAgent: new HttpProxyAgent(options),
+                  httpsAgent: new HttpsProxyAgent(options)
+              };
+          }
 
-                  // Step 2: Request the specific stream config via &i=1
-                  const res = await axios.get(`${BASE_URL}?id=${item.id}&i=1`, { headers, timeout: 15000 });
-                  
-                  // Regex to extract the SERVER_CONFIG object from script tag
-                  const configMatch = res.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
+          function rotate() {
+              if (proxies.length > 0) {
+                  pIdx = (pIdx + 1) % proxies.length;
+                  console.log(`Switched Proxy: ${proxies[pIdx]}`);
+              }
+          }
 
-                  if (configMatch) {
-                      return JSON.parse(configMatch[1]);
-                  } else {
-                      console.log(`❌ SERVER_CONFIG not found for: ${item.name}. Check if cookies are expired.`);
+          // 3. Request Helper with Retry Logic
+          async function fetchWithRetry(url, headers, retries = 5) {
+              for (let i = 0; i < retries; i++) {
+                  try {
+                      const response = await axios.get(url, {
+                          headers,
+                          ...getAgent(),
+                          timeout: 15000
+                      });
+                      return response;
+                  } catch (e) {
+                      const errCode = e.response ? e.response.status : "TIMEOUT";
+                      console.log(`[Attempt ${i+1}] Proxy Error ${errCode}.`);
+                      rotate();
                   }
-              } catch (err) {
-                  console.log(`⚠️ Network Error on ID ${item.id}: ${err.message}`);
               }
               return null;
           }
 
-          function writeToFiles(item, config, allData) {
-              const streamUrl = config.streamUrls?.[0] || "";
-              
-              // 1. Construct JSON entry
-              const entry = {
-                  "name": item.name,
-                  "id": item.id,
-                  "logo": item.logo,
-                  "url": streamUrl,
-                  "clearkey": {
-                      "keyId": config.keyId || "",
-                      "key": config.key || ""
-                  },
-                  "updated_at": new Date().toISOString()
-              };
-              allData.push(entry);
-              
-              // Overwrite JSON file with updated array
-              fs.writeFileSync(JSON_OUTPUT, JSON.stringify(allData, null, 4));
+          // 4. Main Scraper
+          async function main() {
+              await loadProxies();
 
-              // 2. Append to M3U immediately for persistence
-              let m3uEntry = `#EXTINF:-1 tvg-id="${item.id}" tvg-logo="${item.logo}" group-title="WDLIVE",${item.name}\n`;
-              if (config.keyId && config.key) {
-                  m3uEntry += `#KODIPROP:inputstream.adaptive.license_type=clearkey\n`;
-                  m3uEntry += `#KODIPROP:inputstream.adaptive.license_key=${config.keyId}:${config.key}\n`;
-              }
-              m3uEntry += `${streamUrl}\n\n`;
-              
-              fs.appendFileSync(M3U_OUTPUT, m3uEntry);
-              console.log(`✅ Successfully Saved: ${item.name}`);
-          }
+              // Setup Files
+              fs.writeFileSync(M3U_FILE, '#EXTM3U x-tvg-url=""\n\n');
+              fs.writeFileSync(JSON_FILE, '[]');
 
-          async function start() {
-              console.log("--- ALLIN ONE NEW WDLIVE SCRAPER INITIALIZED ---");
-              
-              // Get the source list of channels
+              // Get Channels
+              console.log("Fetching Source...");
               const source = await axios.get(M3U_SOURCE);
               const regex = /#EXTINF:-1.*?tvg-id="(\d+)"\s*.*?tvg-logo="(.*?)",(.*)/g;
-              let match, channelList = [];
-              
+              let match, channels = [];
               while ((match = regex.exec(source.data)) !== null) {
-                  channelList.push({ 
-                      id: match[1].trim(), 
-                      logo: match[2], 
-                      name: match[3].trim() 
-                  });
+                  channels.push({ id: match[1].trim(), logo: match[2], name: match[3].trim() });
               }
+              console.log(`Processing ${channels.length} items.`);
 
-              console.log(`Total channels found in source: ${channelList.length}`);
+              let savedData = [];
+              const headers = {
+                  "User-Agent": USER_AGENT,
+                  "Cookie": MANUAL_COOKIES,
+                  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                  "Sec-Ch-Ua": '"Not?A_Brand";v="99", "Chromium";v="130"',
+                  "Sec-Ch-Ua-Mobile": "?0",
+                  "Sec-Ch-Ua-Platform": '"Windows"',
+                  "Sec-Fetch-Dest": "document",
+                  "Sec-Fetch-Mode": "navigate",
+                  "Sec-Fetch-Site": "same-origin",
+                  "Upgrade-Insecure-Requests": "1",
+                  "Priority": "u=0, i"
+              };
 
-              const results = [];
-              for (const channel of channelList) {
-                  const config = await fetchChannel(channel);
-                  if (config) {
-                      writeToFiles(channel, config, results);
+              for (const ch of channels) {
+                  console.log(`Target: ${ch.name}`);
+                  
+                  // Step 1: Prime Session
+                  const s1 = await fetchWithRetry(`${BASE_URL}?id=${ch.id}`, { ...headers, Referer: BASE_URL });
+                  if (!s1) continue;
+                  await new Promise(r => setTimeout(r, 1200));
+
+                  // Step 2: Request Config
+                  const s2 = await fetchWithRetry(`${BASE_URL}?id=${ch.id}&i=1`, { ...headers, Referer: `${BASE_URL}?id=${ch.id}` });
+                  if (!s2) continue;
+
+                  try {
+                      const configMatch = s2.data.match(/const\s+SERVER_CONFIG\s*=\s*(\{.*?\});/s);
+                      if (configMatch) {
+                          const config = JSON.parse(configMatch[1]);
+                          const streamUrl = config.streamUrls[0] || "";
+
+                          // --- INSTANT STORAGE ---
+                          // JSON Store
+                          const entry = {
+                              name: ch.name,
+                              id: ch.id,
+                              logo: ch.logo,
+                              url: streamUrl,
+                              clearkey: { kid: config.keyId, k: config.key },
+                              time: new Date().toISOString()
+                          };
+                          savedData.push(entry);
+                          fs.writeFileSync(JSON_FILE, JSON.stringify(savedData, null, 4));
+
+                          // M3U Store
+                          let m3uLine = `#EXTINF:-1 tvg-id="${ch.id}" tvg-logo="${ch.logo}" group-title="WDLIVE",${ch.name}\n`;
+                          if (config.keyId) {
+                              m3uLine += `#KODIPROP:inputstream.adaptive.license_type=clearkey\n`;
+                              m3uLine += `#KODIPROP:inputstream.adaptive.license_key=${config.keyId}:${config.key}\n`;
+                          }
+                          m3uLine += `${streamUrl}\n\n`;
+                          fs.appendFileSync(M3U_FILE, m3uLine);
+
+                          console.log(`✅ SAVED: ${ch.name}`);
+                          
+                          // Constant rotation to avoid 429
+                          rotate();
+                      }
+                  } catch (parseErr) {
+                      console.log(`❌ Parse Error on ${ch.name}`);
                   }
                   
-                  // Human-mimic delay (between 3 and 5 seconds)
-                  const randomDelay = 3000 + Math.floor(Math.random() * 2000);
-                  await new Promise(r => setTimeout(r, randomDelay)); 
+                  await new Promise(r => setTimeout(r, 2000));
               }
-
-              console.log(`\n--- SCRAPE FINISHED: ${results.length} CHANNELS CAPTURED ---`);
+              console.log("--- DONE ---");
           }
 
-          start();
+          main();
           EOF
           node scraper.js
 
-      - name: Commit and Push Changes
+      - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add wdlive_output.json wdlive.m3u
-          git commit -m "WDLIVE Auto-Update: $(date)" || exit 0
+          git commit -m "WDLIVE Full Update: $(date)" || exit 0
           git push
