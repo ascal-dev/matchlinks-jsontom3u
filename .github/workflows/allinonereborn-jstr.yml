@@ -16,6 +16,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Generate M3U
         env:
           SOURCE_URL: ${{ secrets.JSTR_SOURCE_URL }}
@@ -34,47 +39,73 @@ jobs:
 
           function fetchJSON(url) {
             return new Promise((resolve, reject) => {
-              https.get(url, res => {
+              https.get(url, (res) => {
                 let data = "";
-                res.on("data", d => data += d);
-                res.on("end", () => resolve(JSON.parse(data)));
+
+                if (res.statusCode !== 200) {
+                  reject(
+                    new Error(`Request failed with status ${res.statusCode}`)
+                  );
+                  return;
+                }
+
+                res.on("data", chunk => {
+                  data += chunk;
+                });
+
+                res.on("end", () => {
+                  try {
+                    const json = JSON.parse(data);
+                    resolve(json);
+                  } catch (err) {
+                    reject(
+                      new Error("Invalid JSON received from source URL")
+                    );
+                  }
+                });
               }).on("error", reject);
             });
           }
 
           (async () => {
-            const data = await fetchJSON(URL);
+            try {
+              const data = await fetchJSON(URL);
 
-            let m3u = '#EXTM3U x-tvg-url="https://avkb.short.gy/jioepg.xml.gz"\n\n';
+              if (!Array.isArray(data)) {
+                throw new Error("Source JSON is not an array");
+              }
 
-            data.forEach(ch => {
-              if (!ch.mpd || !ch.drm || Object.keys(ch.drm).length === 0) return;
+              let m3u =
+                '#EXTM3U x-tvg-url="https://avkb.short.gy/jioepg.xml.gz"\n\n';
 
-              const kid = Object.keys(ch.drm)[0];
-              const key = ch.drm[kid];
-              const cookie = ch.token;
-              const name = ch.name;
-              const logo = ch.logo;
-              const group = ch.category;
-              const id = ch.channel_id || "";
+              data.forEach(ch => {
+                if (!ch.url || !ch.keyId || !ch.key) {
+                  console.log(`Skipping invalid channel: ${ch.name || "Unknown"}`);
+                  return;
+                }
 
-              const url =
-                ch.mpd +
-                "?" +
-                cookie +
-                "&xxx=%7Ccookie=" +
-                cookie;
+                const kid = ch.keyId;
+                const key = ch.key;
+                const name = ch.name || "Unknown";
+                const logo = ch.logo || "";
+                const group = ch.category || "Other";
+                const id = ch.id || "";
 
-              m3u += `#EXTINF:-1 tvg-logo="${logo}" tvg-id="${id}" group-title="${group}",${name}\n`;
-              m3u += `#KODIPROP:inputstream.adaptive.license_type=clearkey\n`;
-              m3u += `#KODIPROP:inputstream.adaptive.license_key=${kid}:${key}\n`;
-              m3u += `#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0\n`;
-              m3u += `#EXTHTTP:{"cookie":"${cookie}"}\n`;
-              m3u += `${url}\n\n`;
-            });
+                m3u += `#EXTINF:-1 tvg-id="${id}" tvg-logo="${logo}" group-title="${group}",${name}\n`;
+                m3u += `#KODIPROP:inputstream.adaptive.license_type=clearkey\n`;
+                m3u += `#KODIPROP:inputstream.adaptive.license_key=${kid}:${key}\n`;
+                m3u += `#EXTVLCOPT:http-user-agent=StreamFlex/7.1.3 (Linux;Android 13) StreamFlex/69.1 ExoPlayerLib/824.0\n`;
+                m3u += `${ch.url}\n\n`;
+              });
 
-            fs.writeFileSync(OUT, m3u);
-            console.log("M3U generated successfully");
+              fs.writeFileSync(OUT, m3u, "utf8");
+
+              console.log(`M3U generated successfully: ${OUT}`);
+            } catch (err) {
+              console.error("Error generating M3U:");
+              console.error(err);
+              process.exit(1);
+            }
           })();
           EOF
 
@@ -82,6 +113,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add allinonenorn-jstr.m3u
-          git commit -m "Auto update allinonenorn-jstr.m3u" || echo "No changes"
+
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "Auto update allinonenorn-jstr.m3u"
+
           git push
