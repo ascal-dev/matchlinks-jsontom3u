@@ -1,0 +1,43 @@
+name: Allinone must have 
+on:
+  workflow_dispatch: # Allows manual trigger
+  schedule:
+    - cron: '0 */6 * * *' # Automatically runs every 6 hours
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch JSON Files
+        run: |
+          # Define the common headers to avoid detection
+          HEADERS=(
+            -H "accept: */*"
+            -H "accept-language: en-GB,en;q=0.9"
+            -H "origin: https://jtvxweb.pages.dev"
+            -H "referer: https://jtvxweb.pages.dev/"
+            -H "user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Mobile Safari/537.36"
+            -H "sec-ch-ua: \"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\""
+            -H "sec-ch-ua-mobile: ?1"
+            -H "sec-ch-ua-platform: \"Android\""
+          )
+
+          echo "Fetching jtv-fetch-json..."
+          curl -L "${HEADERS[@]}" "https://allinonereborn.online/jtv-fetch/json.php" -o jtv-fetch-json.json
+
+          echo "Fetching jstrweb2-cookies2.json..."
+          curl -L "${HEADERS[@]}" "https://allinonereborn.online/jstrweb2/cookies.json" -o jstrweb2-cookies2.json
+
+          echo "Fetching jtv-fetch-jststarcookie/json..."
+          curl -L "${HEADERS[@]}" "https://allinonereborn.online/jtv-fetch/jstarcookie/json.php" -o jtv-fetch-jststarcookie.json
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add *.json
+          git commit -m "Update JSON data: $(date)" || echo "No changes to commit"
+          git push
