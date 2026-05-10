@@ -1,0 +1,102 @@
+name: Update TPlay Channels
+
+on:
+  schedule:
+    - cron: '0 */3 * * *' # Runs every 3 hours to refresh tokens
+  workflow_dispatch: # Allows manual run
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Scrape and Update Channels
+        run: |
+          python << 'EOF'
+          import requests
+          import re
+          import json
+          import os
+
+          BASE_URL = "https://allinonereborn.online/tplay"
+          CHANNELS_JSON_URL = f"{BASE_URL}/channels.json"
+          PLAYER_URL = f"{BASE_URL}/play.php?id="
+          
+          headers = {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36",
+              "Referer": f"{BASE_URL}/",
+              "Cookie": "s9ifs0idfjlwfie32dekl=0;"
+          }
+
+          def get_stream_details(channel_id):
+              try:
+                  response = requests.get(f"{PLAYER_URL}{channel_id}", headers=headers, timeout=10)
+                  html = response.text
+                  
+                  # Extract streamConfig block using Regex
+                  config_match = re.search(r'const streamConfig = (\{.*?\});', html, re.DOTALL)
+                  if config_match:
+                      # Fix JS object to valid JSON (remove trailing commas/handle keys)
+                      config_str = config_match.group(1)
+                      # Basic cleanup to make it look like JSON for parsing
+                      # (In production, a more robust JS-to-JSON parser is better)
+                      mpd = re.search(r'mpd:\s*"(.*?)"', config_str).group(1)
+                      token = re.search(r'token:\s*"(.*?)"', config_str).group(1)
+                      referer = re.search(r'referer:\s*"(.*?)"', config_str).group(1)
+                      ua = re.search(r'userAgent:\s*"(.*?)"', config_str).group(1)
+                      drm = re.search(r'drm:\s*(\{.*?\})', config_str, re.DOTALL).group(1)
+                      
+                      return {
+                          "mpd": mpd,
+                          "token": token,
+                          "referer": referer,
+                          "userAgent": ua,
+                          "drm": json.loads(drm.replace("'", '"'))
+                      }
+              except Exception as e:
+                  print(f"Error extracting {channel_id}: {e}")
+              return None
+
+          # 1. Fetch the master channel list
+          try:
+              res = requests.get(CHANNELS_JSON_URL, headers=headers)
+              channels = res.json()
+          except:
+              print("Failed to fetch channels.json")
+              exit(1)
+
+          updated_list = []
+          
+          # 2. Iterate and update
+          for channel in channels:
+              cid = channel.get("id")
+              print(f"Processing ID: {cid} - {channel.get('name')}")
+              
+              details = get_stream_details(cid)
+              if details:
+                  channel.update(details)
+              
+              updated_list.append(channel)
+
+          # 3. Save to tply.json
+          with open("tply.json", "w") as f:
+              json.dump(updated_list, f, indent=4)
+
+          EOF
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add tply.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update tply.json streams" && git push)
