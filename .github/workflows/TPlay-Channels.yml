@@ -4,7 +4,10 @@ on:
   schedule:
     - cron: '0 */3 * * *' # Runs every 3 hours to refresh tokens
   workflow_dispatch: # Allows manual run
-
+# ADDED: Explicit permissions to allow the bot to commit changes
+permissions:
+  contents: write
+  
 jobs:
   update-json:
     runs-on: ubuntu-latest
@@ -27,7 +30,9 @@ jobs:
           import re
           import json
           import os
+          import sys
 
+          # --- CONFIGURATION ---
           BASE_URL = "https://allinonereborn.online/tplay"
           CHANNELS_JSON_URL = f"{BASE_URL}/channels.json"
           PLAYER_URL = f"{BASE_URL}/play.php?id="
@@ -40,57 +45,82 @@ jobs:
 
           def get_stream_details(channel_id):
               try:
-                  response = requests.get(f"{PLAYER_URL}{channel_id}", headers=headers, timeout=10)
+                  response = requests.get(f"{PLAYER_URL}{channel_id}", headers=headers, timeout=15)
                   html = response.text
                   
-                  # Extract streamConfig block using Regex
+                  # Search for the streamConfig JavaScript object
                   config_match = re.search(r'const streamConfig = (\{.*?\});', html, re.DOTALL)
                   if config_match:
-                      # Fix JS object to valid JSON (remove trailing commas/handle keys)
                       config_str = config_match.group(1)
-                      # Basic cleanup to make it look like JSON for parsing
-                      # (In production, a more robust JS-to-JSON parser is better)
+                      
+                      # Regex extraction of specific fields
                       mpd = re.search(r'mpd:\s*"(.*?)"', config_str).group(1)
                       token = re.search(r'token:\s*"(.*?)"', config_str).group(1)
                       referer = re.search(r'referer:\s*"(.*?)"', config_str).group(1)
                       ua = re.search(r'userAgent:\s*"(.*?)"', config_str).group(1)
-                      drm = re.search(r'drm:\s*(\{.*?\})', config_str, re.DOTALL).group(1)
                       
+                      # DRM extraction logic
+                      drm_match = re.search(r'drm:\s*(\{.*?\})', config_str, re.DOTALL)
+                      drm = json.loads(drm_match.group(1).replace("'", '"')) if drm_match else {}
+
+                      print(f"   [OK] Data extracted for ID {channel_id}")
                       return {
                           "mpd": mpd,
                           "token": token,
                           "referer": referer,
                           "userAgent": ua,
-                          "drm": json.loads(drm.replace("'", '"'))
+                          "drm": drm
                       }
+                  else:
+                      print(f"   [SKIP] streamConfig not found in HTML for {channel_id}")
               except Exception as e:
-                  print(f"Error extracting {channel_id}: {e}")
+                  print(f"   [ERROR] Failed extraction for {channel_id}: {str(e)}")
               return None
 
-          # 1. Fetch the master channel list
+          print("\n--- STEP 1: FETCHING MASTER LIST ---")
           try:
-              res = requests.get(CHANNELS_JSON_URL, headers=headers)
+              res = requests.get(CHANNELS_JSON_URL, headers=headers, timeout=10)
+              res.raise_for_status()
               channels = res.json()
-          except:
-              print("Failed to fetch channels.json")
-              exit(1)
+              print(f"SUCCESS: Found {len(channels)} channels to process.\n")
+          except Exception as e:
+              print(f"CRITICAL ERROR: Could not fetch master channel list. {e}")
+              sys.exit(1)
 
           updated_list = []
-          
-          # 2. Iterate and update
-          for channel in channels:
+          success_count = 0
+          fail_count = 0
+
+          print("--- STEP 2: SCRAPING & UPDATING CHANNELS ---")
+          for index, channel in enumerate(channels, 1):
               cid = channel.get("id")
-              print(f"Processing ID: {cid} - {channel.get('name')}")
+              cname = channel.get("name", "Unknown")
+              
+              print(f"[{index}/{len(channels)}] Checking: {cname} (ID: {cid})")
               
               details = get_stream_details(cid)
               if details:
                   channel.update(details)
+                  success_count += 1
+                  print(f"   [UPDATE] JSON updated with new stream tokens.")
+              else:
+                  fail_count += 1
               
               updated_list.append(channel)
 
-          # 3. Save to tply.json
-          with open("tply.json", "w") as f:
-              json.dump(updated_list, f, indent=4)
+          print("\n--- STEP 3: WRITING TO FILE ---")
+          try:
+              with open("tply.json", "w") as f:
+                  json.dump(updated_list, f, indent=4)
+              print(f"SUCCESS: Data written to tply.json")
+          except Exception as e:
+              print(f"ERROR: Failed to write JSON file: {e}")
+
+          print("\n--- FINAL REPORT ---")
+          print(f"Processed: {len(channels)}")
+          print(f"Succeeded: {success_count}")
+          print(f"Failed:    {fail_count}")
+          print("--------------------\n")
 
           EOF
 
@@ -99,4 +129,10 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add tply.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update tply.json streams" && git push)
+          # Only commit and push if the file actually changed
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "No changes detected in tply.json. Skipping push."
+          else
+            git commit -m "Auto-update tply.json: $(date +'%Y-%m-%d %H:%M:%S')"
+            git push
+          fi
