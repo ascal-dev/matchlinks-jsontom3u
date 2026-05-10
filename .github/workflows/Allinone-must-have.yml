@@ -16,17 +16,19 @@ jobs:
 
       - name: Fetch JSON Files
         run: |
-          # Define the common headers to avoid detection
+          # 1. Define the headers needed for the bypass
+          # Note: We use the same domain the server expects to see
           HEADERS=(
             -H "accept: */*"
             -H "accept-language: en-GB,en;q=0.9"
-            -H "origin: https://jtvxweb.pages.dev"
-            -H "referer: https://jtvxweb.pages.dev/"
-            -H "user-agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Mobile Safari/537.36"
-            -H "sec-ch-ua: \"Chromium\";v=\"148\", \"Google Chrome\";v=\"148\", \"Not/A)Brand\";v=\"99\""
-            -H "sec-ch-ua-mobile: ?1"
-            -H "sec-ch-ua-platform: \"Android\""
+            -H "origin: https://allinonereborn.online"
+            -H "referer: https://allinonereborn.online/"
+            -H "x-requested-with: XMLHttpRequest"
+            -H "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
           )
+
+          echo "Fetching primary json.php with specific spoofed headers..."
+          curl -L "${HEADERS[@]}" -H "Host: allinonereborn.online" "https://allinonereborn.online/jtv-fetch/json.php" -o allinone-reborn.json
 
           echo "Fetching jtv-fetch-json..."
           curl -L "${HEADERS[@]}" "https://allinonereborn.online/jtv-fetch/json.php" -o jtv-fetch-json.json
