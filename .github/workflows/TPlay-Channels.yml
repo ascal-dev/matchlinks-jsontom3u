@@ -1,4 +1,4 @@
-name: Update TPlay Channels
+name: TPlay Channels
 
 on:
   schedule:
