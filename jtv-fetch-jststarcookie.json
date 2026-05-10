@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-10 15:15:24",
+    "timestamp": "2026-05-10 18:46:00",
     "successful_results": [],
     "failed_results": [
         {
@@ -12,7 +12,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsHD_BTS/WDVLive/index.mpd?__hdnea__=st=1778422510~exp=1778444110~acl=/bpk-tv/ColorsHD_BTS/WDVLive/*~hmac=296912306891b0f9ea3d0a63fca60d72974275cb5a113acbda18ee83f20613f8 "
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsHD_BTS/WDVLive/index.mpd?__hdnea__=st=1778422510~exp=1778444110~acl=/bpk-tv/ColorsHD_BTS/WDVLive/*~hmac=296912306891b0f9ea3d0a63fca60d72974275cb5a113acbda18ee83f20613f8"
             }
         },
         {
@@ -22,7 +22,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778416837~exp=1778438437~acl=/bpk-tv/Star_Gold_HD_BTS/WDVLive/*~hmac=a2dbac976a0f9ea825c23744457ee992ecdcb43f2e2b1951fb8df13085f78162"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778438684~exp=1778460284~acl=/bpk-tv/Star_Gold_HD_BTS/WDVLive/*~hmac=ca6835d6fc5c07846522dc72bab209726cc5e0c53d3ebdaf7a3c4bc80655f662"
             }
         },
         {
@@ -52,7 +52,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsRishtey_BTS/WDVLive/index.mpd?__hdnea__=st=1778412607~exp=1778434207~acl=/bpk-tv/ColorsRishtey_BTS/WDVLive/*~hmac=6e30732de33448a1bcc4f7eec0028a6126618cc5435ce57fae25a8369d9bc5d6"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsRishtey_BTS/WDVLive/index.mpd?__hdnea__=st=1778435106~exp=1778456706~acl=/bpk-tv/ColorsRishtey_BTS/WDVLive/*~hmac=6ba552898f32568481b06832c55313cb76b9098fab5373672b204273fca305b7"
             }
         },
         {
@@ -142,7 +142,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1778412612~exp=1778434212~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=38c5cf03eddaf06b1d0fd6e8f341a13bae9a07a235e383aeb3b12dd722754103"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1778434361~exp=1778455961~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=42df365548e59d32f6483f30bf3cd9c32133f84ac9d74f022fae13068852724f"
             }
         },
         {
@@ -162,7 +162,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Kannada_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778412620~exp=1778434220~acl=/bpk-tv/Colors_Kannada_HD_BTS/WDVLive/*~hmac=b8697261b3152afe5d86771827b1c3e7a202b2f1b14545f6d68b394af8dbb0f7"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Kannada_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778435112~exp=1778456712~acl=/bpk-tv/Colors_Kannada_HD_BTS/WDVLive/*~hmac=04171a616def7c336e66207772fb86340f1b87a9e05592cd8ee258c20e698915"
             }
         },
         {
@@ -212,7 +212,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1778416225~exp=1778437825~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=1f1688c99c8a43b3e66627a597bdd75b1451ed4588f4e16205c359f53e494d99"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1778438715~exp=1778460315~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=517a90090e7dbbce07e1f535f169ef2fe2fc5c399c92334658e35ecc20f8a8c4"
             }
         },
         {
@@ -222,7 +222,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1778417112~exp=1778438712~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=a221aa88c81f3c393a17fb1adba283a112538a24477c30d3f50e4e317966c531"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1778438718~exp=1778460318~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=c5c110c0c32149e13bad29b54acde074cbd7b8696574a59cacd4239feaf00d12"
             }
         },
         {
@@ -232,7 +232,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD2_BTS/WDVLive/index.mpd?__hdnea__=st=1778416421~exp=1778438021~acl=/bpk-tv/Star_Sports_HD2_BTS/WDVLive/*~hmac=e339b129596331aa0747e8d7b1d1df4b36560100b50bea65d487a37963e78d28"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD2_BTS/WDVLive/index.mpd?__hdnea__=st=1778438720~exp=1778460320~acl=/bpk-tv/Star_Sports_HD2_BTS/WDVLive/*~hmac=a4a8640981136cc23ac2dc128cd4a01bba56d5d6737191f997c8e5588fe05c41"
             }
         },
         {
@@ -272,7 +272,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778412114~exp=1778433714~acl=/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/*~hmac=b10b8c371146c4bc82628b6bfa377915f78ff9dd1983f078d4b305a059c87d37"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778433775~exp=1778455375~acl=/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/*~hmac=b2f5cdf294e7bf3253e732efe8a930040d408f87b7d9bb1e80721023920e65f9"
             }
         },
         {
@@ -282,7 +282,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/index.mpd?__hdnea__=st=1778415316~exp=1778436916~acl=/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/*~hmac=5c5352566ee910bba8bb792c1fe522b5d872a85a432cda4d0c15ddad70cae25e"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/index.mpd?__hdnea__=st=1778437811~exp=1778459411~acl=/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/*~hmac=82f5fe20824d637e19f05cb928762422004ab07b96efc34bdacc5f7f8ce7d6ea"
             }
         },
         {
@@ -302,7 +302,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Suvarna_BTS/WDVLive/index.mpd?__hdnea__=st=1778416257~exp=1778437857~acl=/bpk-tv/Suvarna_BTS/WDVLive/*~hmac=fc441719487eabde090cbd38dde80e08393754d7868a34ff5c7d55acc095627d"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Suvarna_BTS/WDVLive/index.mpd?__hdnea__=st=1778438730~exp=1778460330~acl=/bpk-tv/Suvarna_BTS/WDVLive/*~hmac=5fddf8190d87abf231aa2b226f4b37468bab77b84150285f6dba556a6a3b69e0"
             }
         },
         {
@@ -342,7 +342,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1778416265~exp=1778437865~acl=/bpk-tv/Star_Sports_1_Tamil_BTS/WDVLive/*~hmac=bcdefd8587a4b63f19a23255540e61e0df841e285f45026533b0a9d417a58290"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1778438734~exp=1778460334~acl=/bpk-tv/Star_Sports_1_Tamil_BTS/WDVLive/*~hmac=9ad1344a0a9ef3b773536584616c74ede6cb6a0b06197a68778d80946c9e66bf"
             }
         },
         {
@@ -422,7 +422,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1778415322~exp=1778436922~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=ecc3541634ea187ed1c33d00622106bd07c70823c9e4b1d8c60c1affeb5a5213"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1778437817~exp=1778459417~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=e0337f989d171888d141917ecbbe84507b5ae3bda063e28eb69c4d55019b7ed8"
             }
         },
         {
@@ -512,7 +512,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_3_BTS/WDVLive/index.mpd?__hdnea__=st=1778413523~exp=1778435123~acl=/bpk-tv/Star_Sports_3_BTS/WDVLive/*~hmac=828e468e65772ba9d8cfc67d7f68602ccce9b5fbc773b0968f04d6897ea6bd6d"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_3_BTS/WDVLive/index.mpd?__hdnea__=st=1778435126~exp=1778456726~acl=/bpk-tv/Star_Sports_3_BTS/WDVLive/*~hmac=323b05917442181ddea07916f4723c77a69722d670de8dd9cfdf5ade366fd199"
             }
         },
         {
@@ -572,7 +572,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1778416282~exp=1778437882~acl=/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/*~hmac=3c56fffe6c4fc075223ee236130dd0dc4225f93b59618b516e5192f01dedd845"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1778438742~exp=1778460342~acl=/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/*~hmac=3fd50c5973739cde28a1f6c65d82e294685738540fce7453738caf949c2774cd"
             }
         },
         {
@@ -602,7 +602,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd?__hdnea__=st=1778416051~exp=1778437651~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=fb7308d09c0d5c40ea2edf26e0f3bb13f1f9233e705a04f2d990f4cb0e7ab2b6"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd?__hdnea__=st=1778437824~exp=1778459424~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=636426ef235353f9b756358f745a2050dd2d6ba4362dc34c87e42462a3d9487d"
             }
         },
         {
@@ -622,7 +622,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsKhel_BTS/WDVLive/index.mpd?__hdnea__=st=1778416287~exp=1778437887~acl=/bpk-tv/StarSportsKhel_BTS/WDVLive/*~hmac=4997c3c8989bf622c6af22851de05fe3627ba2005a36bf060a617a3a985c2601"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsKhel_BTS/WDVLive/index.mpd?__hdnea__=st=1778438747~exp=1778460347~acl=/bpk-tv/StarSportsKhel_BTS/WDVLive/*~hmac=8317a238e816ee3a166266b85f8d77a53e3cfa4661193c8b39ef5a01f4663956"
             }
         },
         {
@@ -702,7 +702,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778416296~exp=1778437896~acl=/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/*~hmac=fa78a82afb21d3006bf4d27203b2b662732614eb60819a5c18fdb72b6b53022c"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778438752~exp=1778460352~acl=/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/*~hmac=99deb28a623708ab27587bd089035dc7eb98072af99c4861d8011be2dc3a3dd7"
             }
         },
         {
@@ -742,7 +742,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778416300~exp=1778437900~acl=/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/*~hmac=2ece0f0837c94961420b50ed41b0b46567251586448a53cdde7397df1013345a"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778438756~exp=1778460356~acl=/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/*~hmac=f8bade1ac7797f7e97117d5296798adc72f64bc4c1f57951209ebc03962d0560"
             }
         },
         {
@@ -762,7 +762,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1778416303~exp=1778437903~acl=/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/*~hmac=22cda437374e7b0c4fd8be213ee4efb758bb12ebc2be4ad051aed69829c4acf5"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1778438759~exp=1778460359~acl=/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/*~hmac=f78226aab0c693e220027b56fada5ae2aaf1a99a1c0c71018b7c4bc894c5b157"
             }
         }
     ]
