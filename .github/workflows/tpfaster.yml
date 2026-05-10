@@ -27,76 +27,87 @@ jobs:
           import re
           import json
           import sys
+          import time
           from concurrent.futures import ThreadPoolExecutor
 
           BASE_URL = "https://allinonereborn.online/tplay"
           CHANNELS_JSON_URL = f"{BASE_URL}/channels.json"
           PLAYER_URL = f"{BASE_URL}/play.php?id="
-          UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36"
+          UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
           
-          # Increase MAX_WORKERS for more speed (10-20 is usually safe for GitHub Actions)
           MAX_WORKERS = 15 
 
-          def run_curl(url):
-              try:
-                  result = subprocess.run([
-                      'curl', '-s', '-L', 
-                      '--connect-timeout', '5',
-                      '--max-time', '10',
-                      '-H', f'User-Agent: {UA}',
-                      '-H', f'Referer: {BASE_URL}/',
-                      '-H', 'Cookie: s9ifs0idfjlwfie32dekl=0;',
-                      url
-                  ], capture_output=True, text=True)
-                  return result.stdout
-              except:
-                  return ""
+          def run_curl(url, retries=3):
+              for i in range(retries):
+                  try:
+                      result = subprocess.run([
+                          'curl', '-s', '-L', 
+                          '--connect-timeout', '10',
+                          '--max-time', '20',
+                          '-H', f'User-Agent: {UA}',
+                          '-H', f'Referer: {BASE_URL}/',
+                          '-H', 'Cookie: s9ifs0idfjlwfie32dekl=0;',
+                          url
+                      ], capture_output=True, text=True)
+                      if result.stdout.strip():
+                          return result.stdout
+                  except Exception as e:
+                      print(f"Attempt {i+1} failed: {e}")
+                  time.sleep(2) # Wait before retry
+              return ""
 
           def process_channel(channel):
               cid = channel.get("id")
+              if not cid: return channel
+              
               html = run_curl(f"{PLAYER_URL}{cid}")
-              if not html:
+              if not html or "streamConfig" not in html:
                   return channel
 
               config_match = re.search(r'const streamConfig = (\{.*?\});', html, re.DOTALL)
               if config_match:
-                  config_str = config_match.group(1)
-                  
-                  def extract(pattern):
-                      m = re.search(pattern, config_str)
-                      return m.group(1) if m else ""
+                  try:
+                      config_str = config_match.group(1)
+                      def extract(pattern):
+                          m = re.search(pattern, config_str)
+                          return m.group(1) if m else ""
 
-                  drm_match = re.search(r'drm:\s*(\{.*?\})', config_str, re.DOTALL)
-                  
-                  # Fast update
-                  channel.update({
-                      "mpd": extract(r'mpd:\s*"(.*?)"'),
-                      "token": extract(r'token:\s*"(.*?)"'),
-                      "referer": extract(r'referer:\s*"(.*?)"'),
-                      "userAgent": extract(r'userAgent:\s*"(.*?)"'),
-                      "drm": json.loads(drm_match.group(1).replace("'", '"')) if drm_match else {}
-                  })
-                  print(f"✅ Processed: {channel.get('name')}")
+                      drm_match = re.search(r'drm:\s*(\{.*?\})', config_str, re.DOTALL)
+                      
+                      channel.update({
+                          "mpd": extract(r'mpd:\s*"(.*?)"'),
+                          "token": extract(r'token:\s*"(.*?)"'),
+                          "referer": extract(r'referer:\s*"(.*?)"'),
+                          "userAgent": extract(r'userAgent:\s*"(.*?)"'),
+                          "drm": json.loads(drm_match.group(1).replace("'", '"')) if drm_match else {}
+                      })
+                      print(f"✅ {channel.get('name')}")
+                  except:
+                      pass
               return channel
 
           print("--- 📡 FETCHING MASTER LIST ---")
           master_raw = run_curl(CHANNELS_JSON_URL)
-          try:
-              channels = json.loads(master_raw)
-          except:
-              print("❌ Master JSON Load Failed")
+
+          if not master_raw:
+              print("❌ Error: Received empty response from server. GitHub IP might be blocked.")
               sys.exit(1)
 
-          print(f"--- 🚀 STARTING MULTI-THREADED EXTRACTION ({MAX_WORKERS} threads) ---")
-          
-          # This is the "Speed of Light" part
+          try:
+              channels = json.loads(master_raw)
+              print(f"Found {len(channels)} channels.")
+          except Exception as e:
+              print(f"❌ JSON Parse Error: {e}")
+              print(f"Server sent back: {master_raw[:500]}") # Print first 500 chars to debug
+              sys.exit(1)
+
+          print(f"--- 🚀 STARTING MULTI-THREADED EXTRACTION ---")
           with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
               updated_list = list(executor.map(process_channel, channels))
 
           print(f"--- 💾 SAVING TO tplyfaster.json ---")
           with open("tplyfaster.json", "w") as f:
               json.dump(updated_list, f, indent=4)
-          
           EOF
 
       - name: Commit and Push
