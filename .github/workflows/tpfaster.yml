@@ -2,7 +2,7 @@ name: Update TPlay Channels Faster
 
 on:
   schedule:
-    - cron: '1,11,21,31,41,51 * * * *'
+    - cron: '5 * * * *'
   workflow_dispatch:
 
 permissions:
