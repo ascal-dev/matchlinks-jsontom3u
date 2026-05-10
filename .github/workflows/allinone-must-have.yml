@@ -1,0 +1,33 @@
+name: Allinone must have2
+on:
+  workflow_dispatch: # Allows manual trigger
+  schedule:
+    - cron: '0 0 */3 * *' # Runs every 3 days at 00:00 UTC
+
+permissions:
+  contents: write # Required to allow the bot to push changes to your repo
+
+jobs:
+  fetch_json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Request JSON with Spoofed Headers
+        run: |
+          curl -X GET "https://allinonereborn.online/jtv-fetch/json.php" \
+          -H "Host: allinonereborn.online" \
+          -H "Origin: https://allinonereborn.online" \
+          -H "Referer: https://allinonereborn.online/" \
+          -H "X-Requested-With: XMLHttpRequest" \
+          -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0 Safari/537.36" \
+          -o jtv-fetch-json2.json
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add jtv-fetch-json2.json
+          git commit -m "Update jtv-fetch-json2: $(date)" || echo "No changes to commit"
+          git push
