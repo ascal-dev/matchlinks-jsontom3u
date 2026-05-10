@@ -5,7 +5,6 @@ on:
     - cron: '0 */3 * * *' # Runs every 3 hours
   workflow_dispatch: # Allows manual run
 
-# IMPORTANT: This block allows the script to push changes back to your repo
 permissions:
   contents: write
 
@@ -48,12 +47,11 @@ jobs:
                   response = requests.get(f"{PLAYER_URL}{channel_id}", headers=headers, timeout=15)
                   html = response.text
                   
-                  # 🔍 Indicator: Searching for config in HTML
                   config_match = re.search(r'const streamConfig = (\{.*?\});', html, re.DOTALL)
                   if config_match:
                       config_str = config_match.group(1)
                       
-                      # 🧪 Indicator: Extracting specific fields
+                      # Extract fields
                       mpd = re.search(r'mpd:\s*"(.*?)"', config_str).group(1)
                       token = re.search(r'token:\s*"(.*?)"', config_str).group(1)
                       referer = re.search(r'referer:\s*"(.*?)"', config_str).group(1)
@@ -62,7 +60,7 @@ jobs:
                       drm_match = re.search(r'drm:\s*(\{.*?\})', config_str, re.DOTALL)
                       drm = json.loads(drm_match.group(1).replace("'", '"')) if drm_match else {}
 
-                      print(f"   ✅ [EXTRACTED] Successfully got stream data for ID: {channel_id}")
+                      print(f"   ✅ [EXTRACTED] Stream found for ID: {channel_id}")
                       return {
                           "mpd": mpd,
                           "token": token,
@@ -71,9 +69,9 @@ jobs:
                           "drm": drm
                       }
                   else:
-                      print(f"   ⚠️ [SKIP] No streamConfig found for ID: {channel_id}")
+                      print(f"   ⚠️ [SKIP] streamConfig missing for ID: {channel_id}")
               except Exception as e:
-                  print(f"   ❌ [ERROR] Failed extraction for ID {channel_id}: {str(e)}")
+                  print(f"   ❌ [ERROR] Failed ID {channel_id}: {str(e)}")
               return None
 
           print("\n--- 📡 STEP 1: FETCHING MASTER LIST ---")
@@ -81,46 +79,54 @@ jobs:
               res = requests.get(CHANNELS_JSON_URL, headers=headers, timeout=10)
               res.raise_for_status()
               channels = res.json()
-              print(f"✅ [SCRAPED] Master list received: {len(channels)} channels found.\n")
+              print(f"✅ [SUCCESS] Master list received: {len(channels)} channels.\n")
           except Exception as e:
-              print(f"❌ [CRITICAL] Could not fetch master list: {e}")
+              print(f"❌ [CRITICAL] Could not fetch list: {e}")
               sys.exit(1)
 
           updated_list = []
           success_count = 0
           fail_count = 0
 
-          print("--- ⚙️ STEP 2: PROCESSING & UPDATING ---")
+          print("--- ⚙️ STEP 2: SCRAPING & UPDATING ---")
           for index, channel in enumerate(channels, 1):
               cid = channel.get("id")
               cname = channel.get("name", "Unknown")
               
-              print(f"[{index}/{len(channels)}] Processing: {cname} (ID: {cid})")
+              print(f"[{index}/{len(channels)}] Scrutinizing: {cname} (ID: {cid})")
               
               details = get_stream_details(cid)
               if details:
                   channel.update(details)
                   success_count += 1
-                  print(f"   📝 [UPDATED] Local JSON object updated.")
+                  print(f"   📝 [UPDATED] Scraped tokens added to channel object.")
               else:
                   fail_count += 1
               
               updated_list.append(channel)
 
-          print("\n--- 💾 STEP 3: SAVING FILE ---")
+          print("\n--- 💾 STEP 3: WRITING TO FILE ---")
           try:
               with open("tply.json", "w") as f:
                   json.dump(updated_list, f, indent=4)
-              print(f"✅ [SAVED] All changes written to tply.json")
+              print(f"✅ [DONE] All changes written to tply.json")
           except Exception as e:
-              print(f"❌ [ERROR] Failed to save tply.json: {e}")
+              print(f"❌ [ERROR] File write failed: {e}")
 
-          print("\n--- 📊 FINAL STATUS REPORT ---")
-          print(f"Total Channels: {len(channels)}")
-          print(f"Success:        {success_count} ✅")
-          print(f"Failed:         {fail_count} ❌")
+          print("\n--- 📊 FINAL REPORT ---")
+          print(f"Total: {len(channels)} | Success: {success_count} ✅ | Failed: {fail_count} ❌")
           print("------------------------------\n")
           EOF
+
+      - name: Verify JSON File
+        run: |
+          if [ -f tply.json ]; then
+            echo "✅ tply.json exists and is ready for commit."
+            ls -lh tply.json
+          else
+            echo "❌ tply.json was not created!"
+            exit 1
+          fi
 
       - name: Commit and Push Changes
         run: |
@@ -128,7 +134,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git add tply.json
           if git diff --quiet && git diff --staged --quiet; then
-            echo "No changes to commit."
+            echo "No changes to commit. Stream tokens are already up to date."
           else
             git commit -m "Auto-update tply.json: $(date +'%Y-%m-%d %H:%M:%S')"
             git push
