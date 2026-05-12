@@ -25,12 +25,12 @@ jobs:
           -H "Referer: https://allinonereborn.online/" \
           -H "X-Requested-With: XMLHttpRequest" \
           -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0 Safari/537.36" \
-          -o jstrweb2-cookies2.json
+          -o jstrweb2-cookies3.json
 
       - name: Commit and Push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add jstrweb2-cookies2.json
+          git add jstrweb2-cookies3.json
           git commit -m "Update jtv-fetch-json2: $(date)" || echo "No changes to commit"
           git push
