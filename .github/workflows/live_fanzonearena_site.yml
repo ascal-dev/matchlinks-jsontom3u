@@ -1,4 +1,4 @@
-name: live_fanzonearena_site
+name: Live fanzonearena site
 on:
   schedule:
     - cron: '30 3 * * *'   # 09:00 AM IST
