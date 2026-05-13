@@ -1,7 +1,9 @@
 name: Live FanZoneareana site
 
+
 on:
   schedule:
+    - cron: '30 0 * * *'   #06:00AM IST
     - cron: '30 3 * * *'   # 09:00 AM IST
     - cron: '30 6 * * *'   # 12:00 PM IST
     - cron: '00 9 * * *'   # 02:30 PM IST
@@ -25,7 +27,7 @@ jobs:
           PLAYLIST_URL="https://live.fanzonearena.site/79960755/playlist.php"
           OUTPUT_FILE="live.fanzonearena.site.json"
           
-          echo "⚡ Launching Hyper-Speed Extraction..."
+          echo "⚡ Launching Hyper-Speed Extraction with HEX DRM Conversion..."
 
           # Fetch playlist once and normalize line endings
           RAW_CONTENT=$(curl -sL "$PLAYLIST_URL" | tr -d '\r')
@@ -37,34 +39,49 @@ jobs:
 
           # Function to process a single channel (Exported for parallel execution)
           process_channel() {
-            # Data input format: ID|CATEGORY|LOGO|NAME|URL
             IFS='|' read -r id cat logo name url <<< "$1"
             
-            # 1. Resolve Redirect to get direct Jio CDN Path
-            # 2. Fetch DRM Keys (KID and KEY) from the fanzonearena API
+            # 1. Resolve Redirect
             FULL_URL=$(curl -s -L -o /dev/null -w "%{url_effective}" "$url")
+            
+            # 2. Fetch DRM Keys
             KEY_JSON=$(curl -s "https://live.fanzonearena.site/79960755/keys/${id}/keys.json")
             
-            # Fast internal splitting for URL and Token
+            # 3. Split URL and Token
             BASE_URL="${FULL_URL%%\?*}"
             TOKEN=""
             [[ "$FULL_URL" == *"?"* ]] && TOKEN="?${FULL_URL#*\?}"
             
-            # Extract Keys using SED
-            KID=$(echo "$KEY_JSON" | sed -n 's/.*"kid":"\([^"]*\)".*/\1/p')
-            KEY=$(echo "$KEY_JSON" | sed -n 's/.*"k":"\([^"]*\)".*/\1/p')
+            # 4. Extract Base64URL Keys
+            B64_KID=$(echo "$KEY_JSON" | sed -n 's/.*"kid":"\([^"]*\)".*/\1/p')
+            B64_KEY=$(echo "$KEY_JSON" | sed -n 's/.*"k":"\([^"]*\)".*/\1/p')
 
-            # Build the JSON object with ALL fields
+            # 5. Helper function to convert Base64URL to HEX
+            to_hex() {
+              local input="$1"
+              [[ -z "$input" ]] && echo "" && return
+              # Convert Base64URL to Standard Base64
+              local base64_str=$(echo "$input" | tr -- '-_' '+/')
+              # Add padding if necessary
+              local mod=$((${#base64_str} % 4))
+              [[ $mod -eq 2 ]] && base64_str="${base64_str}=="
+              [[ $mod -eq 3 ]] && base64_str="${base64_str}="
+              # Decode to Hex
+              echo "$base64_str" | openssl enc -d -base64 | xxd -p -c 256 | tr -d ' \n'
+            }
+
+            HEX_KID=$(to_hex "$B64_KID")
+            HEX_KEY=$(to_hex "$B64_KEY")
+
+            # Build the JSON object
             printf "  {\n    \"id\": \"%s\",\n    \"name\": \"%s\",\n    \"category\": \"%s\",\n    \"channel_logo\": \"%s\",\n    \"channel_url\": \"%s\",\n    \"token_url\": \"%s\",\n    \"full_url\": \"%s\",\n    \"keyid\": \"%s\",\n    \"key\": \"%s\"\n  }," \
-              "$id" "$name" "$cat" "$logo" "$BASE_URL" "$TOKEN" "$FULL_URL" "$KID" "$KEY"
+              "$id" "$name" "$cat" "$logo" "$BASE_URL" "$TOKEN" "$FULL_URL" "$HEX_KID" "$HEX_KEY"
           }
           export -f process_channel
 
-          # Start JSON array
           echo "[" > "$OUTPUT_FILE"
           
-          # AWK extracts clean pipe-separated data
-          # xargs processes 15 channels at once for "Speed of Light" performance
+          # Parse M3U and run 15 parallel threads
           PARSE_RESULTS=$(echo "$RAW_CONTENT" | awk '
             /#EXTINF/ {
               match($0, /tvg-id="([^"]*)"/, id);
@@ -79,18 +96,16 @@ jobs:
             }
           ')
 
-          # Calculate total channels found in playlist
           TOTAL_CHANNELS=$(echo "$PARSE_RESULTS" | grep -c "|")
           echo "📊 Total Channels Found: $TOTAL_CHANNELS"
 
-          # Execute parallel processing
           echo "$PARSE_RESULTS" | xargs -I {} -P 15 bash -c 'process_channel "{}"' >> "$OUTPUT_FILE"
 
-          # Finalize JSON syntax
+          # Finalize JSON
           sed -i '$ s/,$//' "$OUTPUT_FILE"
           echo -e "\n]" >> "$OUTPUT_FILE"
           
-          echo "✅ Extracted $TOTAL_CHANNELS channels successfully."
+          echo "✅ Extracted $TOTAL_CHANNELS channels with HEX keys."
 
       - name: Commit and Push Changes
         run: |
@@ -99,10 +114,9 @@ jobs:
           git add live.fanzonearena.site.json
           
           if git diff --staged --quiet; then
-            echo "⏭️ No changes in data detected. Skipping push."
+            echo "⏭️ No changes detected."
           else
-            # Includes the channel count in the commit message for better history tracking
-            CHANNEL_COUNT=$(grep -c "{" live.fanzonearena.site.json)
-            git commit -m "Hyper-Speed Refresh: $CHANNEL_COUNT Channels Updated"
+            COUNT=$(grep -c "{" live.fanzonearena.site.json)
+            git commit -m "Hex DRM Refresh: $COUNT Channels Updated"
             git push
           fi
