@@ -1,0 +1,89 @@
+name: live.fanzonearena.site
+on:
+  schedule:
+    - cron: '30 3 * * *'   # 09:00 AM IST
+    - cron: '30 6 * * *'   # 12:00 PM IST
+    - cron: '00 9 * * *'   # 02:30 PM IST
+    - cron: '00 13 * * *'  # 06:30 PM IST
+    - cron: '30 16 * * *'  # 10:00 PM IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Process Playlist and Generate JSON
+        run: |
+          # 1. Fetch the playlist
+          PLAYLIST_URL="https://live.fanzonearena.site/79960755/playlist.php"
+          CONTENT=$(curl -sL $PLAYLIST_URL)
+
+          # 2. Check if playlist is empty
+          if [[ -z "$CONTENT" || "$CONTENT" != *#EXTM3U* ]]; then
+            echo "Playlist is empty or invalid. Exiting."
+            exit 0
+          fi
+
+          echo "[" > live.fanzonearena.site.json
+
+          # 3. Parse M3U using a while loop
+          # Extracts tvg-id, group-title, tvg-logo, Name, and Redirect URL
+          echo "$CONTENT" | grep "#EXTINF" -A 1 | while read -r line; do
+            if [[ $line == *"#EXTINF"* ]]; then
+              ID=$(echo "$line" | sed -n 's/.*tvg-id="\([^"]*\)".*/\1/p')
+              CAT=$(echo "$line" | sed -n 's/.*group-title="\([^"]*\)".*/\1/p')
+              LOGO=$(echo "$line" | sed -n 's/.*tvg-logo="\([^"]*\)".*/\1/p')
+              NAME=$(echo "$line" | cut -d',' -f2)
+            elif [[ $line == http* ]]; then
+              REDIRECT_URL=$(echo "$line" | tr -d '\r')
+
+              # 4. Follow redirect to get Jio CDN URL and Token
+              FULL_URL=$(curl -s -o /dev/null -w "%{url_effective}" "$REDIRECT_URL")
+              
+              if [[ "$FULL_URL" == *"?"* ]]; then
+                CHANNEL_URL=$(echo "$FULL_URL" | cut -d'?' -f1)
+                TOKEN_URL="?$(echo "$FULL_URL" | cut -d'?' -f2)"
+              else
+                CHANNEL_URL="$FULL_URL"
+                TOKEN_URL=""
+              fi
+
+              # 5. Fetch DRM Keys
+              KEY_JSON_URL="https://live.fanzonearena.site/79960755/keys/$ID/keys.json"
+              KEY_DATA=$(curl -s "$KEY_JSON_URL")
+              KID=$(echo "$KEY_DATA" | sed -n 's/.*"kid":"\([^"]*\)".*/\1/p')
+              KEY=$(echo "$KEY_DATA" | sed -n 's/.*"k":"\([^"]*\)".*/\1/p')
+
+              # 6. Append to JSON file
+              cat <<EOF >> live.fanzonearena.site.json
+              {
+                "id": "$ID",
+                "category": "$CAT",
+                "channel_logo": "$LOGO",
+                "channel_url": "$CHANNEL_URL",
+                "token_url": "$TOKEN_URL",
+                "full_url": "$FULL_URL",
+                "keyid": "$KID",
+                "key": "$KEY"
+              },
+EOF
+            fi
+          done
+
+          # 7. Finalize JSON formatting (remove last comma and close bracket)
+          sed -i '$ s/,$//' live.fanzonearena.site.json
+          echo "]" >> live.fanzonearena.site.json
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add live.fanzonearena.site.json
+          git commit -m "Automated JioTV Update: $(date)" || exit 0
+          git push
