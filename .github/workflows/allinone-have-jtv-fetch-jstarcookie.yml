@@ -19,7 +19,7 @@ jobs:
 
       - name: Request JSON with Spoofed Headers
         run: |
-          curl -X GET "https://allinonereborn.online/jtv-fetch/jstarcookie/json.php" \
+          curl -X GET "https://allinonereborn.online/jtv-fetch/jstarcookie/cookie.json" \
           -H "Host: allinonereborn.online" \
           -H "Origin: https://allinonereborn.online" \
           -H "Referer: https://allinonereborn.online/" \
