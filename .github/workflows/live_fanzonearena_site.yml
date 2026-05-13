@@ -19,117 +19,69 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Process JioTV Data
+      - name: Hyper-Speed Parallel Extraction
         run: |
-          # --- 🟢 CONFIGURATION & INITIALIZATION 🟢 ---
+          # --- CONFIGURATION ---
           PLAYLIST_URL="https://live.fanzonearena.site/79960755/playlist.php"
           OUTPUT_FILE="live.fanzonearena.site.json"
-          TEMP_FILE="temp_channels.json"
           
-          echo "🚀 STARTING FULL EXTRACTION: $(date)"
-          echo "------------------------------------------------------"
+          echo "⚡ Launching Hyper-Speed Extraction..."
 
-          # Fetch playlist and strip carriage returns (\r) for Linux compatibility
-          CONTENT=$(curl -sL "$PLAYLIST_URL" | tr -d '\r')
+          # Fetch playlist once
+          RAW_CONTENT=$(curl -sL "$PLAYLIST_URL" | tr -d '\r')
 
-          # Validate content: if source is down, stop to prevent deleting existing data
-          if [[ -z "$CONTENT" || "$CONTENT" != *#EXTM3U* ]]; then
-            echo "❌ CRITICAL ERROR: Playlist source is empty or invalid."
+          if [[ -z "$RAW_CONTENT" || "$RAW_CONTENT" != *#EXTM3U* ]]; then
+            echo "❌ Source Empty. Aborting."
             exit 0
           fi
 
-          # Initialize JSON and clear temp storage
-          echo "[" > "$OUTPUT_FILE"
-          > "$TEMP_FILE"
-
-          # --- 🔄 PARSING ENGINE 🔄 ---
-          # This loop identifies metadata and waits for the specific stream URL
-          while read -r line; do
-            # Skip empty lines
-            [[ -z "$line" ]] && continue
+          # Function to process a single channel (Exported for xargs)
+          # This handles Redirects and Keys for one channel
+          process_channel() {
+            local id="$1" cat="$2" logo="$3" name="$4" url="$5"
             
-            # 1. Detect Metadata Line
-            if [[ "$line" == *"#EXTINF"* ]]; then
-              CH_ID=$(echo "$line" | sed -n 's/.*tvg-id="\([^"]*\)".*/\1/p')
-              # Extract category from 'JioTV+ | Category' format
-              CH_CAT=$(echo "$line" | sed -n 's/.*group-title="JioTV+ | \([^"]*\)".*/\1/p')
-              CH_LOGO=$(echo "$line" | sed -n 's/.*tvg-logo="\([^"]*\)".*/\1/p')
-              CH_NAME=$(echo "$line" | sed 's/.*,//' | sed 's/^[[:space:]]*//')
-              continue
-            fi
+            # Resolve Redirect and Keys in parallel
+            FULL_URL=$(curl -s -L -o /dev/null -w "%{url_effective}" "$url")
+            KEY_JSON=$(curl -s "https://live.fanzonearena.site/79960755/keys/${id}/keys.json")
+            
+            # Extract logic
+            BASE_URL="${FULL_URL%%\?*}"
+            TOKEN=""
+            [[ "$FULL_URL" == *"?"* ]] && TOKEN="?${FULL_URL#*\?}"
+            
+            KID=$(echo "$KEY_JSON" | sed -n 's/.*"kid":"\([^"]*\)".*/\1/p')
+            KEY=$(echo "$KEY_JSON" | sed -n 's/.*"k":"\([^"]*\)".*/\1/p')
 
-            # 2. Detect Stream URL (Skips KODIPROP and EXTVLCOPT lines)
-            if [[ "$line" == https://* ]]; then
-              STREAM_REDIRECT_URL="$line"
-              
-              if [[ -n "$CH_ID" ]]; then
-                echo "  ▶️ Processing: $CH_NAME (ID: $CH_ID)"
-                
-                # Resolve Redirect to get the direct Jio CDN link
-                # We use -L to follow and -w to extract the final effective URL
-                FULL_JIO_URL=$(curl -s -L -o /dev/null -w "%{url_effective}" "$STREAM_REDIRECT_URL")
-                
-                # ✂️ Split the Base URL from the Token (?__hdnea__)
-                if [[ "$FULL_JIO_URL" == *"?"* ]]; then
-                  BASE_MPD_URL=$(echo "$FULL_JIO_URL" | cut -d'?' -f1)
-                  AUTH_TOKEN="?$(echo "$FULL_JIO_URL" | cut -d'?' -f2)"
-                  echo "    🔗 CDN Resolved."
-                else
-                  BASE_MPD_URL="$FULL_JIO_URL"
-                  AUTH_TOKEN=""
-                  echo "    ⚠️ Warning: No Token Found."
-                fi
+            # Output formatted JSON block to stdout
+            printf "  {\n    \"id\": \"%s\",\n    \"name\": \"%s\",\n    \"category\": \"%s\",\n    \"channel_logo\": \"%s\",\n    \"channel_url\": \"%s\",\n    \"token_url\": \"%s\",\n    \"full_url\": \"%s\",\n    \"keyid\": \"%s\",\n    \"key\": \"%s\"\n  }," "$id" "$name" "$cat" "$logo" "$BASE_URL" "$TOKEN" "$FULL_URL" "$KID" "$KEY"
+          }
+          export -f process_channel
 
-                # 🔑 Fetch DRM Keys (KID and KEY) from the API
-                KEY_JSON=$(curl -s "https://live.fanzonearena.site/79960755/keys/$CH_ID/keys.json")
-                KID_VAL=$(echo "$KEY_JSON" | sed -n 's/.*"kid":"\([^"]*\)".*/\1/p')
-                KEY_VAL=$(echo "$KEY_JSON" | sed -n 's/.*"k":"\([^"]*\)".*/\1/p')
+          # 1. Parse M3U into a clean data stream using AWK (Blazing fast)
+          # 2. Use xargs -P 10 to process 10 channels at the same time
+          echo "[" > "$OUTPUT_FILE"
+          
+          echo "$RAW_CONTENT" | awk '
+            /#EXTINF/ {
+              match($0, /tvg-id="([^"]*)"/, id);
+              match($0, /group-title="JioTV\+ \| ([^"]*)"/, cat);
+              match($0, /tvg-logo="([^"]*)"/, logo);
+              split($0, a, ",");
+              name = a[2];
+              getline; while($0 ~ /^#/) getline;
+              print id[1] "|" cat[1] "|" logo[1] "|" name "|" $0
+            }
+          ' | xargs -d '\n' -I {} -P 10 bash -c 'process_channel $(echo "{}" | tr "|" "\n")' >> "$OUTPUT_FILE"
 
-                # 📝 Write Channel Object to Temp File (Long Format)
-                printf "  {\n    \"id\": \"%s\",\n    \"name\": \"%s\",\n    \"category\": \"%s\",\n    \"channel_logo\": \"%s\",\n    \"channel_url\": \"%s\",\n    \"token_url\": \"%s\",\n    \"full_url\": \"%s\",\n    \"keyid\": \"%s\",\n    \"key\": \"%s\"\n  },\n" \
-                  "$CH_ID" \
-                  "$CH_NAME" \
-                  "$CH_CAT" \
-                  "$CH_LOGO" \
-                  "$BASE_MPD_URL" \
-                  "$AUTH_TOKEN" \
-                  "$FULL_JIO_URL" \
-                  "$KID_VAL" \
-                  "$KEY_VAL" >> "$TEMP_FILE"
-                
-                # Reset metadata buffer for next channel
-                CH_ID=""
-                echo "    🏁 Done."
-              fi
-            fi
-          done <<< "$CONTENT"
+          # Finalize: Remove trailing comma and close bracket
+          sed -i '$ s/,$//' "$OUTPUT_FILE"
+          echo -e "\n]" >> "$OUTPUT_FILE"
+          
+          echo "🏁 Extraction finished in record time."
 
-          # --- 📂 FINALIZING JSON 📂 ---
-          if [ -s "$TEMP_FILE" ]; then
-            # Remove trailing comma from the last entry to ensure valid JSON
-            sed -i '$ s/,$//' "$TEMP_FILE"
-            cat "$TEMP_FILE" >> "$OUTPUT_FILE"
-            echo "]" >> "$OUTPUT_FILE"
-            echo "------------------------------------------------------"
-            echo "✨ SUCCESS: $OUTPUT_FILE has been updated."
-          else
-            echo "❌ ERROR: No channel data was captured. Process failed."
-            exit 1
-          fi
-
-          # Cleanup temp file
-          rm "$TEMP_FILE"
-
-      - name: Commit and Push Changes
+      - name: Push to Repo
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add live.fanzonearena.site.json
-          
-          # Only push if changes exist
-          if git diff --staged --quiet; then
-            echo "⏭️ No changes detected. Skipping Push."
-          else
-            git commit -m "Automated JioTV Refresh: $(date +'%Y-%m-%d %H:%M:%S')"
-            git push
-          fi
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Hyper-Speed Update: $(date)" && git push)
