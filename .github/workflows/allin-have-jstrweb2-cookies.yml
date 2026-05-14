@@ -5,7 +5,7 @@ on:
 
   schedule:
 
-    - cron: '0 */3 * * *' # Automatically runs every 6 hours
+    - cron: '0 * * * *' # Automatically runs every 1hours
 
 permissions:
   contents: write # Required to allow the bot to push changes to your repo
