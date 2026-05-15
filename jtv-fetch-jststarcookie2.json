@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-15 16:45:26",
+    "timestamp": "2026-05-15 19:30:28",
     "successful_results": [],
     "failed_results": [
         {
@@ -22,7 +22,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778849762~exp=1778871362~acl=/bpk-tv/Star_Gold_HD_BTS/WDVLive/*~hmac=c034dde03bfc7247cf77a5079e7ccd770f2253c11a6de5ce19e0f3b821f1688a"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778871606~exp=1778893206~acl=/bpk-tv/Star_Gold_HD_BTS/WDVLive/*~hmac=939d08f0c6085522fa8d9d78d6b24fa5f6057c09e1a88a923612c3ee0fc684df"
             }
         },
         {
@@ -272,7 +272,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778850932~exp=1778872532~acl=/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/*~hmac=78e9918ff8c5fbf82b4dd3461f29869d243ef7a40a32d71c840512081546972a"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778873410~exp=1778895010~acl=/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/*~hmac=778770a9760824a3df96e9e0afcc0fc4595c6c2b1b6339186adc75e0a00e5c3a"
             }
         },
         {
@@ -482,7 +482,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Channel_BTS/WDVLive/index.mpd?__hdnea__=st=1778850636~exp=1778872236~acl=/bpk-tv/Disney_Channel_BTS/WDVLive/*~hmac=15500813126bf280c15ad2f3a3d3e30b703c22aa482a187a3ca7ef8c8f4dff11"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Channel_BTS/WDVLive/index.mpd?__hdnea__=st=1778872517~exp=1778894117~acl=/bpk-tv/Disney_Channel_BTS/WDVLive/*~hmac=d146e161bd34e34fa25c9fb7c3498cd3d9e152e4e683c7bb500a9512f4591e6b"
             }
         },
         {
@@ -522,7 +522,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Hungama_BTS/WDVLive/index.mpd?__hdnea__=st=1778850942~exp=1778872542~acl=/bpk-tv/Hungama_BTS/WDVLive/*~hmac=526c8f156896e534d0953dc7013a6d2f8e78cb9fe5a64328e5dcecc58599c309"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Hungama_BTS/WDVLive/index.mpd?__hdnea__=st=1778873417~exp=1778895017~acl=/bpk-tv/Hungama_BTS/WDVLive/*~hmac=0c1e30a2379c779653a37ee1ff1c0b56115d71eb2c39b71ccca59bbb0aeeba01"
             }
         },
         {
@@ -652,7 +652,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778850936~exp=1778872536~acl=/bpk-tv/Star_Gold_2_HD_BTS/WDVLive/*~hmac=85278ca5389d6e126f2733d7d9919755bcf393227359f188b8cfb048e98bf073"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778873422~exp=1778895022~acl=/bpk-tv/Star_Gold_2_HD_BTS/WDVLive/*~hmac=3287fd9da8bacdb41776ec2b4b89af0aebd4fdeeeb0b5a2ef4ba0789b987d4d1"
             }
         },
         {
@@ -662,7 +662,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Romance_BTS/WDVLive/index.mpd?__hdnea__=st=1778850940~exp=1778872540~acl=/bpk-tv/Star_Gold_Romance_BTS/WDVLive/*~hmac=5bc9b3a6ded6b31a3e4a3de7fe3149d17912335bebcfbce6f78ff36d3f2ea7ea"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Romance_BTS/WDVLive/index.mpd?__hdnea__=st=1778873426~exp=1778895026~acl=/bpk-tv/Star_Gold_Romance_BTS/WDVLive/*~hmac=6950eb61e736a1f91c5fef8edafc9a9493ce9fae35fbc4401a7e08edacb90e21"
             }
         },
         {
