@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-16 10:15:25",
+    "timestamp": "2026-05-16 13:30:24",
     "successful_results": [],
     "failed_results": [
         {
@@ -22,7 +22,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778915706~exp=1778937306~acl=/bpk-tv/Star_Gold_HD_BTS/WDVLive/*~hmac=caba85359f066c80a43d8d2dc4c427d756ecc2cedeca043777c6b8fcb4b733e8"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1778937343~exp=1778958943~acl=/bpk-tv/Star_Gold_HD_BTS/WDVLive/*~hmac=583b35b18587686cc1fe4057ca6f22882eff644b03a6edbaa29c4c0cb9e90acc"
             }
         },
         {
@@ -482,7 +482,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Channel_BTS/WDVLive/index.mpd?__hdnea__=st=1778915827~exp=1778937427~acl=/bpk-tv/Disney_Channel_BTS/WDVLive/*~hmac=e63b80c0703abb71855bf1c8f172b59873dc5b0e2170525d6ed00c7281144ba7"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Channel_BTS/WDVLive/index.mpd?__hdnea__=st=1778937529~exp=1778959129~acl=/bpk-tv/Disney_Channel_BTS/WDVLive/*~hmac=416dc9971a6d593da7c046234423a90602468b51f4f5ad107e7b4ee3ee1326f4"
             }
         },
         {
