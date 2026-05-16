@@ -14,15 +14,113 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Request JSON with Spoofed Headers
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Advanced Scraping Dependencies
         run: |
-          curl -X GET "https://allinonereborn.online/jtv-fetch/jstr4web.json" \
-          -H "Host: allinonereborn.online" \
-          -H "Origin: https://allinonereborn.online" \
-          -H "Referer: https://allinonereborn.online/" \
-          -H "X-Requested-With: XMLHttpRequest" \
-          -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0 Safari/537.36" \
-          -o jtv-fetch-json2.json
+          npm install puppeteer puppeteer-extra puppeteer-extra-plugin-stealth
+
+      - name: Execute Human-Mimic Extractor
+        run: |
+          cat << 'EOF' > extractor.js
+          const puppeteer = require('puppeteer-extra');
+          const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+          const fs = require('fs');
+
+          // Initialize advanced stealth engine to hide headless properties
+          puppeteer.use(StealthPlugin());
+
+          (async () => {
+            console.log("Launching advanced stealth browser instance...");
+            const browser = await puppeteer.launch({
+              headless: true,
+              args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-blink-features=AutomationControlled',
+                '--window-size=1920,1080'
+              ]
+            });
+
+            const page = await browser.newPage();
+            
+            // Hardcode standard browser fingerprint matching your target environment
+            const TARGET_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.6723.70 Safari/537.36';
+            await page.setUserAgent(TARGET_UA);
+            await page.setViewport({ width: 1920, height: 1080 });
+            
+            // Prime foundational routing headers
+            await page.setExtraHTTPHeaders({
+              'Accept-Language': 'en-US,en;q=0.9',
+              'Priority': 'u=0, i'
+            });
+
+            try {
+              // 1. Establish session context & clear challenges on the root domain
+              console.log("Navigating to target domain to challenge security layers...");
+              await page.goto('https://allinonereborn.online/', {
+                waitUntil: 'networkidle2',
+                timeout: 45000
+              });
+
+              // Human mimicry micro-delay for script settlement and challenge clearing
+              console.log("Allowing JS challenge evaluation...");
+              await page.evaluate(() => window.scrollBy(0, 150));
+              await new Promise(resolve => setTimeout(resolve, 6000));
+
+              // 2. Extract dynamic session cookies (including s9ifs0idfjlwfie32dekl)
+              const cookies = await page.cookies();
+              console.log(`Extracted ${cookies.length} active session cookies.`);
+              const cookieHeaderString = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+
+              // 3. Inject and execute the requested advanced FETCH_OPTIONS block inside the browser runtime
+              console.log("Injecting FETCH_OPTIONS configuration into browser context...");
+              const jsonData = await page.evaluate(async (cookieString) => {
+                
+                // YOUR CUSTOM PARAMETERS INTEGRATED
+                const FETCH_OPTIONS = {
+                  method: "GET",
+                  mode: "cors",
+                  credentials: "omit",
+                  referrerPolicy: "strict-origin-when-cross-origin",
+                  headers: {
+                    "Accept": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    // Injecting extracted session clearance token context inside headers
+                    "Cookie": cookieString
+                  }
+                };
+
+                const response = await fetch('https://allinonereborn.online/jtv-fetch/jstr4web.json', FETCH_OPTIONS);
+                
+                if (!response.ok) {
+                  throw new Error(`Endpoint response failure. Status: ${response.status}`);
+                }
+                
+                return await response.json();
+              }, cookieHeaderString);
+
+              // 4. Save structured payload cleanly
+              fs.writeFileSync('jtv-fetch-json2.json', JSON.stringify(jsonData, null, 2));
+              console.log("Data compiled successfully into jtv-fetch-json2.json");
+
+            } catch (error) {
+              console.error("Execution Pipeline Breakage:", error.message);
+              process.exit(1);
+            } finally {
+              await browser.close();
+            }
+          })();
+          EOF
+          
+          # Execute runtime script
+          node extractor.js
+
+      - name: Clean Workflow Artifacts
+        run: rm -f extractor.js
 
       - name: Commit and Push changes
         run: |
