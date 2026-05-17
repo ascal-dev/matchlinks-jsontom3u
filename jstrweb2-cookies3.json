@@ -1,8 +1,7 @@
-[
-  {
-    "last_updated": "22:00 17-05-2026"
-  },
-  {
-    "cookie": "__hdnea__=st=1779033634~exp=1779055234~acl=/*~hmac=e91966b09431353a726498d17b4eb11bc950172337312ae88417d0c2b3e2cec7"
-  }
-]
+<html>
+<head><title>307 Temporary Redirect</title></head>
+<body>
+<center><h1>307 Temporary Redirect</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
