@@ -296,7 +296,8 @@ async function main() {
 
     for (const result of batchResults) {
       if (!isFirst) writeStream.write(',\n');
-      writeStream.write('  ' + JSON.stringify(result));
+      const formatted = JSON.stringify(result, null, 2).split('\n').map((line, idx) => idx === 0 ? '  ' + line : '  ' + line).join('\n');
+      writeStream.write(formatted);
       isFirst = false;
       results.push(result);
     }
