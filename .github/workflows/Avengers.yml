@@ -1,0 +1,50 @@
+name: Avengers IPTV Auto Run
+
+on:
+  schedule:
+    # 9 AM
+    - cron: '0 9 * * *'
+    # 12 PM
+    - cron: '0 12 * * *'
+    # 3 PM
+    - cron: '0 15 * * *'
+    # 6 PM
+    - cron: '0 18 * * *'
+    # 10 PM
+    - cron: '0 22 * * *'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: |
+          npm install axios cheerio
+
+      - name: Run avengers.js
+        run: node avengers.js
+
+      - name: Commit Updated Files
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add .
+
+          git commit -m "Auto update channels $(date)" || echo "No changes"
+
+          git push
