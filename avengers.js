@@ -161,7 +161,20 @@ function extractNameFromManifest(manifestUrl) {
   try {
     const url = new URL(manifestUrl);
     const path = url.pathname;
-    
+    const parts = path.split('/').filter(p => p);
+
+    // Pattern: /bpk-tv/CHANNEL_NAME/... or similar
+    // Look for the segment after bpk-tv or cdn.jio.com patterns
+    const bpkIdx = parts.indexOf('bpk-tv');
+    if (bpkIdx >= 0 && bpkIdx + 1 < parts.length) {
+      const channelName = parts[bpkIdx + 1];
+      // Skip common directory names (HLSPartner, WDVLive, etc.)
+      if (channelName && !channelName.includes('index') && !channelName.match(/\.(m3u8|mpd)$/i)) {
+        return channelName.replace(/_/g, ' ');
+      }
+    }
+
+    // Fallback: extract filename segment before .m3u8 or .mpd
     const mpdIdx = path.lastIndexOf('.mpd');
     const m3u8Idx = path.lastIndexOf('.m3u8');
     
@@ -174,7 +187,6 @@ function extractNameFromManifest(manifestUrl) {
       return path.slice(startIdx + 1, endIdx).replace(/_/g, ' ');
     }
 
-    const parts = path.split('/');
     return parts[parts.length - 1] || 'Unknown';
   } catch (e) {
     return '';
