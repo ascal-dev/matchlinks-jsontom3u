@@ -1,4 +1,4 @@
-name: Production Curl-Only Update JioTV Channels
+name: Servertv-fast Production Curl-Only Update JioTV Channels
 
 on:
   schedule:
