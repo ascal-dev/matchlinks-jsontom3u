@@ -1,0 +1,135 @@
+name: Production Curl-Only Update JioTV Channels
+
+on:
+  schedule:
+    - cron: '12 6 * * *'   # 6:12 AM UTC
+    - cron: '12 9 * * *'   # 9:12 AM UTC
+    - cron: '12 13 * * *'  # 1:12 PM UTC
+    - cron: '12 15 * * *'  # 3:12 PM UTC
+    - cron: '12 19 * * *'  # 7:12 PM UTC
+    - cron: '12 21 * * *'  # 9:12 PM UTC
+  workflow_dispatch:       # Allows manual execution at any time
+
+permissions:
+  contents: write
+
+jobs:
+  update-channels:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Execute Bypassed Curl Extraction Pipeline
+      run: |
+        # 1. Fetch source channels payload via curl
+        echo "Fetching original channel data from npoint..."
+        curl -s "https://api.npoint.io/1ac6a202753a353b7bb5" > channels.json
+
+        # 2. Parse out all valid Channel IDs using jq
+        ids=$(jq -r '.[] | .id // .channel_id // .channelId' channels.json)
+        echo "Successfully parsed channel IDs. Starting anti-blocking parallel processing..."
+
+        # Create temporary storage workspace for async workers
+        mkdir -p tmp_ids
+
+        # 3. Parallel Processing Loop with Throttling & Header Bypasses
+        for id in $ids; do
+          (
+            target_url="https://servertvhub.site/jiotv+/mpd.php?id=${id}"
+            attempt=1
+            max_attempts=3
+            final_url=""
+
+            while [ $attempt -le $max_attempts ]; do
+              # Perform a GET request but dump only the response headers to stdout
+              # Injects strict Host, Referer, and Origin headers to bypass restrictions
+              headers=$(curl -s -m 8 \
+                -H "Host: servertvhub.site" \
+                -H "Referer: https://servertvhub.site/" \
+                -H "Origin: https://servertvhub.site/" \
+                -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+                -D - -o /dev/null "$target_url")
+
+              # Extract HTTP Status Code and the Location redirect URL
+              http_code=$(echo "$headers" | head -n 1 | awk '{print $2}')
+              final_url=$(echo "$headers" | grep -i '^location:' | awk '{print $2}' | tr -d '\r\n')
+
+              # Handling Rate Limits (HTTP 429)
+              if [ "$http_code" -eq 429 ]; then
+                echo "Channel ${id} rate limited (429). Backing off..."
+                sleep $((attempt * 3))
+                attempt=$((attempt + 1))
+              # Handling Transient Server Failures (HTTP 5xx)
+              elif [ "$http_code" -ge 500 ]; then
+                echo "Channel ${id} server error (${http_code}). Retrying..."
+                sleep $((attempt * 2))
+                attempt=$((attempt + 1))
+              else
+                # Clean exit on successful code execution (typically 302 or 200)
+                break
+              fi
+            done
+
+            # If final_url couldn't be extracted from location headers, fallback to empty strings
+            backup_url="$final_url"
+            token=""
+            
+            if [ -n "$final_url" ]; then
+              # Parse out Backup Channel URL and Token parameters safely
+              if [[ "$final_url" == *\?* ]]; then
+                backup_url="${final_url%%\?*}"
+                token="${final_url#*\?}"
+              fi
+            else
+              final_url=""
+              backup_url=""
+              token=""
+            fi
+
+            # Output isolated data fragments into individual text files
+            printf '"%s": {"channel_url_redirect": "%s", "Backup_channel_url": "%s", "Channel_token": "%s"}\n' "$id" "$final_url" "$backup_url" "$token" > "tmp_ids/${id}.txt"
+          ) &
+
+          # Anti-burst micro-stagger launch delay (150ms) to blend traffic fingerprinting
+          sleep 0.15
+
+          # Concurrency ceiling safety gate: keeps max 12 parallel requests running
+          if [ $(jobs -r | wc -l) -ge 12 ]; then
+            wait -n
+          fi
+        done
+
+        # Wait for all background loops to complete
+        wait
+        echo "All channel extractions complete. Re-assembling data maps..."
+
+        # 4. Construct safe consolidated JSON dictionary
+        echo "{" > lookup.json
+        cat tmp_ids/*.txt | paste -sd, - >> lookup.json
+        echo "}" >> lookup.json
+        rm -rf tmp_ids
+
+        # 5. Injection mapping back into original channels profile structure
+        jq --slurpfile lookup lookup.json '
+          map(
+            . + ($lookup[0][(.id // .channel_id // .channelId | tostring)] // {
+              "channel_url_redirect": "",
+              "Backup_channel_url": "",
+              "Channel_token": ""
+            })
+          )
+        ' channels.json > Servertvhub.json
+
+        # Cleanup working cache documents
+        rm -f channels.json lookup.json
+        echo "Servertvhub.json successfully compiled."
+
+    - name: Commit and Push updates
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add Servertvhub.json
+        git diff-index --quiet HEAD || git commit -m "Automated bypass update of channel tokens"
+        git push origin main
