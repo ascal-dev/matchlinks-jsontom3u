@@ -1,4 +1,4 @@
-name: Fast Fetch and Update JioTV Channels
+name: Servertv HUb Fast Fetch and Update JioTV Channels
 
 on:
   schedule:
