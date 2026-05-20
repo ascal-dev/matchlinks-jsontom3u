@@ -2452,9 +2452,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/News18AssamNE.png",
     "channel_name": "News18 Assam NE",
     "channel_genre": "Assamese",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/News18AssamNE_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/News18AssamNE_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "86fefa8b4f86639d644f03f7bccdc882",
@@ -2673,9 +2673,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Raj_News_Kannada.png",
     "channel_name": "Raj News Kannada",
     "channel_genre": "Kannada",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Raj_News_Kannada_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Raj_News_Kannada_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "b74a42edb18e6833c71ff3f9c663fb49",
@@ -2686,9 +2686,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_SANGAM.png",
     "channel_name": "Zee Bharat",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_SANGAM_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_SANGAM_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "f9b6e4d95d108875de40c20d253aeffa",
@@ -2712,9 +2712,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_Punjabi_HP_Haryana.png",
     "channel_name": "Zee Punjab Haryana HP",
     "channel_genre": "Punjabi",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_Punjabi_HP_Haryana_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_Punjabi_HP_Haryana_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "1cca42b25f3e038fc14698d05fdeb4fe",
@@ -2790,9 +2790,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_Purvaiya.png",
     "channel_name": "Zee Bihar Jharkhand",
     "channel_genre": "Bhojpuri",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_Purvaiya_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_Purvaiya_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "null",
@@ -2946,9 +2946,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sun_News.png",
     "channel_name": "Sun News",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sun_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sun_News_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -3076,9 +3076,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Saam_Tv.png",
     "channel_name": "Saam Tv",
     "channel_genre": "Marathi",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Saam_Tv_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Saam_Tv_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "becc53de132aadc7d24702963bc91df9",
@@ -3349,9 +3349,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/DD_Kashir.png",
     "channel_name": "DD Kashir",
     "channel_genre": "Urdu",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/DD_Kashir_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/DD_Kashir_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "cd5a906adeb08dd7726b5722ecf234fe",
@@ -3427,9 +3427,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Zee_Kalinga.png",
     "channel_name": "Zee Delhi NCR Haryana",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_Kalinga_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Zee_Kalinga_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -3440,9 +3440,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Kairali_People_TV.png",
     "channel_name": "Kairali News",
     "channel_genre": "Malayalam",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Kairali_People_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Kairali_People_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "d0a8380d969c4779321ffafa7656b7d7",
@@ -3453,9 +3453,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/DD5_Podhigai.png",
     "channel_name": "DD5 Podhigai",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/DD5_Podhigai_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/DD5_Podhigai_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "c38f7613812e643c11402bdaca2ab816",
@@ -3479,9 +3479,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Salaam_TV.png",
     "channel_name": "Salaam TV",
     "channel_genre": "Urdu",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Salaam_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Salaam_TV_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "4bc2a11372933c408bc27b11d832d836",
@@ -3752,9 +3752,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/SonyPIX.png",
     "channel_name": "Sony Pix HD",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyPIX_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyPIX_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "2f1d9d18643bbbc8f0f00590cf9175ba",
@@ -3869,9 +3869,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/CVR_Health.png",
     "channel_name": "CVR Health",
     "channel_genre": "Telugu",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/CVR_Health_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/CVR_Health_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "7e1ef6a1476633c63fae88e9732f8193",
@@ -3882,9 +3882,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Vanitha.png",
     "channel_name": "Vanitha",
     "channel_genre": "Telugu",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vanitha_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vanitha_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "f799f108446f372391f020502a419c23",
@@ -4259,9 +4259,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/CNHindi.png",
     "channel_name": "Cartoon Network Hindi",
     "channel_genre": "Kids",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/CNHindi_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/CNHindi_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "a220f0a32aaee1e6989ef8e6a6728fe1",
@@ -4350,9 +4350,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Thanthi_TV.png",
     "channel_name": "Thanthi TV",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Thanthi_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Thanthi_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "960a6b8d173202f64415c16e1e845947",
@@ -4363,9 +4363,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Living_India_News.png",
     "channel_name": "Living India News",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Living_India_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Living_India_News_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "6677984bdf8e69590f66d93c37e33c5d",
@@ -4649,9 +4649,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/SonyYAYTel.png",
     "channel_name": "Sony Yay Telugu",
     "channel_genre": "Telugu",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyYAYTel_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyYAYTel_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "6843545622aa27cab11368ffb3cae72a",
@@ -4688,9 +4688,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Movies_Now2_HD.png",
     "channel_name": "MNX HD",
     "channel_genre": "English",
-    "channel_url_redirect": "https://times-ott-live.akamaized.net/mnxhd_wv_drm/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://times-ott-live.akamaized.net/mnxhd_wv_drm/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "455bc52e4b67f0da818bec857d3d9305",
@@ -4701,9 +4701,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Harekrsna.png",
     "channel_name": "Hare krsna",
     "channel_genre": "Devotional",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Harekrsna_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Harekrsna_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "402eaf3d9b20cc6b7120f5e9c395cfc2",
@@ -4883,9 +4883,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Udaya_HD.png",
     "channel_name": "Sun Udaya HD",
     "channel_genre": "Kannada",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Udaya_HD_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Udaya_HD_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "87238fbcc30dbcb0d75891bdc4a14eba",
@@ -4948,9 +4948,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Indradhanu.png",
     "channel_name": "Newslive Bangla",
     "channel_genre": "Assamese",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Indradhanu_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Indradhanu_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "null",
@@ -4974,9 +4974,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Khabar_Fast.png",
     "channel_name": "Khabar Fast",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Khabar_Fast_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Khabar_Fast_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "f75caa55eadabc2c5aabd04c655c0e42",
@@ -5000,9 +5000,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Bharat_Samachar.png",
     "channel_name": "Bharat Samachar",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Bhaarat_Samachar_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Bhaarat_Samachar_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "320041f866594908ed6575e98a832c34",
@@ -5039,9 +5039,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/R.Kannada.png",
     "channel_name": "R.Kannada",
     "channel_genre": "Kannada",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/R_Kannada_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/R_Kannada_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "c22399355de2e7c0e19de9337ee6150a",
@@ -5052,9 +5052,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Rujumargam_TV.png",
     "channel_name": "Mercy TV",
     "channel_genre": "Urdu",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Rujumargam_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Rujumargam_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "8931943978806098fba221db8c31a96b",
@@ -5117,9 +5117,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Divya_Vani.png",
     "channel_name": "Divya Vani",
     "channel_genre": "Telugu",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Divya_Vani_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Divya_Vani_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "0566f0f5c1d58c8a4ff862e6f9784b10",
@@ -5143,9 +5143,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/SaiTV.png",
     "channel_name": "Sai TV",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/SaiTV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/SaiTV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "dc777262306280b0e41274ebd02c146b",
@@ -5299,9 +5299,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/JUSPunjabi.png",
     "channel_name": "JUS PUNJABI HD",
     "channel_genre": "Punjabi",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/JUS_PUNJABI_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/JUS_PUNJABI_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "611bddc999de85e2858a0be2459814dc",
@@ -5312,9 +5312,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/JUS_HINDI.png",
     "channel_name": "JUS HINDI HD",
     "channel_genre": "Punjabi",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/JUS_HINDI_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/JUS_HINDI_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "cd322be392240a4d02590f3e95a3189b",
@@ -5585,9 +5585,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Swayam_Prabha_11.png",
     "channel_name": "Swayam Prabha 11",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Swayam_Prabha_11_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Swayam_Prabha_11_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "3d200c8e552eeb22576ba5fa76b119cb",
@@ -5845,9 +5845,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Vande_Gujarat_3.png",
     "channel_name": "Vande Gujarat 3",
     "channel_genre": "Gujarati",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vande_Gujarat_3_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vande_Gujarat_3_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "30a2f35d349116455fb6f4dbc41117fa",
@@ -5884,9 +5884,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Vande_Gujarat_7.png",
     "channel_name": "Vande Gujarat 7",
     "channel_genre": "Gujarati",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vande_Gujarat_7_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vande_Gujarat_7_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "8d7e8a031cd604cd83fea91b967729f1",
@@ -5897,9 +5897,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Vande_Gujarat_8.png",
     "channel_name": "Vande Gujarat 8",
     "channel_genre": "Gujarati",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vande_Gujarat_8_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Vande_Gujarat_8_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -6157,9 +6157,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Plus_HD.png",
     "channel_name": "Star Plus HD",
     "channel_genre": "Entertainment",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779248772~exp=1779270372~acl=/bpk-tv/Star_Plus_HD_BTS/WDVLive/*~hmac=20aa649abab0305d7bbcc9826c47b474e31a45988d26fe74ccfc907b408de568",
+    "Backup_channel_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_HD_BTS/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779248772~exp=1779270372~acl=/bpk-tv/Star_Plus_HD_BTS/WDVLive/*~hmac=20aa649abab0305d7bbcc9826c47b474e31a45988d26fe74ccfc907b408de568"
   },
   {
     "key": "80c7058468bfea90d7ba55f550792ec3",
@@ -6469,9 +6469,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ABP_Ganga.png",
     "channel_name": "ABP Ganga",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/ABP_Ganga_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/ABP_Ganga_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "325c78bfc283365dadc2c9986104e541",
@@ -6482,9 +6482,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Kalaignar_TV.png",
     "channel_name": "Kalaignar TV",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Kalaignar_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Kalaignar_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "3c12974cc8f34ac21ccf6a4c0d229755",
@@ -6521,9 +6521,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/AnimalPlanetHDTam.png",
     "channel_name": "Animal Planet HD Tamil",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/AnimalPlanetHDTam_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/AnimalPlanetHDTam_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -6586,9 +6586,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Hi_Dost.png",
     "channel_name": "Hi Dost!",
     "channel_genre": "English",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Hi_Dost_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Hi_Dost_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "null",
@@ -6807,9 +6807,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Gomantak_TV.png",
     "channel_name": "Gomantak TV",
     "channel_genre": "Marathi",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Gomantak_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Gomantak_TV_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "6ff13abf6aa9c460a30b420ad4d67f59",
@@ -6846,9 +6846,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Insync.png",
     "channel_name": "Insync",
     "channel_genre": "Music",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Insync_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Insync_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "9a12b8f4df4298742d2385a51775a193",
@@ -6859,9 +6859,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ANBNews.png",
     "channel_name": "ANB News",
     "channel_genre": "News",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/ANBNews_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/ANBNews_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -6911,9 +6911,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/B4U_Kadak.png",
     "channel_name": "B4U Kadak",
     "channel_genre": "Movies",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/b4u_kadak/HLSPartner/index.m3u8?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/b4u_kadak/HLSPartner/index.m3u8",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "768c85f2155e292a5d63edcd7003d7f0",
@@ -6950,9 +6950,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ZeeCafeHD.png",
     "channel_name": "Zee Cafe HD",
     "channel_genre": "English",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/ZeeCafeHD_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/ZeeCafeHD_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "05be144814dae94555d9d940fb84056f",
@@ -7119,9 +7119,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sonic_Malayalam.png",
     "channel_name": "Sonic Malayalam",
     "channel_genre": "Malayalam",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sonic_Malayalam_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sonic_Malayalam_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "aac720bb73a9db2b2cb64763d5f8942b",
@@ -7210,9 +7210,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/BigMagic.png",
     "channel_name": "Big Magic",
     "channel_genre": "Entertainment",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/BigMagic_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/BigMagic_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "352fa691d2c9d578e1b39e9993c4ffd2",
@@ -7236,9 +7236,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ZeeKannadaHD.png",
     "channel_name": "Zee Kannada HD",
     "channel_genre": "Kannada",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/ZeeKannadaHD_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/ZeeKannadaHD_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "bd1eaea91897258b3068bb81f1c9011c",
@@ -7353,9 +7353,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Goodness_TV.png",
     "channel_name": "Goodness",
     "channel_genre": "Malayalam",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Goodness_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Goodness_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "b2b0db9965848d72fc3c13bf09724e83",
@@ -7444,9 +7444,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/NHK_World_Japan.png",
     "channel_name": "NHK World Japan",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/NHK_World_Japan_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/NHK_World_Japan_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "8a06dd746986c609bccb95b116dfc0bb",
@@ -7600,9 +7600,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/ColorsCineplexSuperhit.png",
     "channel_name": "Colors Cineplex Superhit",
     "channel_genre": "Movies",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/ColorsCineplexSuperhit_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/ColorsCineplexSuperhit_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "5937bb76b8e4ca9ccc15832644a816b2",
@@ -7613,9 +7613,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Shemaroo_MarathiBana.png",
     "channel_name": "Shemaroo MarathiBana",
     "channel_genre": "Marathi",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Shemaroo_MarathiBana_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Shemaroo_MarathiBana_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "04a5dd826df36210f7f696c6c41e7fa4",
@@ -7795,9 +7795,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/News18_India_NW18.png",
     "channel_name": "News18 India.",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://nw18live.cdn.jio.com/bpk-tv/News18_India_NW18_MOB/output01/index.m3u8?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://nw18live.cdn.jio.com/bpk-tv/News18_India_NW18_MOB/output01/index.m3u8",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -7860,9 +7860,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/News18_Bihar_Jharkhand_NW18.png",
     "channel_name": "News18 Bihar Jharkhand.",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://nw18live.cdn.jio.com/bpk-tv/News18_Bihar_Jharkhand_NW18_MOB/output01/index.m3u8?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://nw18live.cdn.jio.com/bpk-tv/News18_Bihar_Jharkhand_NW18_MOB/output01/index.m3u8",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -8510,9 +8510,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Rongeen_TV.png",
     "channel_name": "Rongeen TV",
     "channel_genre": "Bengali",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Rongeen_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Rongeen_TV_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "92ac70b12af7f68fd49a0578e4765ab9",
@@ -8822,9 +8822,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Buletin_India.png",
     "channel_name": "Buletin India",
     "channel_genre": "Gujarati",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Buletin_India_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Buletin_India_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "aaf776e8b8c4eb08293c05231490593f",
@@ -8861,9 +8861,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Hoopla_Kids_TV.png",
     "channel_name": "HooplaKidz TV",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Hoopla_Kids_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Hoopla_Kids_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "4f67848b95e4f5cb2b26ecc5e7a02666",
@@ -8978,9 +8978,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Green_Chillies_TV.png",
     "channel_name": "Green Chillies",
     "channel_genre": "Entertainment",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Green_Chillies_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Green_Chillies_TV_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "2509aac0c21ca795b28d3e3ed3ad96df",
@@ -9069,9 +9069,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/PrathamKhabar24x7.png",
     "channel_name": "Pratham Khabar 24x7",
     "channel_genre": "Assamese",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/PrathamKhabar24x7_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/PrathamKhabar24x7_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "59ef9002dcf67558e68ca05d4fa7cb95",
@@ -9927,9 +9927,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Asom_Live_24.png",
     "channel_name": "Asom Live 24",
     "channel_genre": "Assamese",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Asom_Live_24_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Asom_Live_24_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -10759,9 +10759,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Tabbar_Hits.png",
     "channel_name": "Tabbar Hits",
     "channel_genre": "Punjabi",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Tabbar_Hits_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Tabbar_Hits_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "eb60e3e7edc02fbfa3e4c8e841b65b87",
@@ -11006,9 +11006,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Oye_Music.png",
     "channel_name": "Oye Music",
     "channel_genre": "Music",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Oye_Music_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Oye_Music_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "7ca561c0da8009d5848a0645ebb694f1",
@@ -11617,9 +11617,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Nav_Sanskruti_News.png",
     "channel_name": "Navsarjan Sanskruti News",
     "channel_genre": "News",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Nav_Sanskruti_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Nav_Sanskruti_News_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "e4a83467bc3967c599a740d32483c0f9",
@@ -11747,9 +11747,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sach_Bedhadak.png",
     "channel_name": "SACH BEDHADAK",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sach_Bedhadak_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sach_Bedhadak_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "28d52890ba8be1900b3a96a90a343853",
@@ -12007,9 +12007,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Rajya_24_News.png",
     "channel_name": "Rajya 24 News",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Rajya_24_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Rajya_24_News_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "45ea3d9bdb391f5c47b05027ee56e1e0",
@@ -12150,9 +12150,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/DD_SWAYAM_PRABHA_33.png",
     "channel_name": "DD Swayam Prabha 33",
     "channel_genre": "English",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/DD_SWAYAM_PRABHA_33_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/DD_SWAYAM_PRABHA_33_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "e5afb50071f48b51c21f0074eedc3003",
@@ -12436,9 +12436,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Khabar_24x7_News.png",
     "channel_name": "Khabar 24x7 News",
     "channel_genre": "English",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Khabar_24x7_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Khabar_24x7_News_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "179e5c577fd369788e3975269bfb31d7",
@@ -12553,9 +12553,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Tamil_Naaptol.png",
     "channel_name": "Tamil Naaptol",
     "channel_genre": "Tamil",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Tamil_Naaptol_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Tamil_Naaptol_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "9067d915c3c49e866d7cd139868f8084",
@@ -12917,9 +12917,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Today_India_News.png",
     "channel_name": "Today India News",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Today_India_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Today_India_News_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "0925853817d5c47ff1a65636a484ab0d",
@@ -12930,9 +12930,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Apex_News_India.png",
     "channel_name": "Apex News India",
     "channel_genre": "English",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Apex_News_India_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Apex_News_India_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "f9f39a9c8899612503017f0a69e87b49",
@@ -13515,9 +13515,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Gj_Desi_News.png",
     "channel_name": "Gj Desi News",
     "channel_genre": "English",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Gj_Desi_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Gj_Desi_News_MOB/WDVLive/index.mpd",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "50cb4a8becc2774dc5952d0d0d9e238a",
@@ -13697,9 +13697,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Ten_News.png",
     "channel_name": "Ten News",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten_News_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Ten_News_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -13723,9 +13723,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Awaaz_India_TV.png",
     "channel_name": "Awaaz India TV",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Awaaz_India_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Awaaz_India_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "6f51a6f564dfb677c48964e6a822b603",
@@ -13749,9 +13749,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sanatan_Vedic_TV.png",
     "channel_name": "Sanatan Vedic TV",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sanatan_Vedic_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sanatan_Vedic_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -13814,9 +13814,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Yahoo_Finance.png",
     "channel_name": "Yahoo Finance",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Yahoo_Finance/HLSPartner/index.m3u8?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Yahoo_Finance/HLSPartner/index.m3u8",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "null",
@@ -14035,9 +14035,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/SonyLIV_Sports_1.png",
     "channel_name": "Sony LIV Sports 1",
     "channel_genre": "Sports",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyLIV_Sports_1_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/SonyLIV_Sports_1_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "eb4810ec250a1795a0019dba7881ff45",
@@ -14113,9 +14113,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Brio_TV.png",
     "channel_name": "Brio TV",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "",
-    "Backup_channel_url": "",
-    "Channel_token": ""
+    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/Brio_TV_MOB/WDVLive/index.mpd?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
+    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Brio_TV_MOB/WDVLive/index.mpd",
+    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
   },
   {
     "key": "f9be8660035eecbca5ae015adb73fe7b",
@@ -14230,9 +14230,9 @@
     "channel_logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/suryatvtamil.png",
     "channel_name": "Suriya TV",
     "channel_genre": "Unknown",
-    "channel_url_redirect": "https://jiotvmblive.cdn.jio.com/bpk-tv/suryatvtamil/HLSPartner/index.m3u8?__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187",
-    "Backup_channel_url": "https://jiotvmblive.cdn.jio.com/bpk-tv/suryatvtamil/HLSPartner/index.m3u8",
-    "Channel_token": "__hdnea__=st=1779242436~exp=1779264036~acl=/*~hmac=20dc6b98b423436a7449f25382e8cc578cd80edbabdaeca9f959f092612aa187"
+    "channel_url_redirect": "",
+    "Backup_channel_url": "",
+    "Channel_token": ""
   },
   {
     "key": "null",
