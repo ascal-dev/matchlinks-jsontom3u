@@ -1,11 +1,23 @@
 name: Allinone must have jstrweb2-cookies
+
 on:
-
   workflow_dispatch: # Allows manual trigger
-
   schedule:
-
-    - cron: '0 */1 * * *'
+    - cron: '30 0 * * *'  # 6:00 AM IST  -> 12:30 AM UTC
+    - cron: '30 2 * * *'  # 8:00 AM IST  -> 2:30 AM UTC
+    - cron: '30 3 * * *'  # 9:00 AM IST  -> 3:30 AM UTC
+    - cron: '30 4 * * *'  # 10:00 AM IST -> 4:30 AM UTC
+    - cron: '30 6 * * *'  # 12:00 PM IST -> 6:30 AM UTC
+    - cron: '30 7 * * *'  # 1:00 PM IST  -> 7:30 AM UTC
+    - cron: '30 8 * * *'  # 2:00 PM IST  -> 8:30 AM UTC
+    - cron: '0 9 * * *'   # 2:30 PM IST  -> 9:00 AM UTC
+    - cron: '30 9 * * *'  # 3:00 PM IST  -> 9:30 AM UTC
+    - cron: '0 10 * * *'  # 3:30 PM IST  -> 10:00 AM UTC
+    - cron: '0 13 * * *'  # 6:30 PM IST  -> 1:00 PM UTC
+    - cron: '30 13 * * *' # 7:00 PM IST  -> 1:30 PM UTC
+    - cron: '0 14 * * *'  # 7:30 PM IST  -> 2:00 PM UTC
+    - cron: '30 15 * * *' # 9:00 PM IST  -> 3:30 PM UTC
+    - cron: '30 16 * * *' # 10:00 PM IST -> 4:30 PM UTC
 
 permissions:
   contents: write # Required to allow the bot to push changes to your repo
