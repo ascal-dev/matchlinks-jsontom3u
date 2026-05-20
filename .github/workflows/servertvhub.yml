@@ -1,0 +1,114 @@
+name: Fast Fetch and Update JioTV Channels
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 6:00 AM UTC
+    - cron: '0 9 * * *'   # 9:00 AM UTC
+    - cron: '0 13 * * *'  # 1:00 PM (13:00) UTC
+    - cron: '0 15 * * *'  # 3:00 PM (15:00) UTC
+    - cron: '0 19 * * *'  # 7:00 PM (19:00) UTC
+    - cron: '0 21 * * *'  # 9:00 PM (21:00) UTC
+  workflow_dispatch: # Allows manual immediate run
+
+# Explicitly grants write permissions to the repository's contents
+permissions:
+  contents: write
+
+jobs:
+  update-channels:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Fast Parallel Process Channels Data
+      run: |
+        python - << 'EOF'
+        import requests
+        import json
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        # 1. Fetch source data
+        npoint_url = "https://api.npoint.io/1ac6a202753a353b7bb5"
+        try:
+            response = requests.get(npoint_url, timeout=15)
+            response.raise_for_status()
+            channels_data = response.json()
+        except Exception as e:
+            print(f"Error fetching data from npoint: {e}")
+            exit(1)
+
+        # Normalize data format if root is dict instead of list
+        if isinstance(channels_data, dict):
+            for key, value in channels_data.items():
+                if isinstance(value, list):
+                    channels_list = value
+                    break
+            else:
+                channels_list = [channels_data]
+        else:
+            channels_list = channels_data
+
+        print(f"Loaded {len(channels_list)} channels. Beginning fast parallel extraction...")
+
+        # 2. Worker function to resolve redirects quickly
+        def resolve_channel(channel):
+            channel_id = channel.get("id") or channel.get("channel_id") or channel.get("channelId")
+            if not channel_id:
+                return channel
+
+            target_url = f"https://servertvhub.site/jiotv+/mpd.php?id={channel_id}"
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+            
+            try:
+                # Use a fast HEAD request with a tight timeout to avoid hanging threads
+                redirect_res = requests.head(target_url, allow_redirects=True, headers=headers, timeout=7)
+                final_url = redirect_res.url
+                
+                channel["channel_url_redirect"] = final_url
+                
+                if "?" in final_url:
+                    backup_url, token = final_url.split("?", 1)
+                    channel["Backup_channel_url"] = backup_url
+                    channel["Channel_token"] = token
+                else:
+                    channel["Backup_channel_url"] = final_url
+                    channel["Channel_token"] = ""
+            except Exception as e:
+                channel["channel_url_redirect"] = ""
+                channel["Backup_channel_url"] = ""
+                channel["Channel_token"] = ""
+            
+            return channel
+
+        # 3. Multi-threaded execution pool (Up to 15 concurrent network requests)
+        updated_channels = []
+        with ThreadPoolExecutor(max_workers=15) as executor:
+            future_to_channel = {executor.submit(resolve_channel, ch): ch for ch in channels_list}
+            for future in as_completed(future_to_channel):
+                updated_channels.append(future.result())
+
+        # 4. Save clean data structure back to Servertvhub.json
+        with open("Servertvhub.json", "w", encoding="utf-8") as f:
+            json.dump(channels_data, f, indent=4, ensure_ascii=False)
+            
+        print("Parallel updates complete. Generated Servertvhub.json successfully.")
+        EOF
+
+    - name: Commit and Push updates
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add Servertvhub.json
+        git diff-index --quiet HEAD || git commit -m "Fast automated update of channel tokens"
+        git push origin main
