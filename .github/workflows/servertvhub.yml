@@ -1,4 +1,5 @@
-name: Servertv HUb Fast Fetch and Update JioTV Channels
+name: Servertv 
+
 
 on:
   schedule:
@@ -8,7 +9,7 @@ on:
     - cron: '0 15 * * *'  # 3:00 PM (15:00) UTC
     - cron: '0 19 * * *'  # 7:00 PM (19:00) UTC
     - cron: '0 21 * * *'  # 9:00 PM (21:00) UTC
-  workflow_dispatch: # Allows manual immediate run
+  workflow_dispatch:      # Allows manual immediate run
 
 # Explicitly grants write permissions to the repository's contents
 permissions:
@@ -22,87 +23,119 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
       with:
-        python-version: '3.x'
+        node-version: '20'
 
-    - name: Install dependencies
+    - name: Run Fast Channel Extraction Script
       run: |
-        pip install requests
+        node - << 'EOF'
+        const fs = require('fs');
 
-    - name: Fast Parallel Process Channels Data
-      run: |
-        python - << 'EOF'
-        import requests
-        import json
-        from concurrent.futures import ThreadPoolExecutor, as_completed
+        // Main execution function
+        async function run() {
+          const npointUrl = 'https://api.npoint.io/1ac6a202753a353b7bb5';
+          console.log('Fetching source data from npoint...');
 
-        # 1. Fetch source data
-        npoint_url = "https://api.npoint.io/1ac6a202753a353b7bb5"
-        try:
-            response = requests.get(npoint_url, timeout=15)
-            response.raise_for_status()
-            channels_data = response.json()
-        except Exception as e:
-            print(f"Error fetching data from npoint: {e}")
-            exit(1)
+          let channelsData;
+          try {
+            const res = await fetch(npointUrl);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            channelsData = await res.json();
+          } catch (err) {
+            console.error('Error fetching data from npoint:', err.message);
+            process.exit(1);
+          }
 
-        # Normalize data format if root is dict instead of list
-        if isinstance(channels_data, dict):
-            for key, value in channels_data.items():
-                if isinstance(value, list):
-                    channels_list = value
-                    break
-            else:
-                channels_list = [channels_data]
-        else:
-            channels_list = channels_data
+          // Normalize data structure if root is an object instead of an array
+          let channelsList = channelsData;
+          if (!Array.isArray(channelsData) && typeof channelsData === 'object') {
+            for (const key in channelsData) {
+              if (Array.isArray(channelsData[key])) {
+                channelsList = channelsData[key];
+                break;
+              }
+            }
+            if (!Array.isArray(channelsList)) {
+              channelsList = [channelsData];
+            }
+          }
 
-        print(f"Loaded {len(channels_list)} channels. Beginning fast parallel extraction...")
+          console.log(`Loaded ${channelsList.length} channels. Beginning fast parallel extraction...`);
 
-        # 2. Worker function to resolve redirects quickly
-        def resolve_channel(channel):
-            channel_id = channel.get("id") or channel.get("channel_id") or channel.get("channelId")
-            if not channel_id:
-                return channel
+          // Worker function to handle individual redirects safely using native fetch
+          async function resolveChannel(channel) {
+            const channelId = channel.id || channel.channel_id || channel.channelId;
+            if (!channelId) return channel;
 
-            target_url = f"https://servertvhub.site/jiotv+/mpd.php?id={channel_id}"
-            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+            const targetUrl = `https://servertvhub.site/jiotv+/mpd.php?id=${channelId}`;
             
-            try:
-                # Use a fast HEAD request with a tight timeout to avoid hanging threads
-                redirect_res = requests.head(target_url, allow_redirects=True, headers=headers, timeout=7)
-                final_url = redirect_res.url
-                
-                channel["channel_url_redirect"] = final_url
-                
-                if "?" in final_url:
-                    backup_url, token = final_url.split("?", 1)
-                    channel["Backup_channel_url"] = backup_url
-                    channel["Channel_token"] = token
-                else:
-                    channel["Backup_channel_url"] = final_url
-                    channel["Channel_token"] = ""
-            except Exception as e:
-                channel["channel_url_redirect"] = ""
-                channel["Backup_channel_url"] = ""
-                channel["Channel_token"] = ""
-            
-            return channel
+            try {
+              // We perform a standard request but tell fetch to handle the redirect path.
+              // Note: Native fetch auto-follows redirects. We capture the final landing URL.
+              const controller = new AbortController();
+              const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second strict timeout
 
-        # 3. Multi-threaded execution pool (Up to 15 concurrent network requests)
-        updated_channels = []
-        with ThreadPoolExecutor(max_workers=15) as executor:
-            future_to_channel = {executor.submit(resolve_channel, ch): ch for ch in channels_list}
-            for future in as_completed(future_to_channel):
-                updated_channels.append(future.result())
+              const redirectRes = await fetch(targetUrl, {
+                method: 'GET', // Using GET to trace the true resolved location end-to-end
+                headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+                signal: controller.signal
+              });
+              
+              clearTimeout(timeoutId);
+              const finalUrl = redirectRes.url;
 
-        # 4. Save clean data structure back to Servertvhub.json
-        with open("Servertvhub.json", "w", encoding="utf-8") as f:
-            json.dump(channels_data, f, indent=4, ensure_ascii=False)
-            
-        print("Parallel updates complete. Generated Servertvhub.json successfully.")
+              channel["channel_url_redirect"] = finalUrl;
+
+              if (finalUrl && finalUrl.includes('?')) {
+                const [backupUrl, token] = finalUrl.split('?');
+                channel["Backup_channel_url"] = backupUrl;
+                channel["Channel_token"] = token;
+              } else {
+                channel["Backup_channel_url"] = finalUrl || "";
+                channel["Channel_token"] = "";
+              }
+            } catch (err) {
+              // Handle timeouts or network failures gracefully without breaking the batch
+              channel["channel_url_redirect"] = "";
+              channel["Backup_channel_url"] = "";
+              channel["Channel_token"] = "";
+            }
+
+            return channel;
+          }
+
+          // Concurrency Pool Execution (Limit to 15 simultaneous requests to maximize speed without hitting rate limits)
+          const CONCURRENCY_LIMIT = 15;
+          const results = [];
+          const executing = [];
+
+          for (const channel of channelsList) {
+            const p = Promise.resolve().then(() => resolveChannel(channel));
+            results.push(p);
+
+            if (CONCURRENCY_LIMIT <= channelsList.length) {
+              const e = p.then(() => executing.splice(executing.indexOf(e), 1));
+              executing.push(e);
+              if (executing.length >= CONCURRENCY_LIMIT) {
+                await Promise.race(executing);
+              }
+            }
+          }
+          await Promise.all(results);
+
+          // Write updated structure clean to disk
+          try {
+            fs.writeFileSync('Servertvhub.json', JSON.stringify(channelsData, null, 4), 'utf-8');
+            console.log('Parallel updates complete. Generated Servertvhub.json successfully.');
+          } catch (err) {
+            console.error('Error writing Servertvhub.json:', err.message);
+            process.exit(1);
+          }
+        }
+
+        run();
         EOF
 
     - name: Commit and Push updates
@@ -110,5 +143,6 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add Servertvhub.json
-        git diff-index --quiet HEAD || git commit -m "Fast automated update of channel tokens"
+        git diff-index --quiet HEAD || git commit -m "Fast automated update of channel tokens via Node.js"
         git push origin main
+
