@@ -21,94 +21,66 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Execute Bypassed Curl Extraction Pipeline
+    - name: Execute Max-Speed Extraction Pipeline
       run: |
-        # Start Total Script Timer
         TOTAL_START=$SECONDS
 
         echo "Fetching original channel data from npoint..."
         curl -s "https://api.npoint.io/1ac6a202753a353b7bb5" > channels.json
 
-        # Safely extract IDs, ignoring nulls
+        # Extract clean IDs
         jq -r 'if type=="array" then . else .[keys[0]] end | .[] | .id // .channel_id // .channelId | select(. != null)' channels.json > ids.txt
-        
         channel_count=$(wc -l < ids.txt)
-        echo "Successfully parsed ${channel_count} channel IDs. Starting anti-blocking parallel processing..."
+        
+        echo "Parsed ${channel_count} IDs. Launching max-concurrency background engine..."
         mkdir -p tmp_ids
 
-        # 3. Parallel Processing Loop
-        batch_counter=1
-        while read -r id; do
-          if [ -z "$id" ]; then continue; fi
-          
-          (
-            # Individual Channel Timer
-            CHANNEL_START=$SECONDS
-            
-            target_url="https://servertvhub.site/jiotv+/mpd.php?id=${id}"
-            attempt=1
-            max_attempts=3
-            final_url=""
+        # Worker core function exported so xargs can access it directly
+        process_id() {
+          id="$1"
+          target_url="https://servertvhub.site/jiotv+/mpd.php?id=${id}"
+          attempt=1
+          max_attempts=2 # Dropped to 2 to prevent any single channel from stalling the 30s limit
+          final_url=""
 
-            while [ $attempt -le $max_attempts ]; do
-              res=$(curl -s -m 8 \
-                -H "Host: servertvhub.site" \
-                -H "Referer: https://servertvhub.site/" \
-                -H "Origin: https://servertvhub.site/" \
-                -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-                -w "%{http_code}\n%{redirect_url}" \
-                -o /dev/null "$target_url")
+          while [ $attempt -le $max_attempts ]; do
+            # Timeout set to 5 seconds max per handshake connection
+            res=$(curl -s -m 5 \
+              -H "Host: servertvhub.site" \
+              -H "Referer: https://servertvhub.site/" \
+              -H "Origin: https://servertvhub.site/" \
+              -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+              -w "%{http_code}\n%{redirect_url}" \
+              -o /dev/null "$target_url")
 
-              http_code=$(echo "$res" | sed -n '1p')
-              final_url=$(echo "$res" | sed -n '2p')
+            http_code=$(echo "$res" | sed -n '1p')
+            final_url=$(echo "$res" | sed -n '2p')
 
-              if [ "$http_code" = "429" ]; then
-                sleep $((attempt * 3))
-                attempt=$((attempt + 1))
-              elif [[ "$http_code" =~ ^50[0-9]$ ]]; then
-                sleep $((attempt * 2))
-                attempt=$((attempt + 1))
-              else
-                break
-              fi
-            done
-
-            backup_url="$final_url"
-            token=""
-            
-            if [[ "$final_url" == *\?* ]]; then
-              backup_url="${final_url%%\?*}"
-              token="${final_url#*\?}"
+            if [ "$http_code" = "429" ] || [[ "$http_code" =~ ^50[0-9]$ ]]; then
+              sleep 1
+              attempt=$((attempt + 1))
+            else
+              break
             fi
+          done
 
-            printf '"%s": {"channel_url_redirect": "%s", "Backup_channel_url": "%s", "Channel_token": "%s"}\n' "$id" "$final_url" "$backup_url" "$token" > "tmp_ids/${id}.txt"
-            
-            # Print individual channel processing metrics
-            CHANNEL_DURATION=$((SECONDS - CHANNEL_START))
-            echo "[Channel Processing] ID: ${id} resolved in ${CHANNEL_DURATION}s (Status: ${http_code:-Error})"
-          ) &
-
-          # Anti-burst micro-stagger launch delay
-          sleep 0.15
-
-          # Safe Concurrency ceiling gate (Max 12 parallel requests)
-          running_jobs=$(jobs -p | wc -l)
-          if [ "$running_jobs" -ge 12 ]; then
-            BATCH_START=$SECONDS
-            wait -n || true
-            BATCH_DURATION=$((SECONDS - BATCH_START))
-            echo "[Batch Control] Concurrency ceiling reached. Queue slot cleared in ${BATCH_DURATION}s. (Processed Batch Window #${batch_counter})"
-            batch_counter=$((batch_counter + 1))
+          backup_url="$final_url"
+          token=""
+          if [[ "$final_url" == *\?* ]]; then
+            backup_url="${final_url%%\?*}"
+            token="${final_url#*\?}"
           fi
-        done < ids.txt
 
-        # Wait for any remaining background operations to finish
-        echo "Waiting for final running background channels to complete execution..."
-        REMAINING_START=$SECONDS
-        wait
-        echo "[Batch Control] Final pipeline queue cleared in $((SECONDS - REMAINING_START))s."
+          printf '"%s": {"channel_url_redirect": "%s", "Backup_channel_url": "%s", "Channel_token": "%s"}\n' "$id" "$final_url" "$backup_url" "$token" > "tmp_ids/${id}.txt"
+        }
+
+        # Export function to subshells
+        export -f process_id
+
+        # Fire up to 50 concurrent requests simultaneously using xargs engine
+        cat ids.txt | xargs -I {} -P 50 bash -c 'process_id "{}"'
         
-        echo "All channel extractions complete. Re-assembling data maps..."
+        echo "All channel extractions finished. Merging structures..."
 
         # 4. Construct safe consolidated JSON dictionary
         echo "{" > lookup.json
@@ -132,14 +104,12 @@ jobs:
           end
         ' channels.json > Servertvhub.json
 
-        # Cleanup working cache documents
         rm -rf tmp_ids channels.json lookup.json ids.txt
         echo "Servertvhub.json successfully compiled."
 
-        # Compute and display absolute overall pipeline execution time
         TOTAL_DURATION=$((SECONDS - TOTAL_START))
         echo "========================================================="
-        echo " PIPELINE METRICS SUMMARY"
+        echo " PIPELINE SPEED METRICS"
         echo " Total Channels Processed : ${channel_count}"
         echo " Total Processing Duration: ${TOTAL_DURATION} seconds"
         echo "========================================================="
@@ -149,5 +119,5 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add Servertvhub.json
-        git diff-index --quiet HEAD || git commit -m "Automated bypass update of channel tokens with log analytics"
+        git diff-index --quiet HEAD || git commit -m "Automated max-speed update of channel tokens"
         git push origin main
