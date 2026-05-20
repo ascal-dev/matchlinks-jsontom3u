@@ -2,14 +2,13 @@ name: Production Curl-Only Update JioTV Channels
 
 on:
   schedule:
-    # Set to 12 minutes past the hour to completely bypass GitHub cron queue bottlenecks
-    - cron: '12 6 * * *'   # 6:12 AM UTC
-    - cron: '12 9 * * *'   # 9:12 AM UTC
-    - cron: '12 13 * * *'  # 1:12 PM UTC
-    - cron: '12 15 * * *'  # 3:12 PM UTC
-    - cron: '12 19 * * *'  # 7:12 PM UTC
-    - cron: '12 21 * * *'  # 9:12 PM UTC
-  workflow_dispatch:       # Allows manual execution at any time
+    - cron: '12 6 * * *'
+    - cron: '12 9 * * *'
+    - cron: '12 13 * * *'
+    - cron: '12 15 * * *'
+    - cron: '12 19 * * *'
+    - cron: '12 21 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -22,98 +21,133 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Execute Resilient Curl Extraction Pipeline
+    - name: Execute Bypassed Curl Extraction Pipeline
       run: |
-        # 1. Fetch source channels payload via curl
+        # Start Total Script Timer
+        TOTAL_START=$SECONDS
+
         echo "Fetching original channel data from npoint..."
         curl -s "https://api.npoint.io/1ac6a202753a353b7bb5" > channels.json
 
-        # 2. Parse out all valid Channel IDs using jq
-        ids=$(jq -r '.[] | .id // .channel_id // .channelId' channels.json)
-        echo "Successfully parsed channel IDs. Starting parallel curl processing..."
-
-        # Create temporary storage workspace for async workers
+        # Safely extract IDs, ignoring nulls
+        jq -r 'if type=="array" then . else .[keys[0]] end | .[] | .id // .channel_id // .channelId | select(. != null)' channels.json > ids.txt
+        
+        channel_count=$(wc -l < ids.txt)
+        echo "Successfully parsed ${channel_count} channel IDs. Starting anti-blocking parallel processing..."
         mkdir -p tmp_ids
 
-        # 3. Parallel Processing Loop with Throttling & Rate-Limit Backoffs
-        for id in $ids; do
+        # 3. Parallel Processing Loop
+        batch_counter=1
+        while read -r id; do
+          if [ -z "$id" ]; then continue; fi
+          
           (
+            # Individual Channel Timer
+            CHANNEL_START=$SECONDS
+            
             target_url="https://servertvhub.site/jiotv+/mpd.php?id=${id}"
             attempt=1
             max_attempts=3
             final_url=""
 
             while [ $attempt -le $max_attempts ]; do
-              # Fire curl request tracking http code & landing destination (-m 9 sets a 9s strict timeout)
-              res=$(curl -s -L -m 9 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" -w "%{http_code} %{url_effective}" -o /dev/null "$target_url")
-              
-              http_code=$(echo "$res" | cut -d' ' -f1)
-              final_url=$(echo "$res" | cut -d' ' -f2-)
+              res=$(curl -s -m 8 \
+                -H "Host: servertvhub.site" \
+                -H "Referer: https://servertvhub.site/" \
+                -H "Origin: https://servertvhub.site/" \
+                -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+                -w "%{http_code}\n%{redirect_url}" \
+                -o /dev/null "$target_url")
 
-              # Handling Rate Limits (HTTP 429)
-              if [ "$http_code" -eq 429 ]; then
+              http_code=$(echo "$res" | sed -n '1p')
+              final_url=$(echo "$res" | sed -n '2p')
+
+              if [ "$http_code" = "429" ]; then
                 sleep $((attempt * 3))
                 attempt=$((attempt + 1))
-              # Handling Transient Server Failures (HTTP 5xx)
-              elif [ "$http_code" -ge 500 ]; then
+              elif [[ "$http_code" =~ ^50[0-9]$ ]]; then
                 sleep $((attempt * 2))
                 attempt=$((attempt + 1))
               else
-                # Clean exit on successful codes
                 break
               fi
             done
 
-            # Parse out Backup Channel URL and Token parameters
             backup_url="$final_url"
             token=""
+            
             if [[ "$final_url" == *\?* ]]; then
               backup_url="${final_url%%\?*}"
               token="${final_url#*\?}"
             fi
 
-            # Output isolated key/value fragment into individual storage token maps
             printf '"%s": {"channel_url_redirect": "%s", "Backup_channel_url": "%s", "Channel_token": "%s"}\n' "$id" "$final_url" "$backup_url" "$token" > "tmp_ids/${id}.txt"
+            
+            # Print individual channel processing metrics
+            CHANNEL_DURATION=$((SECONDS - CHANNEL_START))
+            echo "[Channel Processing] ID: ${id} resolved in ${CHANNEL_DURATION}s (Status: ${http_code:-Error})"
           ) &
 
-          # Anti-burst micro-stagger launch delay (150ms) to bypass firewall flags
+          # Anti-burst micro-stagger launch delay
           sleep 0.15
 
-          # Concurrency ceiling safety gate: keeps max 12 parallel curls running concurrently
-          if [ $(jobs -r | wc -l) -ge 12 ]; then
-            wait -n
+          # Safe Concurrency ceiling gate (Max 12 parallel requests)
+          running_jobs=$(jobs -p | wc -l)
+          if [ "$running_jobs" -ge 12 ]; then
+            BATCH_START=$SECONDS
+            wait -n || true
+            BATCH_DURATION=$((SECONDS - BATCH_START))
+            echo "[Batch Control] Concurrency ceiling reached. Queue slot cleared in ${BATCH_DURATION}s. (Processed Batch Window #${batch_counter})"
+            batch_counter=$((batch_counter + 1))
           fi
-        done
+        done < ids.txt
 
-        # Wait for any remaining async background curl processes to wrap up
+        # Wait for any remaining background operations to finish
+        echo "Waiting for final running background channels to complete execution..."
+        REMAINING_START=$SECONDS
         wait
-        echo "All channel extractions complete. Merging data structural keys..."
+        echo "[Batch Control] Final pipeline queue cleared in $((SECONDS - REMAINING_START))s."
+        
+        echo "All channel extractions complete. Re-assembling data maps..."
 
         # 4. Construct safe consolidated JSON dictionary
         echo "{" > lookup.json
-        cat tmp_ids/*.txt | paste -sd, - >> lookup.json
+        if [ "$(ls -A tmp_ids 2>/dev/null)" ]; then
+          cat tmp_ids/*.txt | paste -sd, - >> lookup.json
+        fi
         echo "}" >> lookup.json
-        rm -rf tmp_ids
-
-        # 5. Injection mapping back into the original channels profile structure
+        
+        # 5. Injection mapping back into original channels profile structure
         jq --slurpfile lookup lookup.json '
-          map(
-            . + ($lookup[0][(.id // .channel_id // .channelId | tostring)] // {
-              "channel_url_redirect": "",
-              "Backup_channel_url": "",
-              "Channel_token": ""
-            })
-          )
+          if type=="array" then
+            map(
+              . + ($lookup[0][(.id // .channel_id // .channelId | tostring)] // {
+                "channel_url_redirect": "",
+                "Backup_channel_url": "",
+                "Channel_token": ""
+              })
+            )
+          else
+            .
+          end
         ' channels.json > Servertvhub.json
 
-        # Cleanup transient working components
-        rm -f channels.json lookup.json
-        echo "Servertvhub.json has been completely rebuilt."
+        # Cleanup working cache documents
+        rm -rf tmp_ids channels.json lookup.json ids.txt
+        echo "Servertvhub.json successfully compiled."
+
+        # Compute and display absolute overall pipeline execution time
+        TOTAL_DURATION=$((SECONDS - TOTAL_START))
+        echo "========================================================="
+        echo " PIPELINE METRICS SUMMARY"
+        echo " Total Channels Processed : ${channel_count}"
+        echo " Total Processing Duration: ${TOTAL_DURATION} seconds"
+        echo "========================================================="
 
     - name: Commit and Push updates
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add Servertvhub.json
-        git diff-index --quiet HEAD || git commit -m "Automated update of channel tokens via pure curl pipeline"
+        git diff-index --quiet HEAD || git commit -m "Automated bypass update of channel tokens with log analytics"
         git push origin main
