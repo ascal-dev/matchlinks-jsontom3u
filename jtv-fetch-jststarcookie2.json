@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-21 12:16:36",
+    "timestamp": "2026-05-21 12:30:25",
     "successful_results": [],
     "failed_results": [
         {
@@ -172,7 +172,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Movies_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779365720~exp=1779387320~acl=/bpk-tv/Maa_Movies_HD_BTS/WDVLive/*~hmac=47403cdbc0c2b33d92a38fede3f43fb1edc55c90c5dc7205b693d9e557ba50b9"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Movies_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779365721~exp=1779387321~acl=/bpk-tv/Maa_Movies_HD_BTS/WDVLive/*~hmac=fb77992cfd9b06ccbd27656fa931c6efaa4f8c2237df1f1591673d8483e0a29a"
             }
         },
         {
