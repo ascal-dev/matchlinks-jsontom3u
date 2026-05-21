@@ -19,8 +19,6 @@ on:
     - cron: '30 15 * * *' # 9:00 PM IST  -> 3:30 PM UTC
     - cron: '30 16 * * *' # 10:00 PM IST -> 4:30 PM UTC
 
-  workflow_dispatch:
-
 permissions:
   contents: write
 
