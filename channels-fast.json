@@ -8321,13 +8321,8 @@
   },
   {
     "id": "1967",
-    "name": "PMC Hindi BTS",
-    "logo": "https://img.media.jio.com/imagespublic/21/14/301209_1647496792498_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/PMC_Hindi_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/PMC_Hindi_BTS/WDVLive/*~hmac=c103bd5a4b3280aee65480791bac8a25e25a77df135c535e6bcb279de3a822a1",
-    "keyid": "81180775a1a1551bad8231e6b4874c0f",
-    "key": "eee141672b155eb620e77cee8bbd0896",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "733",
@@ -8471,13 +8466,8 @@
   },
   {
     "id": "977",
-    "name": "Calvary BTS",
-    "logo": "https://img.media.jio.com/imagespublic/3/78/301424_1685009020377_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Calvary_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/Calvary_BTS/WDVLive/*~hmac=6dcc77e9e3c2eaec6975c814e1324a223ebc64711d194f0c414b46c690887d79",
-    "keyid": "e7586613ebdb5e528ca15878a4421938",
-    "key": "e61a9555b35455660bd91aedaf996f45",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "3538",
@@ -9111,13 +9101,8 @@
   },
   {
     "id": "3170",
-    "name": "News 24 Tass BTS",
-    "logo": "https://img.media.jio.com/tvpimages/27/44/301886_1732644152290_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/News_24_Tass_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/News_24_Tass_BTS/WDVLive/*~hmac=e7b569164aefb546070a4f5d836c0e4acc133f36e6d859806d9410f812437df7",
-    "keyid": "79034e0f38515792832f257a73a4ca04",
-    "key": "67137938baad60739c4622537b3fa237",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "772",
@@ -10401,13 +10386,8 @@
   },
   {
     "id": "2770",
-    "name": "Har Khabar BTS",
-    "logo": "https://img.media.jio.com/tvpimages/77/10/301502_1754936227945_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Har_Khabar_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/Har_Khabar_BTS/WDVLive/*~hmac=9bc32c03bb28491abf249b25fab2827ced5413d87dcc5c318a053bcc3547f27d",
-    "keyid": "dc78badde0cd5094ba9ba660e43756e3",
-    "key": "0c31ee4f50b8c22d4baba2e83bd60a76",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "1757",
@@ -10521,13 +10501,8 @@
   },
   {
     "id": "1736",
-    "name": "Luxe TV BTS",
-    "logo": "https://img.media.jio.com/tvpimages/56/83/301022_1758604076488_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Luxe_TV_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/Luxe_TV_BTS/WDVLive/*~hmac=0f141bd47deb673c40a476c7b16b866d6f36dc5a4b9fd7be3d1b476177dff58c",
-    "keyid": "4794d4e8608b50cfb8b2c2c8f026b77c",
-    "key": "903df110d370d10d885ef4a0c3517781",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "2322",
@@ -10561,23 +10536,13 @@
   },
   {
     "id": "1145",
-    "name": "MTV HD Plus BTS",
-    "logo": "https://img.media.jio.com/tvpimages/80/54/301548_1753255937123_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/MTV_HD_Plus_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/MTV_HD_Plus_BTS/WDVLive/*~hmac=d2dfa1a8d2af66c4604a7e3f21bf8e519f13821961f0b6b1447fa0325da8d294",
-    "keyid": "90d8713ba5e85d779d005b1f14a5bc8d",
-    "key": "33650314fe1e945017640ba9878c5de9",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "1545",
-    "name": "Punjab School TV MOB",
-    "logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Punjab_School_TV.png",
-    "manifest": "https://jiotvmblive.cdn.jio.com/bpk-tv/Punjab_School_TV_MOB/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363000~exp=1779384600~acl=/*~hmac=f265dd24c3608f0bb49886fec085c4e15d55e03b7d36adfffb344ad4f2e6e12d",
-    "keyid": "3b99045d338a5a03b6cb0a255c39fb5e",
-    "key": "2591dca28a5ea2e173dca660474e440e",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "418",
@@ -10671,13 +10636,8 @@
   },
   {
     "id": "984",
-    "name": "Swayam Prabha 04 BTS",
-    "logo": "https://img.media.jio.com/imagespublic/11/26/SwayamPrabha04_1602345182852_tv.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Swayam_Prabha_04_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/Swayam_Prabha_04_BTS/WDVLive/*~hmac=eec5e0afd474cdf9b68874d524e0fcca8f80ca87c00385e1193239647d452ae1",
-    "keyid": "f481953a795655ddb9b47a92a8a29e2b",
-    "key": "7aa0c4108a59953af9c0010f50920106",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "544",
@@ -10821,13 +10781,8 @@
   },
   {
     "id": "705",
-    "name": "Polimer TV BTS",
-    "logo": "https://img.media.jio.com/imagespublic/44/73/PolimerTV_1574694249522_tv.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Polimer_TV_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/Polimer_TV_BTS/WDVLive/*~hmac=43af5b483e7939879434fcb6adaa7a64e561f0148e9f3e47aa58033d1bd175c5",
-    "keyid": "00b981848b1a5d979668260a22bd4ae1",
-    "key": "c74650e08f78101679685f459ba6e8d4",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "751",
@@ -10871,13 +10826,8 @@
   },
   {
     "id": "1094",
-    "name": "Vande Gujarat 16 BTS",
-    "logo": "https://img.media.jio.com/imagespublic/42/67/VandeGujarat16_1603990715308_tv.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Vande_Gujarat_16_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363002~exp=1779384602~acl=/bpk-tv/Vande_Gujarat_16_BTS/WDVLive/*~hmac=54f42f3d13c96034401732c5452bd89fcdbfe8ec516b51501680cdc8173793ea",
-    "keyid": "ba0b75fcbecd528d84a76c39af5c3e1a",
-    "key": "a948a4370d207ae9fd790893fef2c70c",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "692",
@@ -11001,13 +10951,8 @@
   },
   {
     "id": "3284",
-    "name": "Rozana Spokesman BTS",
-    "logo": "https://img.media.jio.com/tvpimages/12/79/302064_1753187863387_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/Rozana_Spokesman_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/Rozana_Spokesman_BTS/WDVLive/*~hmac=07a3741d834e408e008f086274d794bf0767e2f32ec1b5e2fb84b9b2fac1fb08",
-    "keyid": "b774b3ee5dcd513f826ccc29e618cbc7",
-    "key": "4dd0dfdab7af593ade29955451566c47",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "2761",
@@ -11151,13 +11096,8 @@
   },
   {
     "id": "566",
-    "name": "AnimalPlanetHin BTS",
-    "logo": "https://img.media.jio.com/imagespublic/49/89/301580_1707144274896_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/AnimalPlanetHin_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/AnimalPlanetHin_BTS/WDVLive/*~hmac=0c523c62fc22ec4a0caa83a7c52e9c50dceca98a17a91d15680d9a94ed7a28d5",
-    "keyid": "ead5a173062a584c85fcdfcfdda3ddf5",
-    "key": "4c799a57db355c7cdfbdbf2ad39ec7fe",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "1227",
@@ -11201,13 +11141,8 @@
   },
   {
     "id": "816",
-    "name": "CNHindi BTS",
-    "logo": "https://img.media.jio.com/imagespublic/27/39/301585_1707144331370_l_medium.jpg",
-    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/CNHindi_BTS/WDVLive/index.mpd",
-    "cookie": "__hdnea__=st=1779363001~exp=1779384601~acl=/bpk-tv/CNHindi_BTS/WDVLive/*~hmac=9f26323506821baead02669ea5834206dd8bfa42282c44afc934840e600d6027",
-    "keyid": "ea48cf7b24dd54dd98c369626b9ad105",
-    "key": "ee5778d627dfae2c2affc02d76e8db6c",
-    "status": "success"
+    "status": "error",
+    "error": "Request failed with status code 503"
   },
   {
     "id": "739",
