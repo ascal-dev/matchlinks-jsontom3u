@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-21 16:30:33",
+    "timestamp": "2026-05-21 17:30:31",
     "successful_results": [],
     "failed_results": [
         {
@@ -142,7 +142,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779362501~exp=1779384101~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=d7b28ae959a1509823b42b354b69f4bf3a18968e2da11b2a709ca451fca9b303"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779384299~exp=1779405899~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=9898cf3e579fc74142c01a1a84976ab9e3091e643e1b4dcad8450e209cd4e9b4"
             }
         },
         {
@@ -312,7 +312,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_BTS/WDVLive/index.mpd?__hdnea__=st=1779360308~exp=1779381908~acl=/bpk-tv/Star_Gold_Select_BTS/WDVLive/*~hmac=4139ad8935e25c8742a4ffade0cb4b49f88e38700ea10c6f284f198f0db590d9"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_BTS/WDVLive/index.mpd?__hdnea__=st=1779381914~exp=1779403514~acl=/bpk-tv/Star_Gold_Select_BTS/WDVLive/*~hmac=499dd43c42d16b799c95eabdff1e5a6875ee41a93a4f8ed741b510e4f98d4173"
             }
         },
         {
@@ -442,7 +442,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779362578~exp=1779384178~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=665fba3c5b7622dff51697066c9013a3a700a6b899cdc7063fa3ff51bdc931f4"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779384621~exp=1779406221~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=db26286db877eb4bce5c8f9fbaefd2faf0655890ac0a1bea30f1427649a6bd4d"
             }
         },
         {
@@ -542,7 +542,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsCineplexHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779360244~exp=1779381844~acl=/bpk-tv/ColorsCineplexHD_BTS/WDVLive/*~hmac=f1434430203ff6947a9cf8c4a2c08a9d2da4db93600b3db43f955542b1eeb3a0"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsCineplexHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779381923~exp=1779403523~acl=/bpk-tv/ColorsCineplexHD_BTS/WDVLive/*~hmac=f27702f9d416b59497a2b660922063f398dfa2df22ad2371dfe91491804fb599"
             }
         },
         {
@@ -672,7 +672,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779361230~exp=1779382830~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=937e69627ab4fafde479143e5462245892fd455710262f488a145337f12af2b1"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779383441~exp=1779405041~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=e9076872b0cba073a9c609d7b937c9a638a06add86abb14ba55e16ae18669983"
             }
         },
         {
