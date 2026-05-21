@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-21 16:15:24",
+    "timestamp": "2026-05-21 16:30:33",
     "successful_results": [],
     "failed_results": [
         {
@@ -12,7 +12,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779358504~exp=1779380104~acl=/bpk-tv/ColorsHD_BTS/WDVLive/*~hmac=1a7b4ebd34699df391725530ae8e879d42bf8746c4e3faece551f6a7bd6417b5"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779380266~exp=1779401866~acl=/bpk-tv/ColorsHD_BTS/WDVLive/*~hmac=cb19f10aee6a737b002f4989e3eb37867044974765146d2152765ed1aadfa51f"
             }
         },
         {
@@ -362,7 +362,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779359413~exp=1779381013~acl=/bpk-tv/Star_Plus_HD_BTS/WDVLive/*~hmac=a8fb13c6b01c686d474c896ef12fa10e7f911c80b103f757add64d80b0147f80"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779381022~exp=1779402622~acl=/bpk-tv/Star_Plus_HD_BTS/WDVLive/*~hmac=70b55b69a2431eeb51c47614eab7b72121b5695beceda06681151e83360c6d94"
             }
         },
         {
