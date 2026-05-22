@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-22 17:15:29",
+    "timestamp": "2026-05-22 18:00:26",
     "successful_results": [],
     "failed_results": [
         {
@@ -142,7 +142,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779449968~exp=1779471568~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=55b219c4e2ac1bce728fd6f3236f7af02581dce2ac9ab0e799ccfd7a378e3596"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779471643~exp=1779493243~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=e46bc96316348f54822bc9b916fe863835e458216a53e1b548d51245a28640cb"
             }
         },
         {
@@ -672,7 +672,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779449421~exp=1779471021~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=63b95b4628c78c7b3d76c781094185a429e192bd09c1934605f86b2525862c34"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779471151~exp=1779492751~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=b49b5d14c8254fb82f9ed08832fb83a0a099c96a48c83d8d49782b07751c2665"
             }
         },
         {
