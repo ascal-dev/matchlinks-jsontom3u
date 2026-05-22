@@ -41,7 +41,7 @@ const CONFIG = {
 
   REQUEST_DELAY: 300, // Moderate delay to avoid rate limiting
 
-
+}
 
 // ============================================
 
