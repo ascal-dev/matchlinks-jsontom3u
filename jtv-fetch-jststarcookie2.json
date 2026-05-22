@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-22 11:45:21",
+    "timestamp": "2026-05-22 12:00:28",
     "successful_results": [],
     "failed_results": [
         {
@@ -442,7 +442,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779428728~exp=1779450328~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=9ca1873c0922b2f1cfcfbc363f56cf87808a75ab22e9652ed5a94bf5f0bd5272"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779451218~exp=1779472818~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=504003d5716b1f95ab7317aaf35b4830ca1b8b4b32fe2bd641567e5d318a04f0"
             }
         },
         {
