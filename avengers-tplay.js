@@ -20,17 +20,19 @@ const http = require('http');
 
 const CONFIG = {
 
-  CONCURRENCY: 15,           // Parallel requests (increased from sequential)
+  CONCURRENCY: 3,            // Further reduced to minimize 429 errors
 
   TIMEOUT: 8000,             // ms
 
-  RETRY_ATTEMPTS: 2,         // Retry failed requests
+  RETRY_ATTEMPTS: 7,         // More attempts for 429 errors
 
   BATCH_SIZE: 50,            // Process results in batches
 
   CACHE_MANIFEST: true,      // Cache decoded scripts
 
-  CHUNK_SIZE: 100            // Write results in chunks for memory efficiency
+  CHUNK_SIZE: 100,           // Write results in chunks for memory efficiency
+
+  REQUEST_DELAY: 500         // Increased delay between requests to avoid rate limiting
 
 };
 
@@ -4325,7 +4327,7 @@ const EXTRACT_PATTERNS = {
 
   key: /key\s*=\s*['"]([^'"]+)['"]/,
 
-  extraHeaders: /extraHeaders\s*=\s*['"]([^'"]+)['"]/
+  extraHeaders: /extraHeaders\s*=\s*['"]?([^'"\n}]+)['"]?/
 
 };
 
@@ -4361,7 +4363,7 @@ async function fetchWithRetry(url, attempt = 1) {
 
   try {
 
-    return await axiosInstance.get(url, {
+    const response = await axiosInstance.get(url, {
 
       headers: {
 
@@ -4371,15 +4373,60 @@ async function fetchWithRetry(url, attempt = 1) {
 
     });
 
+    // Add delay after successful request to avoid rate limiting
+
+    await new Promise(r => setTimeout(r, CONFIG.REQUEST_DELAY));
+
+    return response;
+
   } catch (error) {
 
-    if (attempt < CONFIG.RETRY_ATTEMPTS && error.code !== 'ENOTFOUND') {
+    // Retry on 429 (Too Many Requests), 503 (Service Unavailable), or network errors
+    const is429 = error.response?.status === 429;
 
-      await new Promise(r => setTimeout(r, 300 * attempt));
+    const is503 = error.response?.status === 503;
+
+    const isNetworkError = error.code && error.code !== 'ENOTFOUND';
+
+    const shouldRetry = attempt < CONFIG.RETRY_ATTEMPTS && (is429 || is503 || isNetworkError);
+
+
+
+    if (shouldRetry) {
+
+      // Much longer backoff for 429 errors (rate limiting)
+
+      let delay;
+
+      if (is429) {
+
+        delay = 2000 * Math.pow(2, attempt - 1);  // 2s, 4s, 8s, 16s, 32s
+
+        console.warn(`⚠️  429 Rate Limited! Attempt ${attempt}/${CONFIG.RETRY_ATTEMPTS}, retrying in ${delay}ms...`);
+
+      } else if (is503) {
+
+        delay = 1000 * Math.pow(2, attempt - 1);  // 1s, 2s, 4s, 8s, 16s
+
+        console.warn(`⚠️  503 Service Unavailable! Attempt ${attempt}/${CONFIG.RETRY_ATTEMPTS}, retrying in ${delay}ms...`);
+
+      } else {
+
+        delay = 300 * attempt;  // Regular backoff for network errors
+
+        console.warn(`⚠️  Network error (${error.code}). Attempt ${attempt}/${CONFIG.RETRY_ATTEMPTS}, retrying in ${delay}ms...`);
+
+      }
+
+      
+
+      await new Promise(r => setTimeout(r, delay));
 
       return fetchWithRetry(url, attempt + 1);
 
     }
+
+
 
     throw error;
 
@@ -4543,7 +4590,7 @@ async function main() {
 
   const results = [];
 
-  const writeStream = fs.createWriteStream('avengers-tplay.json');
+  const writeStream = fs.createWriteStream('channels-fast.json');
 
 
 
@@ -4633,7 +4680,7 @@ async function main() {
 
   console.log(`\n\n🎉 Complete in ${totalTime}s`);
 
-  console.log(`📁 Saved to avengers-tplay.json`);
+  console.log(`📁 Saved to channels-fast.json`);
 
   
 
