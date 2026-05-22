@@ -18,23 +18,28 @@ const http = require('http');
 
 
 
+
+
 const CONFIG = {
+  CONCURRENCY: 10, // Increased for faster parallel processing
 
-  CONCURRENCY: 3,            // Further reduced to minimize 429 errors
 
-  TIMEOUT: 8000,             // ms
+  TIMEOUT: 8000, // ms
 
-  RETRY_ATTEMPTS: 7,         // More attempts for 429 errors
 
-  BATCH_SIZE: 50,            // Process results in batches
+  RETRY_ATTEMPTS: 7, // More attempts for 429 errors
 
-  CACHE_MANIFEST: true,      // Cache decoded scripts
 
-  CHUNK_SIZE: 100,           // Write results in chunks for memory efficiency
+  BATCH_SIZE: 50, // Process results in batches
 
-  REQUEST_DELAY: 500         // Increased delay between requests to avoid rate limiting
 
-};
+  CACHE_MANIFEST: true, // Cache decoded scripts
+
+
+  CHUNK_SIZE: 100, // Write results in chunks for memory efficiency
+
+
+  REQUEST_DELAY: 300, // Moderate delay to avoid rate limiting
 
 
 
@@ -4590,7 +4595,7 @@ async function main() {
 
   const results = [];
 
-  const writeStream = fs.createWriteStream('channels-fast.json');
+  const writeStream = fs.createWriteStream('avengers-tplay.json');
 
 
 
@@ -4680,7 +4685,7 @@ async function main() {
 
   console.log(`\n\n🎉 Complete in ${totalTime}s`);
 
-  console.log(`📁 Saved to channels-fast.json`);
+  console.log(`📁 Saved to avengers-tplay.json`);
 
   
 
