@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-23 06:01:56",
+    "timestamp": "2026-05-23 06:31:57",
     "successful_results": [],
     "failed_results": [
         {
@@ -212,7 +212,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1779496231~exp=1779517831~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=3f6ad1d5bcdf9f3260fcb74ef86c1916d8502075856ebfa8a3da9c3f3d2558e3"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1779517835~exp=1779539435~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=b4fbb443dbaf2b6c14da1c8d1f3e49a9b3081d7c63e260b80a27e27fb0147178"
             }
         },
         {
@@ -442,7 +442,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779495359~exp=1779516959~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=0233fef91eebd30b7835a37c9f6f3c66fbe16ab0e8491d7d39ed7c6bc4b9faad"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779516970~exp=1779538570~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=8813f06bd6a817c10196abbb1da1098e212ddfde0193493ebf635ff1cec8e218"
             }
         },
         {
