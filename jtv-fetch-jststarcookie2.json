@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-24 14:45:24",
+    "timestamp": "2026-05-24 14:55:49",
     "successful_results": [],
     "failed_results": [
         {
@@ -352,7 +352,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Music_BTS/WDVLive/index.mpd?__hdnea__=st=1779612619~exp=1779634219~acl=/bpk-tv/Maa_Music_BTS/WDVLive/*~hmac=7178d8acebed83469dec30eba16b65b801c9f5316b0bdf7fabce0d3b80828e50"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Music_BTS/WDVLive/index.mpd?__hdnea__=st=1779634519~exp=1779656119~acl=/bpk-tv/Maa_Music_BTS/WDVLive/*~hmac=147f4681708f1ad5cb03ba42541ed679a80b138cf992c4da764603d58217a670"
             }
         },
         {
@@ -382,7 +382,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Gold_BTS/WDVLive/index.mpd?__hdnea__=st=1779612623~exp=1779634223~acl=/bpk-tv/Maa_Gold_BTS/WDVLive/*~hmac=6394fad6b623a44d1ed259d8e5a8dd1d94c1105ae45ec8ba6febbd0d49b0a2e9"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Gold_BTS/WDVLive/index.mpd?__hdnea__=st=1779634523~exp=1779656123~acl=/bpk-tv/Maa_Gold_BTS/WDVLive/*~hmac=30be23b10db10f1609dbefb9794af7bdeaaa8a286aa1402a1b35be1907c036ec"
             }
         },
         {
@@ -492,7 +492,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Junior_BTS/WDVLive/index.mpd?__hdnea__=st=1779612629~exp=1779634229~acl=/bpk-tv/Disney_Junior_BTS/WDVLive/*~hmac=de92d3553ef217659acc868949d70d4e77c41b4167c7626e646a532891de1511"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Junior_BTS/WDVLive/index.mpd?__hdnea__=st=1779634536~exp=1779656136~acl=/bpk-tv/Disney_Junior_BTS/WDVLive/*~hmac=ab483f92452bc11ca71c53bb0a2182517f462e4944e8fcaf4317f05decf66d93"
             }
         },
         {
@@ -532,7 +532,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Super_Hungama_BTS/WDVLive/index.mpd?__hdnea__=st=1779612632~exp=1779634232~acl=/bpk-tv/Super_Hungama_BTS/WDVLive/*~hmac=5875017dfdb250c7a9184aeacd1e7ad2751d7ed256d5956109bb94874c881d2d"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Super_Hungama_BTS/WDVLive/index.mpd?__hdnea__=st=1779634540~exp=1779656140~acl=/bpk-tv/Super_Hungama_BTS/WDVLive/*~hmac=3d03880dbcfac3b57dabad4b3e69919724d9f2cb42b67f8b2a0a9f10a1f53fc7"
             }
         },
         {
