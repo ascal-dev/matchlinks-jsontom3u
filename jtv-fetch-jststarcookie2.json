@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-24 14:20:29",
+    "timestamp": "2026-05-24 14:45:24",
     "successful_results": [],
     "failed_results": [
         {
@@ -82,7 +82,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Vijay_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779610808~exp=1779632408~acl=/bpk-tv/Star_Vijay_HD_BTS/WDVLive/*~hmac=e9d3fb87125265279df755de0af8bc81aebb76219ec81c964d2b282192b7a039"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Vijay_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779632708~exp=1779654308~acl=/bpk-tv/Star_Vijay_HD_BTS/WDVLive/*~hmac=fab1f41e5008129027418dbfe5b45df549f8aa43796f88dc8bcc5321cca01908"
             }
         },
         {
@@ -292,7 +292,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Movies_BTS/WDVLive/index.mpd?__hdnea__=st=1779610821~exp=1779632421~acl=/bpk-tv/Star_Movies_BTS/WDVLive/*~hmac=78a3df8cdfdc122c0c762a5ff9a8ffe2cfd100ec9ae3a067b5d9771662a1f6e7"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Movies_BTS/WDVLive/index.mpd?__hdnea__=st=1779632721~exp=1779654321~acl=/bpk-tv/Star_Movies_BTS/WDVLive/*~hmac=466977ce19d48e52a8101f9606082e38cfe338822a99260a32ac04258bf99cf0"
             }
         },
         {
@@ -302,7 +302,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Suvarna_BTS/WDVLive/index.mpd?__hdnea__=st=1779610833~exp=1779632433~acl=/bpk-tv/Suvarna_BTS/WDVLive/*~hmac=3d97b750dabbee0359dde634dc69a2dc618b674e075eb636adcbd62c49ec36c1"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Suvarna_BTS/WDVLive/index.mpd?__hdnea__=st=1779632728~exp=1779654328~acl=/bpk-tv/Suvarna_BTS/WDVLive/*~hmac=3d99682f5c5107e3785ec15cd983d3cae1c94c81ca68758a799490f171e0ca78"
             }
         },
         {
@@ -322,7 +322,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/index.mpd?__hdnea__=st=1779610841~exp=1779632441~acl=/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/*~hmac=c9c71b327eb932266438ea14c8b75eb02b42918057c62aedfd00f781433d2ea8"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/index.mpd?__hdnea__=st=1779632735~exp=1779654335~acl=/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/*~hmac=a8deab92d5278938b786c96bec441d972aaeda2b8089cd4b8e0ca57ac1b7640f"
             }
         },
         {
@@ -692,7 +692,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Pravah_Picture_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779610856~exp=1779632456~acl=/bpk-tv/Star_Pravah_Picture_HD_BTS/WDVLive/*~hmac=ee83f87c4c98a492c5d2f69ff5258c8539f4fbc6e71aff30e022bdf39f7d4fd8"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Pravah_Picture_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779632750~exp=1779654350~acl=/bpk-tv/Star_Pravah_Picture_HD_BTS/WDVLive/*~hmac=8c48bd49a87441c0803f1a9dc63e3cfc155fb13ea51a290ec0115ea61a211d13"
             }
         },
         {
@@ -752,7 +752,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Kiran_BTS/WDVLive/index.mpd?__hdnea__=st=1779611734~exp=1779633334~acl=/bpk-tv/Star_Kiran_BTS/WDVLive/*~hmac=9c82022ede6056d476d3250add6e163e986e4aff9690aac9698f5cf5026e077b"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Kiran_BTS/WDVLive/index.mpd?__hdnea__=st=1779633637~exp=1779655237~acl=/bpk-tv/Star_Kiran_BTS/WDVLive/*~hmac=a565dabaec9a2a664d5a7131d27c9c803e4a6f05f2700d6db460bf55a4c6417a"
             }
         },
         {
