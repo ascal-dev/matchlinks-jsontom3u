@@ -1,5 +1,6 @@
 name: ollinone_pages_dev_sports
 
+
 on:
   schedule:
     - cron: '0 */6 * * *'
@@ -37,48 +38,47 @@ jobs:
           total=${#CHANNELS[@]}
           current=0
 
-          # Define a regex block for both single and double quotes
-          Q="[\"']"
-
           for name in "${!CHANNELS[@]}"; do
             IFS='|' read -r url logo <<< "${CHANNELS[$name]}"
             
             echo "Fetching data for: $name..."
             
-            # Fetch HTML with Cloudflare headers and specific Referer
+            # Optimized curl request using an organic browser header profile to minimize Cloudflare blocks
             html=$(curl -s -L \
-              -H "Host: ollinone.pages.dev" \
-              -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
-              -H "Accept-Encoding: gzip, deflate, br" \
+              -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8" \
+              -H "Accept-Language: en-US,en;q=0.9" \
               -H "Referer: https://ollinone.pages.dev/" \
-              -H "Connection: keep-alive" \
-              -H "Sec-Fetch-Dest: document" \
-              -H "Sec-Fetch-Mode: navigate" \
-              -H "Sec-Fetch-Site: same-origin" \
-              "$url" | gunzip -c 2>/dev/null || curl -s -L -H "Referer: https://ollinone.pages.dev/" "$url")
+              -H "Cache-Control: max-age=0" \
+              --retry 3 --retry-delay 2 \
+              "$url")
 
-            # Flatten HTML (remove newlines/carriage returns) to handle multi-line setups cleanly
+            # Flatten HTML to single line for cross-line security
             flat_html=$(echo "$html" | tr '\n' ' ' | tr '\r' ' ' | tr -s ' ')
 
-            # Extract variables (case-insensitive, handles any spacing or variations)
-            streamUrl=$(echo "$flat_html" | grep -ioP "streamurl\s*=\s*$Q\K[^$Q]+" | head -n 1 || echo "")
-            cookieHeader=$(echo "$flat_html" | grep -ioP "cookieheader\s*=\s*$Q\K[^$Q]*" | head -n 1 || echo "")
-            
-            # Extract ClearKeys string block
-            rawKeys=$(echo "$flat_html" | grep -ioP "clearkeys\s*$Q?\s*:\s*\{\s*$Q?\K[^$Q\s]+$Q?\s*:\s*$Q?[^$Q\s\}]+" | head -n 1 || echo "")
+            # 1. Broad Pattern Stream URL Extraction (Grabs any valid streaming manifest path)
+            streamUrl=$(echo "$flat_html" | grep -ioP 'https?://[^"'\''\s]+\.(mpd|m3u8)[^"'\''\s]*' | head -n 1 || echo "")
+
+            # 2. Broad Pattern Cookie Extraction (Looks for assignment values containing cookie patterns)
+            cookieHeader=$(echo "$flat_html" | grep -ioP 'cookieheader\s*[:=]\s*["'\''\s]*\K[^"'\''\s;]+' | head -n 1 || echo "")
+            if [ -z "$cookieHeader" ] || [ "$cookieHeader" = "_" ]; then
+              # Fallback directly to grab anything resembling a jio token if name match missed
+              cookieHeader=$(echo "$flat_html" | grep -ioP '__hdnea__=[^"'\''\s;]+' | head -n 1 || echo "")
+            fi
+
+            # 3. Direct Hexadecimal Scan for ClearKeys (Scans for two distinct 32-character hex fields pairing up)
+            rawKeys=$(echo "$flat_html" | grep -ioP '[0-9a-fA-F]{32}["'\''\s]*:[\s"'\''\s]*[0-9a-fA-F]{32}' | head -n 1 || echo "")
             
             kid=$(echo "$rawKeys" | awk -F':' '{print $1}' | tr -d '"'\'' ')
             key=$(echo "$rawKeys" | awk -F':' '{print $2}' | tr -d '"'\'' ')
 
-            # Dynamic validation: if keys are empty or literal placeholders, dump an empty JSON object
-            if [ -z "$kid" ] || [ -z "$key" ] || [ "$kid" = '""' ]; then
+            if [ -z "$kid" ] || [ -z "$key" ]; then
               clearKeysJson="{}"
             else
               clearKeysJson="{\"$kid\": \"$key\"}"
             fi
 
-            # Append structured layout to target file
+            # Build structural layout
             cat >> "$JSON_FILE" <<EOF
             {
               "id": $id,
@@ -101,7 +101,7 @@ jobs:
 
           echo "]" >> "$JSON_FILE"
           
-          # Use jq to validate and optimize JSON nesting formatting
+          # Validate and clean formatting using jq
           jq . "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
 
       - name: Commit and Push Changes
