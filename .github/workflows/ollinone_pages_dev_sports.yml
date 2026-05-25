@@ -59,12 +59,7 @@ jobs:
             # 1. Broad Pattern Stream URL Extraction (Grabs any valid streaming manifest path)
             streamUrl=$(echo "$flat_html" | grep -ioP 'https?://[^"'\''\s]+\.(mpd|m3u8)[^"'\''\s]*' | head -n 1 || echo "")
 
-            # 2. Broad Pattern Cookie Extraction (Looks for assignment values containing cookie patterns)
-            cookieHeader=$(echo "$flat_html" | grep -ioP 'cookieheader\s*[:=]\s*["'\''\s]*\K[^"'\''\s;]+' | head -n 1 || echo "")
-            if [ -z "$cookieHeader" ] || [ "$cookieHeader" = "_" ]; then
-              # Fallback directly to grab anything resembling a jio token if name match missed
-              cookieHeader=$(echo "$flat_html" | grep -ioP '__hdnea__=[^"'\''\s;]+' | head -n 1 || echo "")
-            fi
+           cookieHeader=$(echo "$html" | grep -oP 'cookieHeader\s*=\s*"\K[^"]+' || echo "")
 
             # 3. Direct Hexadecimal Scan for ClearKeys (Scans for two distinct 32-character hex fields pairing up)
             rawKeys=$(echo "$flat_html" | grep -ioP '[0-9a-fA-F]{32}["'\''\s]*:[\s"'\''\s]*[0-9a-fA-F]{32}' | head -n 1 || echo "")
