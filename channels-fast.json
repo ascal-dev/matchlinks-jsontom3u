@@ -11111,8 +11111,13 @@
   },
   {
     "id": "3242",
-    "status": "error",
-    "error": "Request failed with status code 503"
+    "name": "BHP News BTS",
+    "logo": "https://img.media.jio.com/tvpimages/70/67/301950_1742458607296_l_medium.jpg",
+    "manifest": "https://jiotvpllive.cdn.jio.com/bpk-tv/BHP_News_BTS/WDVLive/index.mpd",
+    "cookie": "__hdnea__=st=1779723004~exp=1779744604~acl=/bpk-tv/BHP_News_BTS/WDVLive/*~hmac=ff7aedb1140d07744bc56591f9b5460ffef0e2fccf77e8866fac15ffdb9d7be4",
+    "keyid": "cb5bf8f369dd5fccae49f8ab2ed81690",
+    "key": "ebac7227099f08460107ce819b1dd716",
+    "status": "success"
   },
   {
     "id": "173",
