@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-25 16:05:32",
+    "timestamp": "2026-05-25 16:15:30",
     "successful_results": [],
     "failed_results": [
         {
@@ -482,7 +482,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Channel_BTS/WDVLive/index.mpd?__hdnea__=st=1779703829~exp=1779725429~acl=/bpk-tv/Disney_Channel_BTS/WDVLive/*~hmac=fc77b9d4093e8e88c4c8546bc8c2e8c5c166a8fe2a93ff770eb394c2b576c338"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Disney_Channel_BTS/WDVLive/index.mpd?__hdnea__=st=1779725648~exp=1779747248~acl=/bpk-tv/Disney_Channel_BTS/WDVLive/*~hmac=92fa40631f8c1a43f60b87f581f92c8a0c1ae5c8308d0956e6bd6e5c243ab771"
             }
         },
         {
