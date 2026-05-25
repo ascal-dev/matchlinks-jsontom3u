@@ -3,57 +3,71 @@
     "id": 1,
     "name": "Kayo",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/8/8c/Kayo_Sports_logo.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": ""
+    "streamUrl": "https://dck1-ac-live.cdn.indazn.com/out/v1/761f422bb93edb7b/58e3b017d11a40d684bfdd4e93d1f004/index.mpd",
+    "clearKeys": {
+      "ecc68c7bc91756a190dcd7fd0c12cefc": "73e68b8b7409b6e603ecc67a44918175"
+    },
+    "cookieHeader": "cookieMatch[1]"
   },
   {
     "id": 2,
     "name": "Star Sports 2 HD Hindi",
     "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_2_HD_Hindi.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": "_"
+    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd",
+    "clearKeys": {
+      "bd1ea6a1c1fb5dcdb709434e0826bbc0": "f57f22cba32739ce7beb1fab3f3d060b"
+    },
+    "cookieHeader": "__hdnea__=st=1776590894~exp=1776612494~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=4d638127eae153b37531f161620925648d8ac05b92540f70e746d293910c526d"
   },
   {
     "id": 3,
     "name": "Star Sports 1 Hindi",
     "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1_Hindi.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": "_"
+    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd",
+    "clearKeys": {
+      "400131994b445d8c8817202248760fda": "2d56cb6f07a75b9aff165d534ae2bfc4"
+    },
+    "cookieHeader": "__hdnea__=st=1777042381~exp=1777063981~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=8338d5249691d882a0ef73abeb76b139acf694d3a3e683552fbdacd0e63f4732"
   },
   {
     "id": 4,
     "name": "Willow Sports",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Willow_TV_logo.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": ""
+    "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/tll6uwepxa/out/v1/a7f67cbb33df46539312956427343886/cenc.mpd",
+    "clearKeys": {
+      "290e09c837da78d5cd961978d390515c": "b748836c71e6a4ca68ef5b5652db6247"
+    },
+    "cookieHeader": "cookieMatch[1]"
   },
   {
     "id": 5,
     "name": "Star Sports 1",
     "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": "_"
+    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd",
+    "clearKeys": {
+      "965dc2ddb1d85138ad787999a7f30ca5": "859695076e67fe961836b564db6d689c"
+    },
+    "cookieHeader": "__hdnea__=st=1777042378~exp=1777063978~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=2c912144ae2d47151063e2cf5e013b72f3798405e880a3336e6ab7ab120e10d9"
   },
   {
     "id": 6,
     "name": "Willow by Cricbuzz",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Willow_TV_logo.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": ""
+    "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/8kgmavmivc/out/v1/394cc62641f1452bb1f5919a9114a57a/cenc.mpd",
+    "clearKeys": {
+      "1d6d9c164f50d0c058c38ea2574b55ab": "007b6b520787fcc78a6a56fd6a149df2"
+    },
+    "cookieHeader": "cookieMatch[1]"
   },
   {
     "id": 7,
     "name": "Fox 501 HD",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Fox_Sports_logo.svg/512px-Fox_Sports_logo.svg.png",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": ""
+    "streamUrl": "https://dck1-fs-live.dtcdn.dazn.com/out/v1/814bffb9b389f652/d65feac5647949e6b45b2674d4715398/index.mpd",
+    "clearKeys": {
+      "01c9bbf8137e58378a5ead514998a7b4": "fb01e61809e80e5e93a889cd31daab22"
+    },
+    "cookieHeader": "cookieMatch[1]"
   },
   {
     "id": 8,
