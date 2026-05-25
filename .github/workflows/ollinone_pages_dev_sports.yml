@@ -1,12 +1,11 @@
 name: ollinone_pages_dev_sports
-
 on:
   schedule:
-    - cron: '0 */6 * * *' # Automatically runs every 6 hours
-  workflow_dispatch: # Allows manual trigger from the Actions tab
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 permissions:
-  contents: write # Explicitly grants permission to push commits to the repo
+  contents: write
 
 jobs:
   extract-streams:
@@ -19,7 +18,6 @@ jobs:
         run: |
           #!/bin/bash
           
-          # Channel configurations: "Name"="URL|Logo_URL"
           declare -A CHANNELS=(
             ["Star Sports 1"]="https://ollinone.pages.dev/ss1|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1.png"
             ["Star Sports 2 HD"]="https://ollinone.pages.dev/ss2|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_2_HD.png"
@@ -38,16 +36,19 @@ jobs:
           total=${#CHANNELS[@]}
           current=0
 
+          # Define a regex block for both single and double quotes
+          Q="[\"']"
+
           for name in "${!CHANNELS[@]}"; do
             IFS='|' read -r url logo <<< "${CHANNELS[$name]}"
             
             echo "Fetching data for: $name..."
             
-            # Execute curl with required Cloudflare bypass headers and referer
+            # Fetch HTML with Cloudflare bypass headers and strict Referer
             html=$(curl -s -L \
               -H "Host: ollinone.pages.dev" \
               -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
-              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7" \
+              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
               -H "Accept-Encoding: gzip, deflate, br" \
               -H "Referer: https://ollinone.pages.dev/" \
               -H "Connection: keep-alive" \
@@ -56,28 +57,34 @@ jobs:
               -H "Sec-Fetch-Site: same-origin" \
               "$url" | gunzip -c 2>/dev/null || curl -s -L -H "Referer: https://ollinone.pages.dev/" "$url")
 
-            # Regex parsing for ClearKeys, Cookie, and Manifest URL
-            clearKeys=$(echo "$html" | grep -oP 'clearKeys:\s*\{\s*"\K[^"]+":\s*"[^"]+' || echo "")
-            kid=$(echo "$clearKeys" | awk -F'": "' '{print $1}')
-            key=$(echo "$clearKeys" | awk -F'": "' '{print $2}')
+            # Flatten HTML (remove newlines/carriage returns) to handle multi-line JS objects perfectly
+            flat_html=$(echo "$html" | tr '\n' ' ' | tr '\r' ' ' | tr -s ' ')
+
+            # Extract variables (case-insensitive, handles any spacing, single/double quotes, or let/var/const)
+            streamUrl=$(echo "$flat_html" | grep -ioP "streamurl\s*=\s*$Q\K[^$Q]+" | head -n 1 || echo "")
+            cookieHeader=$(echo "$flat_html" | grep -ioP "cookieheader\s*=\s*$Q\K[^$Q]*" | head -n 1 || echo "")
             
-            cookieHeader=$(echo "$html" | grep -oP 'cookieHeader\s*=\s*"\K[^"]+' || echo "")
-            streamUrl=$(echo "$html" | grep -oP 'streamUrl\s*=\s*"\K[^"]+' || echo "")
+            # Extract ClearKeys, bypassing multi-line formatting gaps
+            rawKeys=$(echo "$flat_html" | grep -ioP "clearkeys\s*$Q?\s*:\s*\{\s*$Q?\K[^$Q\s]+$Q?\s*:\s*$Q?[^$Q\s\}]+" | head -n 1 || echo "")
+            
+            kid=$(echo "$rawKeys" | awk -F':' '{print $1}' | tr -d '"'\'' ')
+            key=$(echo "$rawKeys" | awk -F':' '{print $2}' | tr -d '"'\'' ')
 
-            # Default empty strings to prevent malformed JSON if extraction fails on a dead link
-            kid=${kid:-""}
-            key=${key:-""}
+            # Format the clearKeys JSON object cleanly, checking if we actually found a key
+            if [ -z "$kid" ]; then
+              clearKeysJson="{}"
+            else
+              clearKeysJson="{\"$kid\": \"$key\"}"
+            fi
 
-            # Append JSON block
+            # Append to JSON output
             cat >> "$JSON_FILE" <<EOF
             {
               "id": $id,
               "name": "$name",
               "logo": "$logo",
               "streamUrl": "$streamUrl",
-              "clearKeys": {
-                "$kid": "$key"
-              },
+              "clearKeys": $clearKeysJson,
               "cookieHeader": "$cookieHeader"
             }
           EOF
@@ -88,12 +95,12 @@ jobs:
             fi
             
             id=$((id+1))
-            sleep 2 # Throttle requests to respect origin server limits
+            sleep 2
           done
 
           echo "]" >> "$JSON_FILE"
           
-          # Validate and format the resulting JSON
+          # Validate and format JSON using jq
           jq . "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
 
       - name: Commit and Push Changes
@@ -101,5 +108,5 @@ jobs:
           git config --local user.name "ascal-dev"
           git config --local user.email "ascal-dev@users.noreply.github.com"
           git add ollinone_pages_dev_sports.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "chore(api): update manifest URLs and ClearKeys for sports channels"
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore(api): auto-update DRM variables and stream URLs"
           git push
