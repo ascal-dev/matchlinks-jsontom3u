@@ -1,0 +1,105 @@
+name: ollinone_pages_dev_sports
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Automatically runs every 6 hours
+  workflow_dispatch: # Allows manual trigger from the Actions tab
+
+permissions:
+  contents: write # Explicitly grants permission to push commits to the repo
+
+jobs:
+  extract-streams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Extract Variables via Curl & Build JSON
+        run: |
+          #!/bin/bash
+          
+          # Channel configurations: "Name"="URL|Logo_URL"
+          declare -A CHANNELS=(
+            ["Star Sports 1"]="https://ollinone.pages.dev/ss1|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1.png"
+            ["Star Sports 2 HD"]="https://ollinone.pages.dev/ss2|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_2_HD.png"
+            ["Star Sports 2 HD Hindi"]="https://ollinone.pages.dev/ss2hin|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_2_HD_Hindi.png"
+            ["Star Sports 1 Hindi"]="https://ollinone.pages.dev/ss1hin|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1_Hindi.png"
+            ["Willow Sports"]="https://ollinone.pages.dev/willo|https://upload.wikimedia.org/wikipedia/commons/4/4e/Willow_TV_logo.png"
+            ["Willow by Cricbuzz"]="https://ollinone.pages.dev/willoc|https://upload.wikimedia.org/wikipedia/commons/4/4e/Willow_TV_logo.png"
+            ["Kayo"]="https://ollinone.pages.dev/kayo|https://upload.wikimedia.org/wikipedia/commons/8/8c/Kayo_Sports_logo.png"
+            ["Fox 501 HD"]="https://ollinone.pages.dev/fox|https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Fox_Sports_logo.svg/512px-Fox_Sports_logo.svg.png"
+          )
+
+          JSON_FILE="ollinone_pages_dev_sports.json"
+          echo "[" > "$JSON_FILE"
+          
+          id=1
+          total=${#CHANNELS[@]}
+          current=0
+
+          for name in "${!CHANNELS[@]}"; do
+            IFS='|' read -r url logo <<< "${CHANNELS[$name]}"
+            
+            echo "Fetching data for: $name..."
+            
+            # Execute curl with required Cloudflare bypass headers and referer
+            html=$(curl -s -L \
+              -H "Host: ollinone.pages.dev" \
+              -H "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+              -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7" \
+              -H "Accept-Encoding: gzip, deflate, br" \
+              -H "Referer: https://ollinone.pages.dev/" \
+              -H "Connection: keep-alive" \
+              -H "Sec-Fetch-Dest: document" \
+              -H "Sec-Fetch-Mode: navigate" \
+              -H "Sec-Fetch-Site: same-origin" \
+              "$url" | gunzip -c 2>/dev/null || curl -s -L -H "Referer: https://ollinone.pages.dev/" "$url")
+
+            # Regex parsing for ClearKeys, Cookie, and Manifest URL
+            clearKeys=$(echo "$html" | grep -oP 'clearKeys:\s*\{\s*"\K[^"]+":\s*"[^"]+' || echo "")
+            kid=$(echo "$clearKeys" | awk -F'": "' '{print $1}')
+            key=$(echo "$clearKeys" | awk -F'": "' '{print $2}')
+            
+            cookieHeader=$(echo "$html" | grep -oP 'cookieHeader\s*=\s*"\K[^"]+' || echo "")
+            streamUrl=$(echo "$html" | grep -oP 'streamUrl\s*=\s*"\K[^"]+' || echo "")
+
+            # Default empty strings to prevent malformed JSON if extraction fails on a dead link
+            kid=${kid:-""}
+            key=${key:-""}
+
+            # Append JSON block
+            cat >> "$JSON_FILE" <<EOF
+            {
+              "id": $id,
+              "name": "$name",
+              "logo": "$logo",
+              "streamUrl": "$streamUrl",
+              "clearKeys": {
+                "$kid": "$key"
+              },
+              "cookieHeader": "$cookieHeader"
+            }
+          EOF
+            
+            current=$((current+1))
+            if [ $current -lt $total ]; then
+              echo "," >> "$JSON_FILE"
+            fi
+            
+            id=$((id+1))
+            sleep 2 # Throttle requests to respect origin server limits
+          done
+
+          echo "]" >> "$JSON_FILE"
+          
+          # Validate and format the resulting JSON
+          jq . "$JSON_FILE" > temp.json && mv temp.json "$JSON_FILE"
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.name "ascal-dev"
+          git config --local user.email "ascal-dev@users.noreply.github.com"
+          git add ollinone_pages_dev_sports.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore(api): update manifest URLs and ClearKeys for sports channels"
+          git push
