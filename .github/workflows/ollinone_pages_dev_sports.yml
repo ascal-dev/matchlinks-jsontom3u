@@ -21,14 +21,14 @@ jobs:
           #!/bin/bash
           
           declare -A CHANNELS=(
-            ["Star Sports 1"]="https://ollinone.pages.dev/ss1|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1.png"
-            ["Star Sports 2 HD"]="https://ollinone.pages.dev/ss2|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_2_HD.png"
-            ["Star Sports 2 HD Hindi"]="https://ollinone.pages.dev/ss2hin|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_2_HD_Hindi.png"
-            ["Star Sports 1 Hindi"]="https://ollinone.pages.dev/ss1hin|https://jiotvimages.cdn.jio.com/dare_images/images/channel/Star_Sports_1_Hindi.png"
-            ["Willow Sports"]="https://ollinone.pages.dev/willo|https://upload.wikimedia.org/wikipedia/commons/4/4e/Willow_TV_logo.png"
-            ["Willow by Cricbuzz"]="https://ollinone.pages.dev/willoc|https://upload.wikimedia.org/wikipedia/commons/4/4e/Willow_TV_logo.png"
-            ["Kayo"]="https://ollinone.pages.dev/kayo|https://upload.wikimedia.org/wikipedia/commons/8/8c/Kayo_Sports_logo.png"
-            ["Fox 501 HD"]="https://ollinone.pages.dev/fox|https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Fox_Sports_logo.svg/512px-Fox_Sports_logo.svg.png"
+            ["Star Sports 1"]="https://ollinone.pages.dev/ss1|https://img.media.jio.com/tvpimages/76/32/301981_1749665664018_l_medium.jpg"
+            ["Star Sports 2 HD"]="https://ollinone.pages.dev/ss2|https://img.media.jio.com/tvpimages/41/51/301983_1749666169105_l_medium.jpg"
+            ["Star Sports 2 HD Hindi"]="https://ollinone.pages.dev/ss2hin|https://img.media.jio.com/tvpimages/56/36/301229_1742214332015_l_medium.jpg"
+            ["Star Sports 1 Hindi"]="https://ollinone.pages.dev/ss1hin|https://img.media.jio.com/tvpimages/5/6/301982_1749665314605_l_medium.jpg"
+            ["Willow Sports"]="https://ollinone.pages.dev/willo|https://mms.businesswire.com/media/20241011098963/en/2269728/4/Willow_Sports_Stacked_Logo_-_White_%281%29.jpg"
+            ["Willow by Cricbuzz"]="https://ollinone.pages.dev/willoc|https://static.toiimg.com/thumb/imgsize-23456,msid-108693639,width-600,resizemode-4/108693639.jpg"
+            ["Kayo"]="https://ollinone.pages.dev/kayo|https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu3av7wTh6_Hi23aaDYDfDUJrqB8Udr6OZhQ&s"
+            ["Fox 501 HD"]="https://ollinone.pages.dev/fox|https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/409efa6e-c69a-4971-ac4e-a2a76dcd02e5/dfg9ktb-0cfd204f-fb93-489d-91b5-9e2fb90f6224.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi80MDllZmE2ZS1jNjlhLTQ5NzEtYWM0ZS1hMmE3NmRjZDAyZTUvZGZnOWt0Yi0wY2ZkMjA0Zi1mYjkzLTQ4OWQtOTFiNS05ZTJmYjkwZjYyMjQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vqJcHTZAMfRb6fLV9swglfbvdGlgDaibaQxD2q6NC0c"
           )
 
           JSON_FILE="ollinone_pages_dev_sports.json"
