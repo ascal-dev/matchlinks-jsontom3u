@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-25 12:35:32",
+    "timestamp": "2026-05-25 12:45:28",
     "successful_results": [],
     "failed_results": [
         {
@@ -142,7 +142,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779691209~exp=1779712809~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=a1f3d20a421398c034e8f6f9db39146ba640277c85a78892bd769daecb648954"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779712844~exp=1779734444~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=b7d2583ae5cf7648040b232423858452f04016833f465c578d8acf4ec8b59efb"
             }
         },
         {
