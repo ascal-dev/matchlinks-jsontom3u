@@ -3,9 +3,9 @@
     "id": 1,
     "name": "Kayo",
     "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu3av7wTh6_Hi23aaDYDfDUJrqB8Udr6OZhQ&s",
-    "streamUrl": "https://dck1-ac-live.cdn.indazn.com/out/v1/761f422bb93edb7b/58e3b017d11a40d684bfdd4e93d1f004/index.mpd",
+    "streamUrl": "https://dck1-ac-live.cdn.indazn.com/out/v1/761f422bb93edb7b/96c681081ef542b1bd4bdf94806e5a06/index.mpd",
     "clearKeys": {
-      "ecc68c7bc91756a190dcd7fd0c12cefc": "73e68b8b7409b6e603ecc67a44918175"
+      "89c5df2d78115f56a99366a56da51f9b": "b30f0983a30d8075048be96569b7f671"
     },
     "cookieHeader": ""
   },
