@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-26 06:25:30",
+    "timestamp": "2026-05-26 06:55:28",
     "successful_results": [],
     "failed_results": [
         {
@@ -142,7 +142,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779756609~exp=1779778209~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=e95123af1985fa3e1e7619a978dce8d35720d19907e790d401cb2496215e78dc"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779778509~exp=1779800109~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=fa297e4910079582b83ca5af2509eb946684617d70fdc10e2a4f6e43f1025eb8"
             }
         },
         {
@@ -672,7 +672,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779755732~exp=1779777332~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=8b63d750655b74c6e8eeefc13b21def16547df6fd733c4c1675b4ed2b163eed3"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779777632~exp=1779799232~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=9ae49763053896757af6ec9a25faa20d81ed02ab4f06a2dc2a627f07985a38ca"
             }
         },
         {
@@ -762,7 +762,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1779755742~exp=1779777342~acl=/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/*~hmac=fe62055105ff01817e40fbc1d1bd0aa75a572c10bd28ea5a4b505bf24823a8e4"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1779777643~exp=1779799243~acl=/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/*~hmac=28aee09ddb3616b63fb81fa1b6685b2bfff2786f5f6f73074d975f8c6d35b8c2"
             }
         }
     ]
