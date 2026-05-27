@@ -1,8 +1,8 @@
 {
     "total_channels": 76,
-    "successful_channels": 38,
-    "failed_channels": 38,
-    "timestamp": "2026-05-27 16:31:21",
+    "successful_channels": 39,
+    "failed_channels": 37,
+    "timestamp": "2026-05-27 16:46:09",
     "successful_results": [
         {
             "channel_id": "156",
@@ -226,6 +226,14 @@
             "status": "success",
             "http_code": 200,
             "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1324",
+            "playlist_data": "API failed: invalid response"
+        },
+        {
+            "channel_id": "1371",
+            "channel_name": "Colors Tamil",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1371",
             "playlist_data": "API failed: invalid response"
         },
         {
@@ -488,16 +496,6 @@
                 "http_code": 450,
                 "error": "",
                 "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779893778~exp=1779915378~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=8b132136bed249d2a4cacaa78527176798015deb81d5a7195c835ae00fd4561e"
-            }
-        },
-        {
-            "channel_id": "1371",
-            "channel_name": "Colors Tamil",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1779878729~exp=1779900329~acl=/bpk-tv/Colors_Tamil_BTS/WDVLive/*~hmac=4ad676dd0ed1ed0cc28587fcabe7f9bdccb9e13b6e26b6c5f139466de63b5589"
             }
         },
         {
