@@ -2,7 +2,7 @@
     "total_channels": 76,
     "successful_channels": 0,
     "failed_channels": 76,
-    "timestamp": "2026-05-27 07:45:30",
+    "timestamp": "2026-05-27 08:10:36",
     "successful_results": [],
     "failed_results": [
         {
@@ -102,7 +102,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeAnmolCinema_BTS/WDVLive/index.mpd?__hdnea__=st=1779847207~exp=1779868807~acl=/bpk-tv/ZeeAnmolCinema_BTS/WDVLive/*~hmac=2a2fe79e0bee906fc0aa857c989b96d711265ba961002bfc088dbfaa975abc97"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ZeeAnmolCinema_BTS/WDVLive/index.mpd?__hdnea__=st=1779868845~exp=1779890445~acl=/bpk-tv/ZeeAnmolCinema_BTS/WDVLive/*~hmac=507465ffbe55ef195f8938c74df990333c89fc40d2d5204b6046bd25069fad2e"
             }
         },
         {
@@ -212,7 +212,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1779846915~exp=1779868515~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=28b411505cd838b3610822cad863bc9a04ec4fc3a6caa1ccbf0ed44a86454eba"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1779868585~exp=1779890185~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=6b1dcbb4c3a8d9ad5f451cf365b9067ad848b7743a1d8d36ae1958e47cb1a8e5"
             }
         },
         {
@@ -442,7 +442,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779846322~exp=1779867922~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=231ae8225ade355a9d9686e86fda05ad9fe3a45899d550c198160205959d9d31"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779867961~exp=1779889561~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=b02c5b93a6c9c2b8a19477b956789fda9a6001a13458c8ee0e8cb33d7c2bdc2e"
             }
         },
         {
