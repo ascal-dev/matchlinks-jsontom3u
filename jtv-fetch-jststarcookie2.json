@@ -1,684 +1,617 @@
 {
     "total_channels": 76,
-    "successful_channels": 43,
-    "failed_channels": 33,
-    "timestamp": "2026-05-27 23:12:01",
+    "successful_channels": 76,
+    "failed_channels": 0,
+    "timestamp": "2026-05-28 07:05:10",
     "successful_results": [
+        {
+            "channel_id": "144",
+            "channel_name": "Colors HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=144",
+            "playlist_data": "API failed: invalid response"
+        },
         {
             "channel_id": "156",
             "channel_name": "Star Gold HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=156",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=156",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "196",
+            "channel_name": "Colors Gujarati",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=196",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "248",
+            "channel_name": "MTV",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=248",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "279",
             "channel_name": "Colors Rishtey",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=279",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=279",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "317",
             "channel_name": "Star Jalsha HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=317",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=317",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "336",
             "channel_name": "Star Pravah HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=336",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=336",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "368",
             "channel_name": "Star Vijay HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=368",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=368",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "370",
             "channel_name": "Suvarna HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=370",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=370",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "415",
             "channel_name": "Zee Anmol Cinema",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=415",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=415",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "429",
+            "channel_name": "Colors Tamil HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=429",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "460",
             "channel_name": "Star Sports Select 1 HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=460",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=460",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "461",
+            "channel_name": "Star Sports Select 2 HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=461",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "482",
+            "channel_name": "Colors Cineplex",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=482",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "755",
+            "channel_name": "Colors Marathi HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=755",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "757",
+            "channel_name": "Colors Kannada HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=757",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "760",
             "channel_name": "Maa Movies HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=760",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=760",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "785",
             "channel_name": "Colors Super",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=785",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=785",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "931",
             "channel_name": "Star Bharat HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=931",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=931",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1104",
             "channel_name": "Star Movies HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1104",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1104",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1106",
             "channel_name": "Star Sports 1 HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1106",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1106",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1108",
+            "channel_name": "Star Sports 1 Hindi HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1108",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1109",
             "channel_name": "Star Sports 2 HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1109",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1109",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1110",
+            "channel_name": "Star Movies Select HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1110",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1111",
+            "channel_name": "Maa Movies",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1111",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1112",
+            "channel_name": "Maa HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1112",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1113",
+            "channel_name": "Star Gold Select HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1113",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1114",
+            "channel_name": "Star Sports Select 2",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1114",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1115",
             "channel_name": "Star Movies",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1115",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1115",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1117",
             "channel_name": "Suvarna",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1117",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1117",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1119",
+            "channel_name": "Star Gold Select",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1119",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1122",
             "channel_name": "Star Sports 2 Kannada",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1122",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1122",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1123",
             "channel_name": "Star Sports Select 1",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1123",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1123",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1124",
             "channel_name": "Star Sports 1 Tamil",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1124",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1124",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1129",
             "channel_name": "Maa Music",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1129",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1129",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1132",
+            "channel_name": "Star Plus HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1132",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1136",
+            "channel_name": "Star Utsav Movies",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1136",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1137",
             "channel_name": "Maa Gold",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1137",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1137",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1138",
             "channel_name": "Star Maa",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1138",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1138",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1140",
             "channel_name": "Suvarna Plus",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1140",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1140",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1141",
             "channel_name": "Star Sports 2",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1141",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1141",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1142",
             "channel_name": "Star Sports 1",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1142",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1142",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1143",
             "channel_name": "Star Utsav",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1143",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1143",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1154",
+            "channel_name": "Star Gold 2 HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1154",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1158",
             "channel_name": "Colors Infinity HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1158",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1158",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1324",
             "channel_name": "Colors Gujarati Cinema",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1324",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1324",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1371",
             "channel_name": "Colors Tamil",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1371",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1371",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1373",
             "channel_name": "Disney Channel",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1373",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1373",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1374",
             "channel_name": "Disney Junior",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1374",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1374",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1375",
             "channel_name": "Disney International HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1375",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1375",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1389",
             "channel_name": "Star Sports 3",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1389",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1389",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1391",
+            "channel_name": "Hungama",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1391",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1392",
             "channel_name": "Super Hungama",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1392",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1392",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1477",
+            "channel_name": "Colors Cineplex HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1477",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1632",
             "channel_name": "Colors Kannada Cinema",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1632",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1632",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1650",
             "channel_name": "Star Sports 1 Kannada",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1650",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1650",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1651",
             "channel_name": "Star Sports 1 Telugu",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1651",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1651",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1657",
             "channel_name": "Colors Bangla Cinema",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1657",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1657",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1763",
+            "channel_name": "Colors Cineplex Bollywood",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1763",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1984",
             "channel_name": "Star Sports 2 Hindi HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1984",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1984",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "1985",
             "channel_name": "Star Sports 2 Hindi",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=1985",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1985",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "1998",
+            "channel_name": "Star Sports Khel",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=1998",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "2852",
+            "channel_name": "Star Sports 2 Telugu",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=2852",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "2853",
+            "channel_name": "Star Sports 2 Tamil",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=2853",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3096",
+            "channel_name": "Star Gold 2 HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3096",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3097",
+            "channel_name": "Star Gold Romance",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3097",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3098",
+            "channel_name": "Star Gold Thrills",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3098",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "3099",
             "channel_name": "Star Pravah Picture",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=3099",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3099",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "3100",
             "channel_name": "Star Pravah Picture HD",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=3100",
-            "playlist_data": "API failed: invalid response"
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3100",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3273",
+            "channel_name": "Star Sports 2 Tamil HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3273",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3274",
+            "channel_name": "Star Sports 2 Telugu HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3274",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3276",
+            "channel_name": "Star Movies Select",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3276",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3277",
+            "channel_name": "Star Sports 1 Tamil HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3277",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
+        },
+        {
+            "channel_id": "3278",
+            "channel_name": "Star Sports 1 Telugu HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3278",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "3267",
             "channel_name": "Star Kiran",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/ifO3V8/Jtv.mpd?id=3267",
-            "playlist_data": "API failed: invalid response"
-        }
-    ],
-    "failed_results": [
-        {
-            "channel_id": "144",
-            "channel_name": "Colors HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779905206~exp=1779926806~acl=/bpk-tv/ColorsHD_BTS/WDVLive/*~hmac=a285fc5ada3b3a64d5be3cad6f2142cd4b577a9380caa91ca9b2f39711ee4c84"
-            }
-        },
-        {
-            "channel_id": "196",
-            "channel_name": "Colors Gujarati",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsGujarati_BTS/WDVLive/index.mpd?__hdnea__=st=1779903307~exp=1779924907~acl=/bpk-tv/ColorsGujarati_BTS/WDVLive/*~hmac=230d43bdc1c12cb91ac34a0be57a77520627a0a9293f3ed223ac5da93618bc67"
-            }
-        },
-        {
-            "channel_id": "248",
-            "channel_name": "MTV",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/MTV_BTS/WDVLive/index.mpd?__hdnea__=st=1779903008~exp=1779924608~acl=/bpk-tv/MTV_BTS/WDVLive/*~hmac=19ef1f1eaad7bc2114dded1bc0caddfe0ceaa0d91f8fc75aa8cf780040738084"
-            }
-        },
-        {
-            "channel_id": "429",
-            "channel_name": "Colors Tamil HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsTamilHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779916208~exp=1779937808~acl=/bpk-tv/ColorsTamilHD_BTS/WDVLive/*~hmac=b6ee3589609fb9fa2798802e3e001469748db55c5d8a651e97b8edc4f3d38ee4"
-            }
-        },
-        {
-            "channel_id": "461",
-            "channel_name": "Star Sports Select 2 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_HD_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779903317~exp=1779924917~acl=/bpk-tv/Star_Sports_Select_HD_2_BTS/WDVLive/*~hmac=8d1f0b7dda1e345b890dac539e9fd7ca3cb702e90273c6bca825dec4cebfe0ca"
-            }
-        },
-        {
-            "channel_id": "482",
-            "channel_name": "Colors Cineplex",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Cineplex_BTS/WDVLive/index.mpd?__hdnea__=st=1779916211~exp=1779937811~acl=/bpk-tv/Colors_Cineplex_BTS/WDVLive/*~hmac=64815fd2c5c92ef1d0ffe313441aa83222f2c9b95117e0c43cce456743d03fa0"
-            }
-        },
-        {
-            "channel_id": "755",
-            "channel_name": "Colors Marathi HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Marathi_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779903326~exp=1779924926~acl=/bpk-tv/Colors_Marathi_HD_BTS/WDVLive/*~hmac=2f125e050efe14acd4eb939410f77a0cf190773cd44125ccd7461efa46ddcd19"
-            }
-        },
-        {
-            "channel_id": "757",
-            "channel_name": "Colors Kannada HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Colors_Kannada_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779902112~exp=1779923712~acl=/bpk-tv/Colors_Kannada_HD_BTS/WDVLive/*~hmac=dd4dcbb159eac2c77d4093db56fbc0031002c879b5e56cc90615f54ea6c932b3"
-            }
-        },
-        {
-            "channel_id": "1108",
-            "channel_name": "Star Sports 1 Hindi HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1779916220~exp=1779937820~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=44c84321676892164f892f562b4bb5b2813d1153b1b9d73a2c1629e85670ced8"
-            }
-        },
-        {
-            "channel_id": "1110",
-            "channel_name": "Star Movies Select HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Movies_Select_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779916224~exp=1779937824~acl=/bpk-tv/Star_Movies_Select_HD_BTS/WDVLive/*~hmac=30c2a6c2fd808c5e30676505864b9297acbaac7657b331816b70197dac7b39ef"
-            }
-        },
-        {
-            "channel_id": "1111",
-            "channel_name": "Maa Movies",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_Movies_BTS/WDVLive/index.mpd?__hdnea__=st=1779916230~exp=1779937830~acl=/bpk-tv/Maa_Movies_BTS/WDVLive/*~hmac=ccd8674b9d4c1532da68feaca5c5eb3b5ec90ae20d96f62d8e2a3ba39e6ce4dc"
-            }
-        },
-        {
-            "channel_id": "1112",
-            "channel_name": "Maa HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Maa_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779916233~exp=1779937833~acl=/bpk-tv/Maa_HD_BTS/WDVLive/*~hmac=c8561b5d33987351a3b032a9e5a972fcf3305de13cfd3660e9f733147f534d49"
-            }
-        },
-        {
-            "channel_id": "1113",
-            "channel_name": "Star Gold Select HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779903334~exp=1779924934~acl=/bpk-tv/Star_Gold_Select_HD_BTS/WDVLive/*~hmac=059dda54ef1d89d18bed3f693ce0f3e764c43779a46d161d232c35a8e5d260cd"
-            }
-        },
-        {
-            "channel_id": "1114",
-            "channel_name": "Star Sports Select 2",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779916237~exp=1779937837~acl=/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/*~hmac=70101cef703b41703119d38ea4f54209d112499f6032f22a02e4f9db485099cd"
-            }
-        },
-        {
-            "channel_id": "1119",
-            "channel_name": "Star Gold Select",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Select_BTS/WDVLive/index.mpd?__hdnea__=st=1779916240~exp=1779937840~acl=/bpk-tv/Star_Gold_Select_BTS/WDVLive/*~hmac=6977cb8a4fe84c3a23decbaac1c97f39a7baa59bc12de72ac9f52c4da823f806"
-            }
-        },
-        {
-            "channel_id": "1132",
-            "channel_name": "Star Plus HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Plus_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779904523~exp=1779926123~acl=/bpk-tv/Star_Plus_HD_BTS/WDVLive/*~hmac=f35740f702b94544f2e3aee46fd9f9fff8399ac3dcc8a39235dee9ad90cf5305"
-            }
-        },
-        {
-            "channel_id": "1136",
-            "channel_name": "Star Utsav Movies",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Utsav_Movies_BTS/WDVLive/index.mpd?__hdnea__=st=1779916243~exp=1779937843~acl=/bpk-tv/Star_Utsav_Movies_BTS/WDVLive/*~hmac=18f72284afd9a60c7d4fd0012416645c329783ae05757c12086a937cd7442f8e"
-            }
-        },
-        {
-            "channel_id": "1154",
-            "channel_name": "Star Gold 2 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_BTS/WDVLive/index.mpd?__hdnea__=st=1779916249~exp=1779937849~acl=/bpk-tv/Star_Gold_2_BTS/WDVLive/*~hmac=4dbddcf4dab8ab1948766327e59c1f692f682a7c54bd6ffaac87290b01853fac"
-            }
-        },
-        {
-            "channel_id": "1391",
-            "channel_name": "Hungama",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Hungama_BTS/WDVLive/index.mpd?__hdnea__=st=1779903202~exp=1779924802~acl=/bpk-tv/Hungama_BTS/WDVLive/*~hmac=d19ff68303266e45af2e2601673ac7d1efbe885f0b60b6204920c83f1f098a5c"
-            }
-        },
-        {
-            "channel_id": "1477",
-            "channel_name": "Colors Cineplex HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsCineplexHD_BTS/WDVLive/index.mpd?__hdnea__=st=1779904536~exp=1779926136~acl=/bpk-tv/ColorsCineplexHD_BTS/WDVLive/*~hmac=a80798b34ca9f0c5a5b7ba7a3207e9cf6c0daf6f867cb34d11864c62df0727f6"
-            }
-        },
-        {
-            "channel_id": "1763",
-            "channel_name": "Colors Cineplex Bollywood",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsCineplexBollywood_BTS/WDVLive/index.mpd?__hdnea__=st=1779916255~exp=1779937855~acl=/bpk-tv/ColorsCineplexBollywood_BTS/WDVLive/*~hmac=671e5720addda656977763bfd2c5fc2d0eec47ee7cd89d74637ef584179aa13c"
-            }
-        },
-        {
-            "channel_id": "1998",
-            "channel_name": "Star Sports Khel",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsKhel_BTS/WDVLive/index.mpd?__hdnea__=st=1779903353~exp=1779924953~acl=/bpk-tv/StarSportsKhel_BTS/WDVLive/*~hmac=9f3ef3f33112337703200b3c411356de2fe92c972625d43ececc68ab2fc21155"
-            }
-        },
-        {
-            "channel_id": "2852",
-            "channel_name": "Star Sports 2 Telugu",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSports2Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1779903361~exp=1779924961~acl=/bpk-tv/StarSports2Telugu_BTS/WDVLive/*~hmac=ee497f5b7ccb520268949bc88e3e350a454c6f402626e5482f322e41e315d4ee"
-            }
-        },
-        {
-            "channel_id": "2853",
-            "channel_name": "Star Sports 2 Tamil",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSports2Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1779903374~exp=1779924974~acl=/bpk-tv/StarSports2Tamil_BTS/WDVLive/*~hmac=29f4996000fda3fafde29fcd1d074d61effb63ca2b6b54921e1f72291e0b9d09"
-            }
-        },
-        {
-            "channel_id": "3096",
-            "channel_name": "Star Gold 2 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_2_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779903378~exp=1779924978~acl=/bpk-tv/Star_Gold_2_HD_BTS/WDVLive/*~hmac=a2af06db6362e19f89fd26679c3b5583586d9afb909ced7fbf820432a8f400d3"
-            }
-        },
-        {
-            "channel_id": "3097",
-            "channel_name": "Star Gold Romance",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Romance_BTS/WDVLive/index.mpd?__hdnea__=st=1779904545~exp=1779926145~acl=/bpk-tv/Star_Gold_Romance_BTS/WDVLive/*~hmac=74fa49e26df8d4fcef4e83e1d82cf8a8ce286a9bf052df8dcbce58560c554add"
-            }
-        },
-        {
-            "channel_id": "3098",
-            "channel_name": "Star Gold Thrills",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/index.mpd?__hdnea__=st=1779916259~exp=1779937859~acl=/bpk-tv/Star_Gold_Thrills_BTS/WDVLive/*~hmac=86d8312fa7a8ce8323e293c5bce4987ad9ba1d695d9b22d16ba4e931aa2550d1"
-            }
-        },
-        {
-            "channel_id": "3273",
-            "channel_name": "Star Sports 2 Tamil HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779903388~exp=1779924988~acl=/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/*~hmac=023b459002d669a48b5ccee043d1f47d56241473cf89bf611b43f80cbcd8e2b4"
-            }
-        },
-        {
-            "channel_id": "3274",
-            "channel_name": "Star Sports 2 Telugu HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779903396~exp=1779924996~acl=/bpk-tv/Star_Sports2_Telugu_HD_BTS/WDVLive/*~hmac=569e5350c51e1abf73405ace518fe602257d1e0f60c6a155392a7a6b63c90fef"
-            }
-        },
-        {
-            "channel_id": "3276",
-            "channel_name": "Star Movies Select",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Movies_Select_BTS/WDVLive/index.mpd?__hdnea__=st=1779903938~exp=1779925538~acl=/bpk-tv/Star_Movies_Select_BTS/WDVLive/*~hmac=72f8d261cc9c94965445a1cf405fffe49aca623dbbe07bd003fba59d1e83054d"
-            }
-        },
-        {
-            "channel_id": "3277",
-            "channel_name": "Star Sports 1 Tamil HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Tamil_HD_BTS/output/index.mpd?__hdnea__=st=1779916264~exp=1779937864~acl=/bpk-tv/Star_Sports_1_Tamil_HD_BTS/WDVLive/*~hmac=9f11a5a60e21ed694cca532875baa944ce90e901852f1b1d28ae86966d28c445"
-            }
-        },
-        {
-            "channel_id": "3278",
-            "channel_name": "Star Sports 1 Telugu HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1779916268~exp=1779937868~acl=/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/*~hmac=ddf57c6bb1c931a1364ed6216e9b64392ddc5e1dead9b26066414fbf673651db"
-            }
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=3267",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         },
         {
             "channel_id": "362",
             "channel_name": "Star Sports 1 Hindi",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1779916271~exp=1779937871~acl=/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/*~hmac=a7e5f0d627669a868264ac271a1d8e3ccd3c3628d44f9a429d346384f9f8107f"
-            }
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/GsMNus/Jtv.mpd?id=362",
+            "playlist_data": "{\"error\":\"Invalid token\"}"
         }
-    ]
+    ],
+    "failed_results": []
 }
