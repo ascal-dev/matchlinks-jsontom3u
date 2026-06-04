@@ -1,31 +1,15 @@
 {
     "total_channels": 23,
-    "successful_channels": 3,
-    "failed_channels": 20,
-    "timestamp": "2026-06-04 10:45:55",
+    "successful_channels": 1,
+    "failed_channels": 22,
+    "timestamp": "2026-06-04 11:30:24",
     "successful_results": [
         {
-            "channel_id": "1114",
-            "channel_name": "Star Sports Select 2",
+            "channel_id": "2853",
+            "channel_name": "Star Sports 2 Tamil",
             "status": "success",
             "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1114",
-            "playlist_data": "API failed: invalid response"
-        },
-        {
-            "channel_id": "1122",
-            "channel_name": "Star Sports 2 Kannada",
-            "status": "success",
-            "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1122",
-            "playlist_data": "API failed: invalid response"
-        },
-        {
-            "channel_id": "3273",
-            "channel_name": "Star Sports 2 Tamil HD",
-            "status": "success",
-            "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=3273",
+            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=2853",
             "playlist_data": "API failed: invalid response"
         }
     ],
@@ -58,6 +42,16 @@
                 "http_code": 450,
                 "error": "",
                 "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_HD_2_BTS/WDVLive/index.mpd?__hdnea__=st=1780563324~exp=1780584924~acl=/bpk-tv/Star_Sports_Select_HD_2_BTS/WDVLive/*~hmac=cb9b15a534eb188b6b15b2c0b85e38420683792c51e4da94434908fb73f09820"
+            }
+        },
+        {
+            "channel_id": "1114",
+            "channel_name": "Star Sports Select 2",
+            "status": "failed",
+            "error_details": {
+                "http_code": 450,
+                "error": "",
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/index.mpd?__hdnea__=st=1780571409~exp=1780593009~acl=/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/*~hmac=105ac6a0a9bf988f98df778ac841c2891ca3d48c7b56ac24778b0782270a5a90"
             }
         },
         {
@@ -201,13 +195,23 @@
             }
         },
         {
-            "channel_id": "2853",
-            "channel_name": "Star Sports 2 Tamil",
+            "channel_id": "1122",
+            "channel_name": "Star Sports 2 Kannada",
             "status": "failed",
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSports2Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1780550716~exp=1780572316~acl=/bpk-tv/StarSports2Tamil_BTS/WDVLive/*~hmac=6b7a35bc793554f81616e7c30bb6477ebc7e4f1cfb598884927d469f6ca69e39"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/index.mpd?__hdnea__=st=1780571419~exp=1780593019~acl=/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/*~hmac=f24702759bcc4ed2a2ef3ec41ce259495337ef92cd2f0d95ccb0edffb1d0b6fe"
+            }
+        },
+        {
+            "channel_id": "3273",
+            "channel_name": "Star Sports 2 Tamil HD",
+            "status": "failed",
+            "error_details": {
+                "http_code": 450,
+                "error": "",
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1780571429~exp=1780593029~acl=/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/*~hmac=256dbfd57303a8d6047d9fee0040bc9d250030c2c9915bd757f686a17f60b00c"
             }
         },
         {
