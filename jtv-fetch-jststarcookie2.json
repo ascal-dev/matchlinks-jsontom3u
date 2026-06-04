@@ -1,8 +1,8 @@
 {
     "total_channels": 23,
-    "successful_channels": 4,
-    "failed_channels": 19,
-    "timestamp": "2026-06-04 10:21:11",
+    "successful_channels": 3,
+    "failed_channels": 20,
+    "timestamp": "2026-06-04 10:45:55",
     "successful_results": [
         {
             "channel_id": "1114",
@@ -13,27 +13,19 @@
             "playlist_data": "API failed: invalid response"
         },
         {
-            "channel_id": "1984",
-            "channel_name": "Star Sports 2 Hindi HD",
-            "status": "success",
-            "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1984",
-            "playlist_data": "API failed: invalid response"
-        },
-        {
-            "channel_id": "1650",
-            "channel_name": "Star Sports 1 Kannada",
-            "status": "success",
-            "http_code": 200,
-            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1650",
-            "playlist_data": "API failed: invalid response"
-        },
-        {
             "channel_id": "1122",
             "channel_name": "Star Sports 2 Kannada",
             "status": "success",
             "http_code": 200,
             "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1122",
+            "playlist_data": "API failed: invalid response"
+        },
+        {
+            "channel_id": "3273",
+            "channel_name": "Star Sports 2 Tamil HD",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=3273",
             "playlist_data": "API failed: invalid response"
         }
     ],
@@ -85,7 +77,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1780547109~exp=1780568709~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=dca695214cdda3d1cc5c30f62a2178b4a5609dc9c9509d59955d16880d7da360"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1780569025~exp=1780590625~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=b4289e7da79900a242e5518872cf65365b0e497415b6bfd186bde0168b00d274"
             }
         },
         {
@@ -126,6 +118,16 @@
                 "http_code": 450,
                 "error": "",
                 "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_BTS/WDVLive/index.mpd?__hdnea__=st=1780562498~exp=1780584098~acl=/bpk-tv/Star_Sports_2_BTS/WDVLive/*~hmac=a79394fd963674002781ae7bbfe4ec07034d3dacad07a7dd28ae6ede97da1982"
+            }
+        },
+        {
+            "channel_id": "1984",
+            "channel_name": "Star Sports 2 Hindi HD",
+            "status": "failed",
+            "error_details": {
+                "http_code": 450,
+                "error": "",
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd?__hdnea__=st=1780568741~exp=1780590341~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=45119ad00b7c5b87ee37c8775903a6faea64bbf6e5e1fcedb50cafe48e02b8bd"
             }
         },
         {
@@ -189,13 +191,13 @@
             }
         },
         {
-            "channel_id": "3273",
-            "channel_name": "Star Sports 2 Tamil HD",
+            "channel_id": "1650",
+            "channel_name": "Star Sports 1 Kannada",
             "status": "failed",
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1780548019~exp=1780569619~acl=/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/*~hmac=def481fb51e5d721f35832270889b08fe653428c63a9307b7e810a898988e1fc"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Kannada_BTS/WDVLive/index.mpd?__hdnea__=st=1780569033~exp=1780590633~acl=/bpk-tv/Star_Sports_1_Kannada_BTS/WDVLive/*~hmac=34b7312d7d0fcbccc7ff6dd678f23dd2da937823eb43ee1d4eb8f60090808463"
             }
         },
         {
