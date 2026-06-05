@@ -2,7 +2,7 @@
     "total_channels": 23,
     "successful_channels": 0,
     "failed_channels": 23,
-    "timestamp": "2026-06-05 07:50:07",
+    "timestamp": "2026-06-05 08:25:07",
     "successful_results": [],
     "failed_results": [
         {
@@ -172,7 +172,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1780625409~exp=1780647009~acl=/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/*~hmac=8ab2f3ee911e1168e4387ee9295c1ed86aabc67404877d22f41d4006dd66fb8d"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1780647312~exp=1780668912~acl=/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/*~hmac=7e98678f26bbad4aab81fbdad0d968db18f926163817947cfdfc56db971f34e3"
             }
         },
         {
