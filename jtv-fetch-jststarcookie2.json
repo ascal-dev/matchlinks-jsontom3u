@@ -1,8 +1,8 @@
 {
     "total_channels": 23,
-    "successful_channels": 8,
-    "failed_channels": 15,
-    "timestamp": "2026-06-06 07:25:33",
+    "successful_channels": 9,
+    "failed_channels": 14,
+    "timestamp": "2026-06-06 09:05:42",
     "successful_results": [
         {
             "channel_id": "1114",
@@ -34,6 +34,14 @@
             "status": "success",
             "http_code": 200,
             "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1389",
+            "playlist_data": "API failed: invalid response"
+        },
+        {
+            "channel_id": "1651",
+            "channel_name": "Star Sports 1 Telugu",
+            "status": "success",
+            "http_code": 200,
+            "final_url": "https://game.denver69.fun/Jtv/pqNHlN/Jtv.mpd?id=1651",
             "playlist_data": "API failed: invalid response"
         },
         {
@@ -188,16 +196,6 @@
                 "http_code": 450,
                 "error": "",
                 "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1780719013~exp=1780740613~acl=/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/*~hmac=85c5c6bbfefdeb22116dca87686683557694abba7bd5119148537ea9632461fe"
-            }
-        },
-        {
-            "channel_id": "1651",
-            "channel_name": "Star Sports 1 Telugu",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1780713013~exp=1780734613~acl=/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/*~hmac=90d58230a36d4b691eff922e60efaa8a42e2f374a3f1df1fe38c00de57b12c2e"
             }
         },
         {
