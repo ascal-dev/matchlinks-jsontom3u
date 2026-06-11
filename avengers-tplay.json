@@ -4549,7 +4549,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/EKMCYN_Thumbnail-v1/EKMCYN_Thumbnail.png",
     "Language": "Odia",
     "status": "error",
-    "error": "socket hang up"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "1201",
