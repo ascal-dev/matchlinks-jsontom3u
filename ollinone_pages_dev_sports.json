@@ -61,10 +61,8 @@
     "id": 7,
     "name": "Fox 501 HD",
     "logo": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/409efa6e-c69a-4971-ac4e-a2a76dcd02e5/dfg9ktb-0cfd204f-fb93-489d-91b5-9e2fb90f6224.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi80MDllZmE2ZS1jNjlhLTQ5NzEtYWM0ZS1hMmE3NmRjZDAyZTUvZGZnOWt0Yi0wY2ZkMjA0Zi1mYjkzLTQ4OWQtOTFiNS05ZTJmYjkwZjYyMjQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vqJcHTZAMfRb6fLV9swglfbvdGlgDaibaQxD2q6NC0c",
-    "streamUrl": "https://dck1-fs-live.dtcdn.dazn.com/out/v1/814bffb9b389f652/d65feac5647949e6b45b2674d4715398/index.mpd",
-    "clearKeys": {
-      "01c9bbf8137e58378a5ead514998a7b4": "fb01e61809e80e5e93a889cd31daab22"
-    },
+    "streamUrl": "",
+    "clearKeys": {},
     "cookieHeader": ""
   },
   {
