@@ -3,21 +3,17 @@
     "id": 1,
     "name": "Kayo",
     "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu3av7wTh6_Hi23aaDYDfDUJrqB8Udr6OZhQ&s",
-    "streamUrl": "https://dck1-fs-live.dtcdn.dazn.com/out/v1/814bffb9b389f652/38970a6e3f6f42b5a0ef07ad51a68d0c/index.mpd",
-    "clearKeys": {
-      "f1f97a734b1752ae9c3639310b105278": "57e0135e10a8ed3246b8306ada268954"
-    },
+    "streamUrl": "",
+    "clearKeys": {},
     "cookieHeader": ""
   },
   {
     "id": 2,
     "name": "Star Sports 2 HD Hindi",
     "logo": "https://img.media.jio.com/tvpimages/56/36/301229_1742214332015_l_medium.jpg",
-    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd",
-    "clearKeys": {
-      "bd1ea6a1c1fb5dcdb709434e0826bbc0": "f57f22cba32739ce7beb1fab3f3d060b"
-    },
-    "cookieHeader": "__hdnea__=st=1776590894~exp=1776612494~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=4d638127eae153b37531f161620925648d8ac05b92540f70e746d293910c526d"
+    "streamUrl": "",
+    "clearKeys": {},
+    "cookieHeader": ""
   },
   {
     "id": 3,
@@ -33,10 +29,8 @@
     "id": 4,
     "name": "Willow Sports",
     "logo": "https://mms.businesswire.com/media/20241011098963/en/2269728/4/Willow_Sports_Stacked_Logo_-_White_%281%29.jpg",
-    "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/tll6uwepxa/out/v1/a7f67cbb33df46539312956427343886/cenc.mpd",
-    "clearKeys": {
-      "290e09c837da78d5cd961978d390515c": "b748836c71e6a4ca68ef5b5652db6247"
-    },
+    "streamUrl": "",
+    "clearKeys": {},
     "cookieHeader": ""
   },
   {
@@ -53,20 +47,16 @@
     "id": 6,
     "name": "Willow by Cricbuzz",
     "logo": "https://static.toiimg.com/thumb/imgsize-23456,msid-108693639,width-600,resizemode-4/108693639.jpg",
-    "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/8kgmavmivc/out/v1/394cc62641f1452bb1f5919a9114a57a/cenc.mpd",
-    "clearKeys": {
-      "1d6d9c164f50d0c058c38ea2574b55ab": "007b6b520787fcc78a6a56fd6a149df2"
-    },
+    "streamUrl": "",
+    "clearKeys": {},
     "cookieHeader": ""
   },
   {
     "id": 7,
     "name": "Fox 501 HD",
     "logo": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/409efa6e-c69a-4971-ac4e-a2a76dcd02e5/dfg9ktb-0cfd204f-fb93-489d-91b5-9e2fb90f6224.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi80MDllZmE2ZS1jNjlhLTQ5NzEtYWM0ZS1hMmE3NmRjZDAyZTUvZGZnOWt0Yi0wY2ZkMjA0Zi1mYjkzLTQ4OWQtOTFiNS05ZTJmYjkwZjYyMjQucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vqJcHTZAMfRb6fLV9swglfbvdGlgDaibaQxD2q6NC0c",
-    "streamUrl": "https://dck1-fs-live.dtcdn.dazn.com/out/v1/814bffb9b389f652/d65feac5647949e6b45b2674d4715398/index.mpd",
-    "clearKeys": {
-      "01c9bbf8137e58378a5ead514998a7b4": "fb01e61809e80e5e93a889cd31daab22"
-    },
+    "streamUrl": "",
+    "clearKeys": {},
     "cookieHeader": ""
   },
   {
