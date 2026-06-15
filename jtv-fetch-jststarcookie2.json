@@ -2,7 +2,7 @@
     "total_channels": 23,
     "successful_channels": 0,
     "failed_channels": 23,
-    "timestamp": "2026-06-15 17:50:06",
+    "timestamp": "2026-06-15 18:05:14",
     "successful_results": [],
     "failed_results": [
         {
@@ -62,7 +62,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1781524809~exp=1781546409~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=2f4e93366f3e8f9ce7233dc06efd3ce4bef84c5a7ba27f57c492107e197eec97"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1781546711~exp=1781568311~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=262e9080bb376400783b048b93033b91e468f4b32f1ea45d2f823556c38774ab"
             }
         },
         {
@@ -92,7 +92,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD2_BTS/WDVLive/index.mpd?__hdnea__=st=1781524209~exp=1781545809~acl=/bpk-tv/Star_Sports_HD2_BTS/WDVLive/*~hmac=fe17ee6d9e536a627a7349e9c4dc791487cce5156c2e0dccae38e2a6d2b72e7c"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD2_BTS/WDVLive/index.mpd?__hdnea__=st=1781546113~exp=1781567713~acl=/bpk-tv/Star_Sports_HD2_BTS/WDVLive/*~hmac=33c77428b1b650c6af3e89f1b431efae03b7c65eaef7b29d492d7297548384df"
             }
         },
         {
