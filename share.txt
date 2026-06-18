@@ -1,119 +1,574 @@
-// Pre-allocated hex lookup table for high-speed byte-to-hex translation
-const HEX_STRINGS = Array.from({ length: 256 }, (_, i) => i.toString(16).padStart(2, '0'));
+const htmlContent = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITAN ZENITH | Media Hub</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/shaka-player.ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.5/controls.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+        .sticky-header { background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-bottom: 1px solid #1a1a1c; }
+        
+        /* APP FULLSCREEN PLAYER MODE */
+        #playerSection { 
+            display: none; 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            z-index: 99999; background: #000; 
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const targetUrl = url.searchParams.get('url');
+        /* Remove borders and force full size */
+        .shaka-video-container { 
+            width: 100%; height: 100%; max-width: none; 
+            border: none; border-radius: 0; background: #000;
+        }
+
+        /* Custom UI Overlays */
+        .player-overlay-ui {
+            transition: opacity 0.4s ease;
+        }
+        .idle-hide { 
+            opacity: 0 !important; 
+            pointer-events: none; 
+        }
+
+        #closePlayerBtn {
+            position: absolute; top: 30px; right: 30px; z-index: 100000;
+            background: rgba(0,0,0,0.6); border: 1px solid #dc2626; color: #fff;
+            padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;
+            backdrop-filter: blur(10px); transition: 0.3s;
+        }
+        #closePlayerBtn:hover { background: #dc2626; }
+
+        .title-overlay {
+            position: absolute; top: 30px; left: 30px; z-index: 100000;
+        }
+
+        /* GRID STYLES */
+        .channel-card { 
+            background: #09090b; border: 1px solid #18181b; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer; border-radius: 20px;
+        }
+        .channel-card:hover { border-color: #3b82f6; transform: translateY(-5px); background: #111113; }
+        .channel-card img { transition: 0.4s; }
+        .channel-card:hover img { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(59,130,246,0.3)); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+    </style>
+</head>
+<body class="p-4 md:p-8 pb-20">
+
+    <div class="max-w-7xl mx-auto" id="mainUI">
+        <header class="sticky top-0 z-50 sticky-header py-5 mb-10 px-4">
+            <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-1.5 bg-red-600 rounded-full"></div>
+                    <h1 class="text-3xl font-black tracking-tighter uppercase italic">TITAN<span class="text-red-600">ZENITH</span></h1>
+                </div>
+                
+                <div class="flex gap-3 w-full md:w-2/3">
+                    <div class="relative w-full">
+                        <input type="text" id="searchBar" placeholder="Search 1,100+ Premium Channels..." 
+                               class="bg-zinc-900 border border-zinc-800 px-12 py-4 rounded-2xl focus:outline-none focus:border-red-600 w-full text-sm font-semibold transition-all">
+                        <span class="absolute left-4 top-4.5 opacity-30 text-lg">🔍</span>
+                    </div>
+                    <select id="groupFilter" class="bg-zinc-900 border border-zinc-800 px-6 py-4 rounded-2xl focus:outline-none text-xs font-black uppercase tracking-widest cursor-pointer">
+                        <option value="all">ALL GROUPS</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <div id="channelGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6"></div>
+
+        <div id="sentinel" class="h-40 w-full flex items-center justify-center">
+            <div class="animate-spin h-6 w-6 border-2 border-red-600 border-t-transparent rounded-full"></div>
+        </div>
+    </div>
+
+    <section id="playerSection">
+        <button id="closePlayerBtn" class="player-overlay-ui" onclick="closePlayer()">✕ CLOSE HUB</button>
+        
+        <div class="title-overlay player-overlay-ui flex flex-col items-start">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="h-3 w-3 rounded-full bg-red-600 animate-pulse shadow-[0_0_10px_#dc2626]"></div>
+                <span class="text-zinc-300 text-xs font-black uppercase tracking-[0.4em] drop-shadow-md">TITAN LIVE ENGINE</span>
+            </div>
+            <h2 id="currentTitle" class="text-white font-black text-4xl uppercase tracking-tighter italic drop-shadow-lg"></h2>
+        </div>
+
+        <div id="videoContainer" class="shaka-video-container">
+            <video id="video" class="w-full h-full" autoplay playsinline></video>
+        </div>
+    </section>
+
+<script>
+// CONFIG
+const PROXY = 'https://allinone.godess.workers.dev/?url=';
+const DRM_PRIMARY = 'https://cloudplay2.godess.workers.dev/?url=';
+const DRM_FALLBACK = 'https://cloudplay.godess.workers.dev/?url=';
+const DEFAULT_UA = 'TiviMate/4.7.0 (Android 11; NVIDIA SHIELD Android TV Pro)';
+
+// STATE
+let allChannels = [];
+let filteredChannels = [];
+let cursor = 0;
+const BATCH = 60;
+
+// GLOBAL PLAYER STATE (Singleton)
+let player = null;
+let ui = null;
+let cdnToken = ""; 
+let activeCookie = "";
+let activeUA = DEFAULT_UA;
+let idleTimer;
+
+// UI 2-SECOND AUTO-HIDE LOGIC
+function resetIdleTimer() {
+    const overlays = document.querySelectorAll('.player-overlay-ui');
+    overlays.forEach(el => el.classList.remove('idle-hide'));
     
-    // 1. Validate the incoming query parameter
-    if (!targetUrl) {
-      return new Response('Error: Missing "url" query parameter. Usage: ?url=https://domain.com/key.php', { 
-        status: 400,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-      });
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+        overlays.forEach(el => el.classList.add('idle-hide'));
+    }, 2000); 
+}
+
+document.getElementById('playerSection').addEventListener('mousemove', resetIdleTimer);
+document.getElementById('playerSection').addEventListener('touchstart', resetIdleTimer);
+
+function closePlayer() {
+    document.getElementById('playerSection').style.display = 'none';
+    if (player) {
+        player.unload(); // Stops stream but keeps UI intact
+    }
+}
+
+// 1. ONE-TIME GLOBAL INITIALIZATION (Fixes Duplicate UI Bug)
+async function initGlobalPlayer() {
+    if (player) return; // Already initialized
+
+    shaka.polyfill.installAll();
+
+    const video = document.getElementById('video');
+    const videoContainer = document.getElementById('videoContainer');
+
+    player = new shaka.Player(video);
+    ui = new shaka.ui.Overlay(player, videoContainer, video);
+
+    // YOUR EXACT UI CONFIG APPLIED ONLY ONCE
+    ui.configure({
+        controlPanelElements: [
+            'play_pause',
+            'time_and_duration',
+            'mute',
+            'volume',
+            'spacer',
+            'language',
+            'captions',
+            'picture_in_picture',
+            'quality',
+            'fullscreen'
+        ],
+        volumeBarColors: {
+            base: 'rgba(63, 187, 1, 1)',
+            level: 'rgb(255, 69, 0)'
+        },
+        seekBarColors: {
+            base: 'rgb(41, 41, 163)',
+            buffered: 'rgb(35, 99, 3)',
+            played: 'rgba(63, 187, 1, 1)'
+        },
+        addSeekBar: true,
+        addBigPlayButton: true
+    });
+
+    // NETWORK INTERCEPTOR (Reads global state dynamically)
+    player.getNetworkingEngine().registerRequestFilter((type, request) => {
+        const RT = shaka.net.NetworkingEngine.RequestType;
+        if (type === RT.MANIFEST) {
+            const urlObj = new URL(request.uris[0]);
+            if (urlObj.search.includes('__hdnea__')) cdnToken = urlObj.search;
+        }
+        if (type === RT.SEGMENT && cdnToken) {
+            if (!request.uris[0].includes('__hdnea__')) {
+                const cleanToken = cdnToken.startsWith('?') ? cdnToken.substring(1) : cdnToken;
+                request.uris[0] += (request.uris[0].includes('?') ? '&' : '?') + cleanToken;
+            }
+        }
+        request.headers['User-Agent'] = activeUA;
+        request.headers['Origin'] = 'https://www.jiotv.com';
+        request.headers['Referer'] = 'https://www.jiotv.com/';
+        if (activeCookie) request.headers['Cookie'] = activeCookie;
+    });
+
+    player.addEventListener('error', (event) => console.error('Titan Engine Error:', event.detail));
+}
+
+// 2. DYNAMIC STREAM SWITCHER
+async function startStreaming(mpdUrl, title, ua, cookie, licenseUrl) {
+    const container = document.getElementById('playerSection');
+    container.style.display = 'block'; 
+    resetIdleTimer(); 
+    document.getElementById('currentTitle').innerText = "Fetching Keys...";
+
+    // Update Network State globals for interceptor
+    activeCookie = cookie;
+    activeUA = ua || DEFAULT_UA;
+    cdnToken = ""; 
+
+    // Ensure engine is built (Happens once)
+    await initGlobalPlayer();
+
+    // Clear previous video segments
+    await player.unload();
+
+    // DYNAMIC DRM FETCHING WITH FALLBACK LOGIC
+    let currentDrmKeys = {};
+    if (licenseUrl) {
+        try {
+            const encodedLicUrl = encodeURIComponent(licenseUrl);
+            
+            // Try Primary Proxy First
+            let response = await fetch(DRM_PRIMARY + encodedLicUrl);
+            
+            // If Primary fails or returns non-200 status, switch to Fallback
+            if (!response.ok) {
+                console.warn("Primary DRM failed (Status: " + response.status + "), switching to fallback...");
+                response = await fetch(DRM_FALLBACK + encodedLicUrl);
+            }
+
+            // If Fallback also fails, throw error
+            if (!response.ok) {
+                throw new Error("Both DRM proxies failed to return 200 OK.");
+            }
+
+            const rawText = await response.text();
+            
+            const hexes = rawText.match(/[a-fA-F0-9]{32}/g);
+            if (hexes && hexes.length >= 2) {
+                for (let i = 0; i < hexes.length; i += 2) {
+                    currentDrmKeys[hexes[i].toLowerCase()] = hexes[i+1].toLowerCase();
+                }
+            } else {
+                document.getElementById('currentTitle').innerText = "DRM KEY ERROR";
+                return;
+            }
+        } catch (drmErr) {
+            console.error("DRM Fetch Error:", drmErr);
+            document.getElementById('currentTitle').innerText = "DRM NETWORK FAILURE";
+            return;
+        }
     }
 
-    // 2. Setup the full spoofed browser stack headers featuring your identity token
-    const advancedHeaders = {
-      'User-Agent': 'https://t.me/cloudply || @cloudplay',
-      'Accept': 'application/json, text/plain, */*',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Accept-Encoding': 'gzip, deflate, br',
-      'Cache-Control': 'no-cache',
-      'Pragma': 'no-cache',
-      'Sec-Ch-Ua': '"Chromium";v="122", "Not(A:Brand";v="24"',
-      'Sec-Ch-Ua-Mobile': '?0',
-      'Sec-Ch-Ua-Platform': '"Windows"',
-      'Sec-Fetch-Dest': 'empty',
-      'Sec-Fetch-Mode': 'cors',
-      'Sec-Fetch-Site': 'same-origin',
-      'Upgrade-Insecure-Requests': '1'
-    };
+    document.getElementById('currentTitle').innerText = title;
 
-    // Forward the Content-Type header if the client provided one
-    if (request.headers.has('content-type')) {
-      advancedHeaders['Content-Type'] = request.headers.get('content-type');
-    }
-
-    // 3. Read incoming body payload only if the client sent one
-    let body = null;
-    if (request.method !== 'GET' && request.method !== 'HEAD') {
-      body = await request.arrayBuffer(); 
-    }
+    // YOUR EXACT STREAM CONFIG
+    player.configure({
+        drm: { clearKeys: currentDrmKeys },
+        manifest: {
+            dash: {
+                ignoreDrmInfo: true, 
+                ignoreMinBufferTime: true,
+                autoCorrectDrift: true,
+                initialSegmentLimit: 2000
+            },
+            defaultPresentationDelay: 5,
+            retryParameters: {
+                timeout: 15000,
+                maxAttempts: 10,
+                backoffFactor: 1.5
+            }
+        },
+        streaming: {
+            lowLatencyMode: true,
+            bufferingGoal: 5,
+            rebufferingGoal: 2,
+            bufferBehind: 30,
+            alwaysStreaming: true,
+            retryParameters: {
+                timeout: 15000,
+                maxAttempts: 10,
+                baseDelay: 500,
+                backoffFactor: 1.5
+            },
+            segmentRequestTimeout: 15000,
+            segmentPrefetchLimit: 10,
+            useNativeHlsOnSafari: true,
+            smallGapLimit: 0.5,
+            stallEnabled: true,
+            stallThreshold: 2,
+            rebufferingEnabled: true,
+            durationBackoff: 1,
+            ignoreTextStreamFailures: true,
+            ignoreManifestUpdateFailures: true,
+            manifestUpdateRetryParameters: {
+                timeout: 10000,
+                maxAttempts: 5
+            }
+        },
+        abr: {
+            enabled: true,
+            defaultBandwidthEstimate: 8000000,
+            switchInterval: 2,
+            bandwidthUpgradeTarget: 0.7,
+            bandwidthDowngradeTarget: 0.5,
+            restrictions: {
+                minWidth: 320,
+                maxWidth: 1920,
+                minHeight: 240,
+                maxHeight: 1080
+            }
+        }
+    });
 
     try {
-      // 4. Force the network request to ALWAYS use POST
-      const response = await fetch(targetUrl, {
-        method: 'POST',
-        headers: advancedHeaders,
-        body: body,
-        cf: {
-          cacheTtl: -1,          // Instantly forces a fresh fetch from source (No caching latency)
-          apps: false,           // Strips out script injection systems
-          mirage: false,         // Bypasses optimization routines for imagery
-          polish: 'off'          // Deactivates compression pipeline engines
+        const tokenVal = activeCookie.split('__hdnea__=')[1] || "";
+        const cleanMpd = mpdUrl.split('|')[0];
+        const loadUrl = cleanMpd + (tokenVal ? '?__hdnea__=' + tokenVal : '');
+        
+        const videoElement = document.getElementById('video');
+        
+        // Force mute to bypass strict browser autoplay blocks on recycled streams
+        videoElement.autoplay = true;
+        
+        await player.load(loadUrl);
+        await videoElement.play();
+    } catch (e) { if (e.code !== 7000) console.error("Titan Engine Load Error:", e); }
+}
+
+// DATA & GRID LOGIC - FETCHES FROM SERVER ENDPOINT
+async function init() {
+    try {
+        const res = await fetch('/channels');
+        allChannels = await res.json();
+        
+        if (allChannels.error) {
+            console.error("Server returned an error:", allChannels.error);
+            return;
         }
-      });
 
-      if (!response.ok) {
-        return new Response(`Origin Error: Target returned status ${response.status}`, { status: response.status });
-      }
+        filteredChannels = allChannels;
+        loadGroups();
+        renderNext();
+        setupObserver();
+    } catch (e) { console.error("Data Load Failed", e); }
+}
 
-      // 5. Parse JSON payload
-      const data = await response.json();
+function renderNext() {
+    const grid = document.getElementById('channelGrid');
+    const chunk = filteredChannels.slice(cursor, cursor + BATCH);
+    
+    const html = chunk.map((item, index) => {
+        // Fallback for logo if it's empty, and proxy it
+        const logoUrl = item.logo ? (PROXY + encodeURIComponent(item.logo)) : '';
+        const globalIndex = cursor + index;
 
-      if (!data || !data.keys || !data.keys[0]) {
-        return new Response('Error: Invalid JSON payload format from source target.', { status: 422 });
-      }
+        return \`
+            <div data-index="\${globalIndex}" class="channel-card p-6 flex flex-col items-center">
+                \${logoUrl ? \`<img loading="lazy" src="\${logoUrl}" alt="" class="h-16 w-16 object-contain mb-4 pointer-events-none">\` : \`<div class="h-16 w-16 mb-4 flex items-center justify-center bg-zinc-800 rounded text-zinc-500 font-bold text-xs pointer-events-none">NO LOGO</div>\`}
+                <p class="text-[11px] font-black truncate w-full text-center uppercase tracking-tighter text-zinc-200 pointer-events-none">\text{item.name}</p>
+                <div class="mt-3 px-2.5 py-0.5 bg-zinc-800 border border-zinc-700 rounded text-[8px] text-zinc-500 font-bold uppercase tracking-widest pointer-events-none">\text{item.group}</div>
+            </div>
+        \`;
+    }).join('');
 
-      const { kid, k } = data.keys[0];
+    grid.insertAdjacentHTML('beforeend', html);
+    cursor += BATCH;
+}
 
-      if (!kid || !k) {
-        return new Response('Error: Target JSON payload is missing "kid" or "k" keys.', { status: 422 });
-      }
+document.getElementById('channelGrid').addEventListener('click', (e) => {
+    const card = e.target.closest('.channel-card');
+    if (!card) return;
 
-      // 6. High-speed raw byte hex conversions
-      const kidHex = fastBase64UrlToHex(kid);
-      const kHex = fastBase64UrlToHex(k);
+    const index = parseInt(card.getAttribute('data-index'), 10);
+    const item = filteredChannels[index];
 
-      // 7. Return standard keyid:key output format
-      return new Response(`${kidHex}:${kHex}`, {
-        headers: { 
-          'Content-Type': 'text/plain; charset=utf-8',
-          'Access-Control-Allow-Origin': '*',                          // Enables API usability anywhere
-          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' // Prevents old data caching
-        }
-      });
-
-    } catch (error) {
-      return new Response(`Execution Exception Error: ${error.message}`, { status: 500 });
+    if (item) {
+        const cookie = item.headers?.cookie || "";
+        const licUrl = item.license_url || "";
+        startStreaming(item.mpd_url, item.name, item.user_agent, cookie, licUrl);
     }
+});
+
+function setupObserver() {
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && cursor < filteredChannels.length) {
+            renderNext();
+        }
+    }, { threshold: 0.1 });
+    observer.observe(document.getElementById('sentinel'));
+}
+
+function loadGroups() {
+    const select = document.getElementById('groupFilter');
+    const uniqueGroups = [...new Set(allChannels.map(i => i.group))].sort();
+    uniqueGroups.forEach(g => {
+        const el = document.createElement('option');
+        el.value = g; el.innerText = g;
+        select.appendChild(el);
+    });
+}
+
+document.getElementById('searchBar').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    filteredChannels = allChannels.filter(c => c.name.toLowerCase().includes(term));
+    refreshGrid();
+});
+
+document.getElementById('groupFilter').addEventListener('change', (e) => {
+    const val = e.target.value;
+    filteredChannels = val === 'all' ? allChannels : allChannels.filter(c => c.group === val);
+    refreshGrid();
+});
+
+function refreshGrid() {
+    cursor = 0;
+    document.getElementById('channelGrid').innerHTML = '';
+    renderNext();
+}
+
+init();
+</script>
+</body>
+</html>
+`;
+
+// ============================================
+// SERVER-SIDE M3U PARSER
+// ============================================
+function parseM3UServer(m3uText) {
+  const lines = m3uText.split(/\r?\n/);
+  const channels = [];
+  
+  // Isolated localized tracking parameters to avoid Cloudflare compilation warnings
+  let trackedName = "Unknown";
+  let trackedLogo = "";
+  let trackedGroup = "Uncategorized";
+  let trackedLicense = "";
+
+  for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+
+      if (line.startsWith('#EXTINF:')) {
+          const tvgNameMatch = line.match(/tvg-name="([^"]+)"/);
+          const tvgLogoMatch = line.match(/tvg-logo="([^"]+)"/);
+          const groupTitleMatch = line.match(/group-title="([^"]+)"/);
+          
+          const commaSplit = line.split(',');
+          const nameFallback = commaSplit.length > 1 ? commaSplit.pop().trim() : 'Unknown';
+
+          trackedName = tvgNameMatch ? tvgNameMatch[1] : nameFallback;
+          trackedLogo = tvgLogoMatch ? tvgLogoMatch[1] : '';
+          trackedGroup = groupTitleMatch ? groupTitleMatch[1] : 'Uncategorized';
+          trackedLicense = ""; // reset for next entry
+      } 
+      else if (line.startsWith('#EXT-X-LICENSE-URL:')) {
+          trackedLicense = line.replace('#EXT-X-LICENSE-URL:', '').trim();
+      } 
+      else if (line.startsWith('#KODIPROP:inputstream.adaptive.license_key=')) {
+          if (!trackedLicense) {
+              trackedLicense = line.replace('#KODIPROP:inputstream.adaptive.license_key=', '').trim();
+          }
+      } 
+      else if (line.startsWith('http')) {
+          let rawUrl = line;
+          const proxyPrefix = "https://allinone.godess.workers.dev/?url=";
+          
+          if (rawUrl.startsWith(proxyPrefix)) {
+              rawUrl = decodeURIComponent(rawUrl.substring(proxyPrefix.length));
+          }
+
+          const parts = rawUrl.split('|');
+          const finalMpdUrl = parts[0];
+          let userAgent = "";
+          let finalCookie = "";
+
+          if (parts.length > 1) {
+              const headerParts = parts[1].split('&');
+              for (const hp of headerParts) {
+                  if (hp.startsWith('User-Agent=')) {
+                      userAgent = hp.substring(11); 
+                  } else if (hp.startsWith('Cookie=')) {
+                      finalCookie = hp.substring(7); 
+                  }
+              }
+          }
+          
+          channels.push({
+              name: trackedName,
+              logo: trackedLogo,
+              group: trackedGroup,
+              license_url: trackedLicense,
+              mpd_url: finalMpdUrl,
+              user_agent: userAgent,
+              headers: { cookie: finalCookie }
+          });
+      }
+  }
+  return channels;
+}
+
+export default {
+  async fetch(request) {
+    const url = new URL(request.url);
+    const path = url.pathname;
+
+    // FIX: Process specific API routes BEFORE broad template matching checks
+    if (path === '/channels') {
+      try {
+        const DATA_SOURCE = 'https://noisy-truth-6766.streamstar18.workers.dev/';
+        const PROXY_URL = 'https://allinone.godess.workers.dev/?url=';
+        
+        // Route through proxy to prevent scraping restrictions
+        //const fetchTarget = eDATA_SOURCE);
+        const response = await fetch(DATA_SOURCE);
+        
+        if (!response.ok) {
+            throw new Error(`Proxy returned status: ${response.status}`);
+        }
+
+        const rawData = await response.text();
+        let channelsData = [];
+        
+        // Automatically determine format structure and route parse pattern
+        if (rawData.trim().startsWith('#EXTM3U')) {
+            channelsData = parseM3UServer(rawData);
+        } else {
+            channelsData = JSON.parse(rawData);
+        }
+
+        return new Response(JSON.stringify(channelsData), { 
+            headers: { 
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Access-Control-Allow-Origin': '*'
+            } 
+        });
+
+      } catch (error) {
+        return new Response(JSON.stringify({ error: error.message || "Failed to process channels configuration." }), {
+            status: 500,
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+      }
+    }
+
+    // Serve HTML page route
+    if (path === '/' || path.startsWith('/c')) {
+      return new Response(htmlContent, { headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+    }
+
+    // Default Fallback
+    return new Response('Titan Zenith 100% Operational', { status: 200 });
   }
 };
-
-/**
- * Supercharged conversion helper function.
- * Avoids heavy V8 string concatenation engine operations by processing via prebuilt arrays.
- */
-function fastBase64UrlToHex(base64url) {
-  // Translate URL-safe Base64 symbols back to standard format
-  let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
-  
-  // Re-append standard cryptographic chunk padding if omitted
-  while (base64.length % 4) {
-    base64 += '=';
-  }
-
-  // Deconstruct standard string payload to binary layout
-  const binaryString = atob(base64);
-  const len = binaryString.length;
-  
-  // Process hex compilation strings utilizing pre-allocated table indexing references
-  let hexResult = '';
-  for (let i = 0; i < len; i++) {
-    hexResult += HEX_STRINGS[binaryString.charCodeAt(i)];
-  }
-  
-  return hexResult;
-}
