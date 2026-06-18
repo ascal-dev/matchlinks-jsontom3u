@@ -1,686 +1,119 @@
+// Pre-allocated hex lookup table for high-speed byte-to-hex translation
+const HEX_STRINGS = Array.from({ length: 256 }, (_, i) => i.toString(16).padStart(2, '0'));
 
-<?php
-// Prevent browser caching
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-
-$headers = [
-    "Host: allinonereborn.online",
-    "Origin: https://allinonereborn.online",
-    "Referer: https://allinonereborn.online/",
-    "X-Requested-With: XMLHttpRequest",
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/124.0.0.0 Safari/537.36"
-];
-
-$curlOptions = [
-    CURLOPT_CUSTOMREQUEST => "GET",
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_SSL_VERIFYPEER => false,
-    CURLOPT_SSL_VERIFYHOST => false,
-    CURLOPT_CONNECTTIMEOUT => 8,
-    CURLOPT_TIMEOUT => 15
-];
-
-// ─── 1. FETCH CHANNELS LIST FROM NEW ENDPOINT ───
-$chUrl = "https://allinonereborn.online/jtv-fetch/jstr4web.json";
-$chList = curl_init($chUrl);
-curl_setopt_array($chList, $curlOptions);
-$channelsResponse = curl_exec($chList);
-$channelsData = json_decode($channelsResponse, true) ?? [];
-curl_close($chList);
-
-// ─── 2. FETCH PRIMARY COOKIE ───
-$primaryUrl = "https://allinonereborn.online/jstrweb2/cookies.json";
-$ch1 = curl_init($primaryUrl);
-curl_setopt_array($ch1, $curlOptions);
-curl_setopt($ch1, CURLOPT_HTTPHEADER, $headers);
-$primaryResponse = curl_exec($ch1);
-$primaryData = json_decode($primaryResponse, true);
-curl_close($ch1);
-
-// ─── 3. FETCH STAR SPORTS COOKIE ───
-$starUrl = "https://allinonereborn.online/jtv-fetch/jstarcookie/cookie.json";
-$ch2 = curl_init($starUrl);
-curl_setopt_array($ch2, $curlOptions);
-curl_setopt($ch2, CURLOPT_HTTPHEADER, $headers);
-$starResponse = curl_exec($ch2);
-$starData = json_decode($starResponse, true);
-curl_close($ch2);
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JioTV Live</title>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
-
-    <style>
-        :root {
-            --bg-main: #0c111d;
-            --bg-navbar: rgba(15, 23, 42, 0.75);
-            --card-bg: #161f30;
-            --card-hover: #1e293b;
-            --accent-blue: #0072ef;
-            --accent-gradient: linear-gradient(135deg, #0072ef 0%, #ff0055 100%);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --live-red: #ef4444;
-            --indicator-green: #10b981;
-            --panel-glass: rgba(8, 12, 18, 0.85);
-            --border-tech: rgba(0, 255, 204, 0.2);
-            --glow-cyan: #00ffcc;
-            --glow-red: #ff003c;
-            --text-base: #c8d6e5;
-            --text-muted: #576574;
-            --font-mono: 'Consolas', 'Courier New', monospace;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body, html { 
-            width: 100%; height: 100%; 
-            background: var(--bg-main); 
-            color: var(--text-primary);
-            overflow: hidden; 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        #gridView-Wrapper {
-            width: 100%; height: 100vh;
-            overflow-y: auto; scroll-behavior: smooth;
-        }
-
-        /* Tactical HUD Header */
-        .header {
-            background: var(--bg-navbar);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 16px 30px;
-            position: sticky; top: 0; z-index: 10;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex; gap: 20px; align-items: center; justify-content: space-between;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .brand-zone { display: flex; align-items: center; gap: 12px; }
-
-        .brand-logo {
-           font-weight: 800; font-size: 20px; letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .sys-badge {
-           background: rgba(0, 114, 239, 0.15); border: 1px solid rgba(0, 114, 239, 0.3);
-            color: #38bdf8; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600;
-        }
-
-        .filter-controls {
-           display: flex; gap: 12px; flex-grow: 1; justify-content: flex-end; max-width: 700px;
-        }
-
-        .input-elem {
-           background: rgba(15, 23, 42, 0.6); color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px 16px;
-            border-radius: 8px; outline: none; font-size: 14px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .input-elem:focus {
-            border-color: var(--glow-cyan);
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.2);
-        }
-
-        #searchInput { width: 100%; max-width: 300px; }
-        #categoryFilter { width: 100%; max-width: 180px; cursor: pointer; }
-        
-        /* High-Density Cyber Grid */
-        #gridView {
-            padding: 25px; display: grid; gap: 15px;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        }
-
-        .card {
-            background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 12px; border-radius: 12px; cursor: pointer; position: relative;
-            overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column;
-        }
-
-        .card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--glow-cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
-        }
-
-        .card:hover { 
-            background: #0f141c; border-color: #2a374a;
-            transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.8);
-        }
-
-        .card:hover::before { transform: scaleX(1); }
-
-        .card-thumb-wrapper {
-            position: relative; width: 100%; aspect-ratio: 16/9; background: #000; 
-            border-radius: 4px; margin-bottom: 10px; overflow: hidden; 
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .card img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
-
-        .badge-live {
-            position: absolute; top: 4px; left: 4px; background: rgba(255, 0, 60, 0.9); 
-            color: #fff; font-family: var(--font-mono); font-size: 9px; font-weight: bold; 
-            padding: 2px 4px; border-radius: 2px;
-        }
-
-        .name { 
-            font-size: 12px; color: #fff; font-weight: 600; line-height: 1.3; 
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
-            overflow: hidden; height: 32px; margin-bottom: 4px;
-        }
-
-        .card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        
-        .category-tag { 
-            font-family: var(--font-mono); font-size: 10px; 
-            color: var(--glow-cyan); opacity: 0.8; 
-        }
-        
-        .status-dot {
-            width: 6px; height: 6px; background: var(--glow-cyan);
-            border-radius: 50%; box-shadow: 0 0 6px var(--glow-cyan);
-        }
-
-        /* Player Overlay */
-        #playerView {
-            position: fixed; inset: 0; width: 100%; height: 100%;
-            background: #000; z-index: 100; display: none; align-items: center; justify-content: center;
-        }
-        #playerView.active { display: flex; }
-
-        .back-btn {
-            position: absolute; top: 20px; left: 20px; z-index: 110;
-            background: rgba(0, 0, 0, 0.8); color: var(--glow-red); 
-            border: 1px solid var(--glow-red); padding: 8px 16px;
-            border-radius: 4px; cursor: pointer; font-family: var(--font-mono); font-size: 12px; 
-            transition: all 0.2s; text-transform: uppercase;
-        }
-        .back-btn:hover { background: var(--glow-red); color: #000; }
-
-        #player-container { width: 100%; height: 100%; }
-        video { width: 100%; height: 100%; object-fit: contain; }
-        
-        .shaka-controls-container button { color: #fff !important; }
-        .loader-text { grid-column: 1 / -1; text-align: center; padding: 60px; color: var(--text-muted); font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; }
-        #scroll-anchor { grid-column: 1 / -1; height: 20px; }
-
-       @media (max-width: 400px) {
-        #gridView {
-            grid-template-columns: repeat(2, 1fr); /* Forces exactly 2 columns */
-            padding: 10px; /* Reduces outer padding to save space */
-            gap: 10px;     /* Reduces the gap between the two cards */
-        }
-       }
-
-
-                /* ─── FIX FOR QUALITY & SETTINGS DROPDOWN MENUS ─── */
-        .shaka-settings-menu, 
-        .shaka-overflow-menu {
-            background-color: #ffffff !important; /* Solid white background */
-            border-radius: 6px !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-        }
-
-        /* Force the text inside the dropdown to be black */
-        .shaka-settings-menu button, 
-        .shaka-overflow-menu button,
-        .shaka-settings-menu span, 
-        .shaka-overflow-menu span,
-        .shaka-settings-menu i, 
-        .shaka-overflow-menu i {
-            color: #000000 !important; /* Black text */
-        }
-
-        /* Add a clean hover effect for the dropdown items */
-        .shaka-settings-menu button:hover, 
-        .shaka-overflow-menu button:hover {
-            background-color: #e2e8f0 !important; /* Light gray hover */
-            color: #000000 !important;
-        }
-    </style>
-</head>
-<body>
-
-<div id="gridView-Wrapper">
-    <div class="header">
-        <div class="brand-zone">
-            <div class="brand-logo">JioTv</div>
-            <div class="sys-badge">Ascal</div>
-        </div>
-        <div class="filter-controls">
-            <input type="text" id="searchInput" class="input-elem" placeholder="Search parameters..." oninput="applyFilters()">
-            <select id="categoryFilter" class="input-elem" onchange="applyFilters()">
-                <option value="">CATEGORIES</option>
-            </select>
-        </div>
-    </div>
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const targetUrl = url.searchParams.get('url');
     
-    <div id="gridView">
-        <div class="loader-text" id="initial-loader">Live Extracting from Allinonereborn.online......</div>
-    </div>
-    <div id="scroll-anchor"></div>
-</div>
-
-<div id="playerView">
-    <button class="back-btn" onclick="closePlayer()">Cancel</button>
-    <div id="player-container" class="shaka-video-container">
-        <video id="video" autoplay playsinline></video>
-    </div>
-</div>
-
-<script>
-(function() {
-    /* ───────────────── INJECTED BACKEND DATA ───────────────── */
-    const allChannels = <?php echo json_encode($channelsData); ?>;
-    const injectedPrimaryData = <?php echo json_encode($primaryData); ?>;
-    const injectedStarData = <?php echo json_encode($starData); ?>;
-
-    /* ───────────────── GLOBALS ───────────────── */
-    let filteredChannels = [];
-    let loadedCount = 0;
-    const CHANNELS_PER_LOAD = 60;
-    let observer = null;
-    let player = null;
-    let ui = null;
-
-    /* ───────────────── INIT ENGINE ───────────────── */
-    function initEngine() {
-        if (!allChannels || allChannels.length === 0) {
-            document.getElementById("gridView").innerHTML = "<div class='loader-text' style='color: var(--glow-red);'>CRITICAL: CONNECTION FAILED</div>";
-            return;
-        }
-        filteredChannels = allChannels;
-        populateCategoryFilter();
-        document.getElementById("gridView").innerHTML = ""; 
-        setupObserver();
-        loadNextBatch();
+    // 1. Validate the incoming query parameter
+    if (!targetUrl) {
+      return new Response('Error: Missing "url" query parameter. Usage: ?url=https://domain.com/key.php', { 
+        status: 400,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+      });
     }
 
-    /* ───────────────── UI & FILTERS ───────────────── */
-    function populateCategoryFilter() {
-        const categories = [...new Set(allChannels
-            .map(c => c.category ? c.category.trim() : null)
-            .filter(Boolean)
-        )].sort();
-
-        const select = document.getElementById("categoryFilter");
-        categories.forEach(cat => {
-            const opt = document.createElement("option");
-            opt.value = cat;
-            opt.textContent = `[ ${cat.toUpperCase()} ]`;
-            select.appendChild(opt);
-        });
-    }
-
-    window.applyFilters = function() {
-        const searchText = document.getElementById("searchInput").value.toLowerCase();
-        const selectedCategory = document.getElementById("categoryFilter").value.replace(/[\[\]]/g, '').trim().toLowerCase();
-        
-        filteredChannels = allChannels.filter(c => {
-            const matchesSearch = (c.name || "").toLowerCase().includes(searchText);
-            const channelCat = c.category ? c.category.trim().toLowerCase() : "";
-            const matchesCategory = selectedCategory === "all categories" || !selectedCategory || channelCat === selectedCategory;
-            return matchesSearch && matchesCategory;
-        });
-        
-        loadedCount = 0;
-        document.getElementById("gridView").innerHTML = "";
-        
-        if(observer) observer.disconnect();
-        setupObserver();
-        loadNextBatch();
+    // 2. Setup the full spoofed browser stack headers featuring your identity token
+    const advancedHeaders = {
+      'User-Agent': 'https://t.me/cloudply || @cloudplay',
+      'Accept': 'application/json, text/plain, */*',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+      'Sec-Ch-Ua': '"Chromium";v="122", "Not(A:Brand";v="24"',
+      'Sec-Ch-Ua-Mobile': '?0',
+      'Sec-Ch-Ua-Platform': '"Windows"',
+      'Sec-Fetch-Dest': 'empty',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Site': 'same-origin',
+      'Upgrade-Insecure-Requests': '1'
     };
 
-    /* ───────────────── INFINITE SCROLL ENGINE ───────────────── */
-    function setupObserver() {
-        if (observer) observer.disconnect();
-        observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) { loadNextBatch(); }
-        }, { root: document.getElementById('gridView-Wrapper'), rootMargin: '300px', threshold: 0.1 });
-        observer.observe(document.getElementById('scroll-anchor'));
+    // Forward the Content-Type header if the client provided one
+    if (request.headers.has('content-type')) {
+      advancedHeaders['Content-Type'] = request.headers.get('content-type');
     }
 
-    function loadNextBatch() {
-        if (filteredChannels.length === 0) {
-            document.getElementById("gridView").innerHTML = "<div class='loader-text'>0 nodes match query parameters.</div>";
-            return;
-        }
-        if (loadedCount >= filteredChannels.length) return;
-
-        const nextBatch = filteredChannels.slice(loadedCount, loadedCount + CHANNELS_PER_LOAD);
-        const grid = document.getElementById("gridView");
-
-        nextBatch.forEach((ch) => {
-            const card = document.createElement("div");
-            card.className = "card";
-            card.onclick = () => startPlaySequence(ch.id);
-
-            const thumbWrapper = document.createElement("div");
-            thumbWrapper.className = "card-thumb-wrapper";
-
-            const liveBadge = document.createElement("div");
-            liveBadge.className = "badge-live";
-            liveBadge.textContent = "Live";
-
-            const img = document.createElement("img");
-            img.src = ch.logo || "";
-            img.loading = "lazy"; 
-            img.onerror = function () {
-                this.src = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iODQiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwOTBjMTAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZmlsbD0iIzAwZmZjYyIgZHk9Ii4zZW0iIGZvbnQtZmFtaWx5PSJtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTJweCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5PREUgT0ZGTElORTwvdGV4dD48L3N2Zz4=";
-            };
-
-            thumbWrapper.appendChild(liveBadge);
-            thumbWrapper.appendChild(img);
-
-            const name = document.createElement("div");
-            name.className = "name";
-            name.textContent = ch.name || "UNKNOWN_SIG";
-
-            const metaRow = document.createElement("div");
-            metaRow.className = "card-meta";
-
-            const cat = document.createElement("div");
-            cat.className = "category-tag";
-            cat.textContent = ch.category ? ch.category.trim() : "SYS";
-
-            const dot = document.createElement("div");
-            dot.className = "status-dot";
-
-            metaRow.appendChild(cat);
-            metaRow.appendChild(dot);
-
-            card.appendChild(thumbWrapper); 
-            card.appendChild(name); 
-            card.appendChild(metaRow);
-            grid.appendChild(card);
-        });
-        loadedCount += nextBatch.length;
+    // 3. Read incoming body payload only if the client sent one
+    let body = null;
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      body = await request.arrayBuffer(); 
     }
 
-    /* ───────────────── CONFIG SYSTEM ───────────────── */
-    function getStreamConfig(channelId) {
-        const channelData = allChannels.find(c => String(c.id) === String(channelId));
-        if (!channelData) return null;
-
-        let primaryCookie = "";
-
-        if (injectedStarData && injectedStarData.failed_results) {
-            const matchingEntry = injectedStarData.failed_results.find(item => String(item.channel_id) === String(channelId));
-            if (matchingEntry && matchingEntry.error_details && matchingEntry.error_details.final_url) {
-                const match = matchingEntry.error_details.final_url.match(/__hdnea__=([^&]+)/);
-                if (match && match[1]) primaryCookie = match[1];
-            }
+    try {
+      // 4. Force the network request to ALWAYS use POST
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: advancedHeaders,
+        body: body,
+        cf: {
+          cacheTtl: -1,          // Instantly forces a fresh fetch from source (No caching latency)
+          apps: false,           // Strips out script injection systems
+          mirage: false,         // Bypasses optimization routines for imagery
+          polish: 'off'          // Deactivates compression pipeline engines
         }
+      });
 
-        if (!primaryCookie && injectedPrimaryData) {
-            const entry = Array.isArray(injectedPrimaryData) ? injectedPrimaryData.find(i => i.cookie) : null;
-            if (entry && entry.cookie) {
-                const rawCookie = entry.cookie;
-                const match = rawCookie.match(/__hdnea__=([^;]+)/) || rawCookie.match(/([^;=]+)$/);
-                primaryCookie = match ? match[1] : rawCookie;
-            }
+      if (!response.ok) {
+        return new Response(`Origin Error: Target returned status ${response.status}`, { status: response.status });
+      }
+
+      // 5. Parse JSON payload
+      const data = await response.json();
+
+      if (!data || !data.keys || !data.keys[0]) {
+        return new Response('Error: Invalid JSON payload format from source target.', { status: 422 });
+      }
+
+      const { kid, k } = data.keys[0];
+
+      if (!kid || !k) {
+        return new Response('Error: Target JSON payload is missing "kid" or "k" keys.', { status: 422 });
+      }
+
+      // 6. High-speed raw byte hex conversions
+      const kidHex = fastBase64UrlToHex(kid);
+      const kHex = fastBase64UrlToHex(k);
+
+      // 7. Return standard keyid:key output format
+      return new Response(`${kidHex}:${kHex}`, {
+        headers: { 
+          'Content-Type': 'text/plain; charset=utf-8',
+          'Access-Control-Allow-Origin': '*',                          // Enables API usability anywhere
+          'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' // Prevents old data caching
         }
+      });
 
-        const streamUrls = [channelData.url, channelData.url1, channelData.url2, channelData.url3]
-            .filter(Boolean)
-            .map(u => u.replace("bpk-tv//", "bpk-tv/"));
-
-        return { channelData, streamUrls, primaryCookie };
+    } catch (error) {
+      return new Response(`Execution Exception Error: ${error.message}`, { status: 500 });
     }
+  }
+};
 
-    /* ───────────────── PLAYER EXECUTION ───────────────── */
-    async function startPlaySequence(id) {
-        try {
-            const cfg = getStreamConfig(id);
-            if (!cfg) return;
+/**
+ * Supercharged conversion helper function.
+ * Avoids heavy V8 string concatenation engine operations by processing via prebuilt arrays.
+ */
+function fastBase64UrlToHex(base64url) {
+  // Translate URL-safe Base64 symbols back to standard format
+  let base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+  
+  // Re-append standard cryptographic chunk padding if omitted
+  while (base64.length % 4) {
+    base64 += '=';
+  }
 
-            const { channelData, streamUrls, primaryCookie } = cfg;
-            const videoEl = document.getElementById("video");
-            const container = document.getElementById("player-container");
-            
-            document.getElementById("playerView").classList.add("active");
-            shaka.polyfill.installAll();
-
-            if (!shaka.Player.isBrowserSupported()) {
-                alert("ERR: Browser ecosystem unsupported for advanced hardware rendering.");
-                return;
-            }
-
-            // Parse valid Keys for ClearKey authentication
-            const cleanKeyId = (channelData.keyId || "").trim();
-            const cleanKey = (channelData.key || "").trim();
-            const hasDrmKeys = cleanKeyId.length > 0 && cleanKey.length > 0;
-
-            // Initialize/Clean Core Player Instantiation
-            if (!player) {
-                player = new shaka.Player();
-                await player.attach(videoEl);
-                ui = new shaka.ui.Overlay(player, container, videoEl);
-                
-                // YOUR EXACT UI CONFIGURATION WITH EXPLICIT TOGGLES
-                ui.configure({
-                    controlPanelElements: [
-                        'play_pause', 'time_and_duration', 'mute', 'volume',
-                        'spacer', 'picture_in_picture','quality', 'language', 'captions', 'fullscreen'
-                    ],
-                    // The items inside the settings gear:
-          
-
-                    volumeBarColors: { base: 'rgba(63, 187, 1, 1)', level: 'rgb(255, 69, 0)' },
-                    seekBarColors: { base: 'rgb(41, 41, 163)', buffered: 'rgb(35, 99, 3)', played: 'rgba(63, 187, 1, 1)' }
-                });
-            } else {
-                await player.unload();
-            }
-
-            player.getNetworkingEngine().clearAllRequestFilters();
-
-            // Inject Header Token Authentication Interceptor
-            player.getNetworkingEngine().registerRequestFilter((type, request) => {
-                request.headers["Referer"] = "https://www.jiotv.com/";
-                request.headers["User-Agent"] = "plaYtv/7.1.5";
-                
-                if (primaryCookie && (type === shaka.net.NetworkingEngine.RequestType.MANIFEST || type === shaka.net.NetworkingEngine.RequestType.SEGMENT)) {
-                    const tokenString = "__hdnea__=" + primaryCookie;
-                    for (let i = 0; i < request.uris.length; i++) {
-                        let uri = request.uris[i];
-                        if (!uri.includes("__hdnea__")) {
-                            const joiner = uri.includes('?') ? '&' : '?';
-                            request.uris[i] = uri + joiner + tokenString;
-                        }
-                    }
-                }
-            });
-
-            let loaded = false;
-            for (let i = 0; i < streamUrls.length; i++) {
-                try {
-                    let finalUrl = streamUrls[i];
-                    if (primaryCookie) {
-                        const tokenString = "__hdnea__=" + primaryCookie;
-                        if (!finalUrl.includes("__hdnea__")) {
-                            finalUrl += (finalUrl.includes('?') ? '&' : '?') + tokenString;
-                        }
-                    }
-
-                    const isM3U8 = finalUrl.toLowerCase().includes('.m3u8');
-                    const isMPD = finalUrl.toLowerCase().includes('.mpd');
-
-                    // ─── SANITIZED CONFIGURATION PROFILES (All invalid keys removed) ───
-                    if (isMPD) {
-                        // 1. DEDICATED MPD (DASH) PROFILE
-                        const drmConfig = hasDrmKeys ? { clearKeys: { [cleanKeyId]: cleanKey } } : {};
-                        
-                        player.configure({
-                            drm: drmConfig,
-                            manifest: {
-                            defaultPresentationDelay: 5,
-                            retryParameters: {
-                                timeout: 15000,
-                                maxAttempts: 10,
-                                backoffFactor: 1.5
-                            },
-                            dash: {
-                                ignoreMinBufferTime: true,
-                                autoCorrectDrift: true,
-                                initialSegmentLimit: 2000
-                                }
-                            },
-                            streaming: {
-                                lowLatencyMode: true,
-                                bufferingGoal: 5,
-                                rebufferingGoal: 2,
-                                bufferBehind: 30,
-                                alwaysStreaming: true,
-                                retryParameters: {
-                                    timeout: 15000,
-                                    maxAttempts: 10,
-                                    baseDelay: 500,
-                                    backoffFactor: 1.5
-                                },
-                                segmentRequestTimeout: 15000,
-                                segmentPrefetchLimit: 10,
-                                useNativeHlsOnSafari: true,
-                                smallGapLimit: 0.5,
-                                jumpLargeGaps: true,
-                                stallEnabled: true,
-                                stallThreshold: 2,
-                                rebufferingEnabled: true,
-                                durationBackoff: 1,
-                                ignoreTextStreamFailures: true,
-                                ignoreManifestUpdateFailures: true,
-                                manifestUpdateRetryParameters: {
-                                    timeout: 10000,
-                                    maxAttempts: 5
-                                }
-                                },
-                                abr: {
-                                    enabled: true,
-                                    defaultBandwidthEstimate: 8000000,
-                                    switchInterval: 2,
-                                    bandwidthUpgradeTarget: 0.7,
-                                    bandwidthDowngradeTarget: 0.5,
-                                    restrictions: {
-                                        minWidth: 320,
-                                        maxWidth: 1920,
-                                        minHeight: 240,
-                                        maxHeight: 1080
-                                    }
-                                }
-                              });
-
-                    } else if (isM3U8) {
-                        // 2. DEDICATED M3U8 (HLS) PROFILE
-                        const drmConfig = hasDrmKeys ? { clearKeys: { [cleanKeyId]: cleanKey } } : {};
-
-                        player.configure({
-                            drm: drmConfig,
-                             streaming: {
-                                lowLatencyMode: true,
-                                bufferingGoal: 5,
-                                rebufferingGoal: 2,
-                                bufferBehind: 30,
-                                alwaysStreaming: true,
-                                retryParameters: {
-                                    timeout: 15000,
-                                    maxAttempts: 10,
-                                    baseDelay: 500,
-                                    backoffFactor: 1.5
-                                },
-                                segmentRequestTimeout: 15000,
-                                segmentPrefetchLimit: 10,
-                                useNativeHlsOnSafari: true,
-                                smallGapLimit: 0.5,
-                                jumpLargeGaps: true,
-                                stallEnabled: true,
-                                stallThreshold: 2,
-                                rebufferingEnabled: true,
-                                durationBackoff: 1,
-                                ignoreTextStreamFailures: true,
-                                ignoreManifestUpdateFailures: true,
-                                manifestUpdateRetryParameters: {
-                                    timeout: 10000,
-                                    maxAttempts: 5
-                                }
-                                },
-                                abr: {
-                                    enabled: true,
-                                    defaultBandwidthEstimate: 8000000,
-                                    switchInterval: 2,
-                                    bandwidthUpgradeTarget: 0.7,
-                                    bandwidthDowngradeTarget: 0.5,
-                                    restrictions: {
-                                        minWidth: 320,
-                                        maxWidth: 1920,
-                                        minHeight: 240,
-                                        maxHeight: 1080
-                                    }
-                                },
-                            manifest: {
-                                retryParameters: { timeout: 10000, maxAttempts: 5 },
-                                hls: {
-                                    ignoreManifestProgramDateTime: false, 
-                                    useSafariBehaviorForLive: false
-                                }
-                            },
-                            offline: { usePersistentLicense: false },
-                            abr: {
-                                enabled: true, 
-                                defaultBandwidthEstimate: 4000000, 
-                                switchInterval: 4, 
-                                bandwidthUpgradeTarget: 0.85, 
-                                bandwidthDowngradeTarget: 0.6
-                            }
-                        });
-                    }
-
-                    // Load manifest
-                    await player.load(finalUrl);
-                    loaded = true;
-                    break;
-                } catch (e) { 
-                    console.warn("Pipeline failover path checking alternate link variant indexing:", i, e); 
-                }
-            }
-
-            // Post-load validation block isolated to prevent continuous false alert loops
-            if (loaded) {
-                try {
-                    await videoEl.play();
-                } catch (playError) {
-                    console.warn("Autoplay was blocked by browser permissions. Awaiting manual user start.", playError);
-                }
-            } else {
-                alert("ERR: Premium key exchange verification failed or link expired. Please try again.");
-            }
-
-        } catch (err) {
-            console.error("Critical stream pipeline runtime core crash:", err);
-        }
-    }
-
-    window.closePlayer = async function() {
-        try { if (player) await player.unload(); } catch (e) {}
-        document.getElementById("playerView").classList.remove("active");
-    };
-
-    document.addEventListener("DOMContentLoaded", initEngine);
-})();
-</script>
-</body>
-</html>
+  // Deconstruct standard string payload to binary layout
+  const binaryString = atob(base64);
+  const len = binaryString.length;
+  
+  // Process hex compilation strings utilizing pre-allocated table indexing references
+  let hexResult = '';
+  for (let i = 0; i < len; i++) {
+    hexResult += HEX_STRINGS[binaryString.charCodeAt(i)];
+  }
+  
+  return hexResult;
+}
