@@ -1,239 +1,131 @@
-{
-    "total_channels": 23,
-    "successful_channels": 0,
-    "failed_channels": 23,
-    "timestamp": "2026-06-21 18:05:07",
-    "successful_results": [],
-    "failed_results": [
-        {
-            "channel_id": "460",
-            "channel_name": "Star Sports Select 1 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_HD_1_BTS/WDVLive/index.mpd?__hdnea__=st=1782051048~exp=1782072648~acl=/bpk-tv/Star_Sports_Select_HD_1_BTS/WDVLive/*~hmac=d57cf1c8e54605c80e6014642c088928a148c99340ce0c2f87d71595ed7435bc"
-            }
-        },
-        {
-            "channel_id": "1123",
-            "channel_name": "Star Sports Select 1",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_1_BTS/WDVLive/index.mpd?__hdnea__=st=1782063015~exp=1782084615~acl=/bpk-tv/Star_Sports_Select_1_BTS/WDVLive/*~hmac=211eed3efa8fdf7705f9e565e9a8e9f8068da51e5a2bfc3b7ea42e274b7c7ab6"
-            }
-        },
-        {
-            "channel_id": "461",
-            "channel_name": "Star Sports Select 2 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_HD_2_BTS/WDVLive/index.mpd?__hdnea__=st=1782051317~exp=1782072917~acl=/bpk-tv/Star_Sports_Select_HD_2_BTS/WDVLive/*~hmac=fd2e248148a0743626d46e6c08cff7e04724bd702cb356cfceda6a9fda9fbac6"
-            }
-        },
-        {
-            "channel_id": "1114",
-            "channel_name": "Star Sports Select 2",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/index.mpd?__hdnea__=st=1782061813~exp=1782083413~acl=/bpk-tv/Star_Sports_Select_2_BTS/WDVLive/*~hmac=1d5e9b12ed55fb3ab50d194e1eac61f00a4901ecd31efe071442d01d1b4c3bae"
-            }
-        },
-        {
-            "channel_id": "1106",
-            "channel_name": "Star Sports 1 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd?__hdnea__=st=1782051326~exp=1782072926~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=15c959785cfbdbbe5ebe9fa6cad9e049f7026e01b083ab1f1eb96d05a87602ba"
-            }
-        },
-        {
-            "channel_id": "1142",
-            "channel_name": "Star Sports 1",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_BTS/WDVLive/index.mpd?__hdnea__=st=1782051333~exp=1782072933~acl=/bpk-tv/Star_Sports_1_BTS/WDVLive/*~hmac=9dfcf8d4f2cb0d57335a0810cef960259e909d72648cb7aa49fdd1fc38b3fad3"
-            }
-        },
-        {
-            "channel_id": "1108",
-            "channel_name": "Star Sports 1 Hindi HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1782050389~exp=1782071989~acl=/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/*~hmac=7d85874467d1e48997f3cbbf822e901ba6e544af107420b307cdc95a7c611f2f"
-            }
-        },
-        {
-            "channel_id": "362",
-            "channel_name": "Star Sports 1 Hindi",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/index.mpd?__hdnea__=st=1782051014~exp=1782072614~acl=/bpk-tv/Star_Sports_1_Hindi_BTS/WDVLive/*~hmac=47bb96a0ac3eaf0306bcbd1e346d0dc46e1dc851d1557022352d1c11b92bacbb"
-            }
-        },
-        {
-            "channel_id": "1109",
-            "channel_name": "Star Sports 2 HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD2_BTS/WDVLive/index.mpd?__hdnea__=st=1782046214~exp=1782067814~acl=/bpk-tv/Star_Sports_HD2_BTS/WDVLive/*~hmac=8e1572c0ebb2cd869aa337661487f01048939d6ed6c63ed01350fdae12f84dae"
-            }
-        },
-        {
-            "channel_id": "1141",
-            "channel_name": "Star Sports 2",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_BTS/WDVLive/index.mpd?__hdnea__=st=1782057310~exp=1782078910~acl=/bpk-tv/Star_Sports_2_BTS/WDVLive/*~hmac=e5cb4a9ff4bcc241ab0c9d87356b7cc42f687d471bf759f985c5d575bdff7f7b"
-            }
-        },
-        {
-            "channel_id": "1984",
-            "channel_name": "Star Sports 2 Hindi HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd?__hdnea__=st=1782053114~exp=1782074714~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=7c94a760083f34694e536f80c8c771420e9eaa95af2f14fd2f874f80d352857e"
-            }
-        },
-        {
-            "channel_id": "1985",
-            "channel_name": "Star Sports 2 Hindi",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSports2Hin_BTS/WDVLive/index.mpd?__hdnea__=st=1782052217~exp=1782073817~acl=/bpk-tv/StarSports2Hin_BTS/WDVLive/*~hmac=1f15d2b7d203d2e190da2e4b9920290b95a345246d60570acac99b6106a69137"
-            }
-        },
-        {
-            "channel_id": "1389",
-            "channel_name": "Star Sports 3",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_3_BTS/WDVLive/index.mpd?__hdnea__=st=1782051342~exp=1782072942~acl=/bpk-tv/Star_Sports_3_BTS/WDVLive/*~hmac=ffe7d26d8a8a2e7f800ef5a6cdc1ca21198aaee99bfc44a961c83923560691be"
-            }
-        },
-        {
-            "channel_id": "3277",
-            "channel_name": "Star Sports 1 Tamil HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Tamil_HD_BTS/output/index.mpd?__hdnea__=st=1782063022~exp=1782084622~acl=/bpk-tv/Star_Sports_1_Tamil_HD_BTS/WDVLive/*~hmac=3cab2d27a9cb067e190ecc48e0b9d406a6d5c338d97e370cf76b49ac9f05b021"
-            }
-        },
-        {
-            "channel_id": "1124",
-            "channel_name": "Star Sports 1 Tamil",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1782063612~exp=1782085212~acl=/bpk-tv/Star_Sports_1_Tamil_BTS/WDVLive/*~hmac=e6fd020925f94d472d49baccdcf3aaf04761035d4323eb631028e271f81b6a8e"
-            }
-        },
-        {
-            "channel_id": "3278",
-            "channel_name": "Star Sports 1 Telugu HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782063619~exp=1782085219~acl=/bpk-tv/Star_Sports_1_Telugu_HD_BTS/WDVLive/*~hmac=ded4a17c7e1d4d33df144f1b1f53c18040e43e863daf2ab4574a64893fdceeed"
-            }
-        },
-        {
-            "channel_id": "1651",
-            "channel_name": "Star Sports 1 Telugu",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1782063625~exp=1782085225~acl=/bpk-tv/Star_Sports_1_Telugu_BTS/WDVLive/*~hmac=540c0ce5492e8428f2c9b3f96e8e02f552b2b0b838862d43250f4e330db22f39"
-            }
-        },
-        {
-            "channel_id": "1650",
-            "channel_name": "Star Sports 1 Kannada",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_1_Kannada_BTS/WDVLive/index.mpd?__hdnea__=st=1782053131~exp=1782074731~acl=/bpk-tv/Star_Sports_1_Kannada_BTS/WDVLive/*~hmac=7db610cc24cbc234cb4f833a7392391eea22f6062bf193db6ea618f31b8cc5a4"
-            }
-        },
-        {
-            "channel_id": "1122",
-            "channel_name": "Star Sports 2 Kannada",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/index.mpd?__hdnea__=st=1782063631~exp=1782085231~acl=/bpk-tv/Star_Sports_2_Kannada_BTS/WDVLive/*~hmac=573f9af762bbe9d674516f187d69f2bc88bc274c4377fe4df92d9f8773cd983d"
-            }
-        },
-        {
-            "channel_id": "3273",
-            "channel_name": "Star Sports 2 Tamil HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782061823~exp=1782083423~acl=/bpk-tv/Star_Sports2_Tamil_HD_BTS/WDVLive/*~hmac=8c063e054c100155358724fb661ee6c2b2b816ab6e920357169d12e3ff261496"
-            }
-        },
-        {
-            "channel_id": "2853",
-            "channel_name": "Star Sports 2 Tamil",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSports2Tamil_BTS/WDVLive/index.mpd?__hdnea__=st=1782063637~exp=1782085237~acl=/bpk-tv/StarSports2Tamil_BTS/WDVLive/*~hmac=f85d9aad797219b85455eb9bc7ef116305e558d9ac2c955e41213fe281aa5d9c"
-            }
-        },
-        {
-            "channel_id": "3274",
-            "channel_name": "Star Sports 2 Telugu HD",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports2_Telugu_HD_BTS/WDVLive/index.mpd?__hdnea__=st=1782063645~exp=1782085245~acl=/bpk-tv/Star_Sports2_Telugu_HD_BTS/WDVLive/*~hmac=2b5d133369e7861010e096493fa8da807361270065e92826f6077e8db75485b7"
-            }
-        },
-        {
-            "channel_id": "2852",
-            "channel_name": "Star Sports 2 Telugu",
-            "status": "failed",
-            "error_details": {
-                "http_code": 450,
-                "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSports2Telugu_BTS/WDVLive/index.mpd?__hdnea__=st=1782063651~exp=1782085251~acl=/bpk-tv/StarSports2Telugu_BTS/WDVLive/*~hmac=aa831903191f4c8a0eab48445d9e40cb926c97ebc1c8341f7e5f680d5da019b3"
-            }
+<!DOCTYPE html>
+<html lang="en-us"
+    prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        @charset "UTF-8";
+
+        [ng\:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak,
+        .ng-hide:not(.ng-hide-animate) {
+            display: none !important;
         }
-    ]
-}
+
+        ng\:form {
+            display: block;
+        }
+
+        .ng-animate-shim {
+            visibility: hidden;
+        }
+
+        .ng-anchor {
+            position: absolute;
+        }
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>This Page Does Not Exist</title>
+    <meta name="description" content="Oops, looks like the page is lost.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,600,600i,700,700i,800,800i"
+        rel="stylesheet">
+
+    <script type="text/javascript" async=""
+        src="https://www.googletagmanager.com/gtag/js?id=G-9Q6H0QETRF&amp;cx=c&amp;_slc=1"></script>
+    <script async="" src="https://www.google-analytics.com/analytics.js"></script>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-26575989-46', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+
+<body>
+    <iframe allow="join-ad-interest-group" data-tagging-id="G-9Q6H0QETRF" data-load-time="1744709464093" height="0"
+        width="0"
+        src="https://td.doubleclick.net/td/ga/rul?tid=G-9Q6H0QETRF&amp;gacid=1669583486.1744709463&amp;gtm=45je54b0v9125959112za200&amp;dma=1&amp;dma_cps=syphamo&amp;gcd=13l3lPl2l2l1&amp;npa=0&amp;pscdl=noapi&amp;aip=1&amp;fledge=1&amp;frm=0&amp;tag_exp=102509683~102803279~102813109~102887800~102926062~103021830~103027016~103051953~103055465~103077950&amp;z=2108504389"
+        style="display: none; visibility: hidden;">
+    </iframe>
+    <div class="page-not-found">
+        <img class="image" alt="Page Not Found" src="/htdocs_error/page_not_found.svg" />
+        <h1 class="title">This Page Does Not Exist</h1>
+        <p class="text">
+            Sorry, the page you are looking for could not be found. It's just an
+            accident that was not intentional.
+        </p>
+    </div>
+
+</body>
+<style>
+    body {
+        color: #1d1e20;
+        background: #f4f5ff;
+
+        font-size: 14px;
+        font-family: "DM Sans", "Roboto", sans-serif !important;
+        font-weight: 400;
+        -ms-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page-not-found {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 0 16px;
+
+        img {
+            vertical-align: middle;
+            border-style: none;
+        }
+
+        .image {
+            max-width: 100%;
+            margin-bottom: 32px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .title {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 24px;
+            line-height: 32px;
+            font-weight: 700;
+        }
+
+        .text {
+            text-align: center;
+            max-width: 650px;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #6D7081;
+        }
+
+
+    }
+</style>
+
+</html>
