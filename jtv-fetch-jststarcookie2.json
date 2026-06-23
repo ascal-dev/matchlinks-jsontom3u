@@ -2,7 +2,7 @@
     "total_channels": 74,
     "successful_channels": 0,
     "failed_channels": 74,
-    "timestamp": "2026-06-23 06:25:50",
+    "timestamp": "2026-06-23 07:00:19",
     "successful_results": [],
     "failed_results": [
         {
@@ -412,7 +412,7 @@
             "error_details": {
                 "http_code": 450,
                 "error": "",
-                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsCineplexHD_BTS/WDVLive/index.mpd?__hdnea__=st=1782177914~exp=1782199514~acl=/*~hmac=c92c138045ecfd3cbaefcef5f1161cf2007b632c22a119029976dab014f4591c"
+                "final_url": "https://jiotvpllive.cdn.jio.com/bpk-tv/ColorsCineplexHD_BTS/WDVLive/index.mpd?__hdnea__=st=1782195192~exp=1782216792~acl=/*~hmac=289c1c936b7d30ee131e29156a20f50308dc28476e82ec8511786e35a2199ad0"
             }
         },
         {
