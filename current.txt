@@ -1,0 +1,11 @@
+https://sportlink.pages.dev/
+
+https://sportlink-fifa-live.pages.dev/sony.json
+
+https://sonujson-devloper.vercel.app/Data/sports.json
+
+
+https://sportlink-fifa-live.pages.dev/jtv.json
+
+
+https://sportlink-fifa-live.pages.dev/star.json
