@@ -333,11 +333,20 @@
     "logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/sonic_Tamil.png"
   },
   {
-    "name": "SET HD",
+    "name": "SET SD",
     "id": "291",
     "category": "Entertainment",
+    "url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sony_SD_MOB/WDVLive/index.mpd",
+    "keyId": "041a2752e99f5c6c8d4835fe221e16de",
+    "key": "null",
+    "logo": "https://jiotvimages.cdn.jio.com/dare_images/images/Sony_SD.png"
+  },
+  {
+    "name": "SET HD",
+    "id": "1396",
+    "category": "Entertainment",
     "url": "https://jiotvmblive.cdn.jio.com/bpk-tv/Sony_HD_MOB/WDVLive/index.mpd",
-    "keyId": "null",
+    "keyId": "15d0fb6df895c4d18368f5058f207511",
     "key": "null",
     "logo": "https://jiotv.catchup.cdn.jio.com/dare_images/images/Sony_HD.png"
   },
