@@ -1,15 +1,6 @@
 name: Live FanZoneareana site
 
 
-on:
-  schedule:
-    - cron: '30 0 * * *'   #06:00AM IST
-    - cron: '30 3 * * *'   # 09:00 AM IST
-    - cron: '30 6 * * *'   # 12:00 PM IST
-    - cron: '00 9 * * *'   # 02:30 PM IST
-    - cron: '00 13 * * *'  # 06:30 PM IST
-    - cron: '30 16 * * *'  # 10:00 PM IST
-  workflow_dispatch:
 
 permissions:
   contents: write
