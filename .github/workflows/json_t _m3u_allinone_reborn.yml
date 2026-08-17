@@ -1,9 +1,6 @@
 name: json to m3u allinone reborn
 
-on:
-  schedule:
-    - cron: '0 * * * *' # This runs exactly every 1 hour (at the 0th minute) # Runs automatically every 6 hours
-  workflow_dispatch: # Allows you to run it manually from the Actions tab
+
 
 permissions:
   contents: write # Required to allow the bot to push the .m3u file to your repo
