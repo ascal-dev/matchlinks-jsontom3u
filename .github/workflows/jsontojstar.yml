@@ -1,9 +1,5 @@
 name: jsontojstar
 
-on:
-  schedule:
-    - cron: '0 * * * *'   # Runs every 1 hour
-  workflow_dispatch:      # Allows manual run
 
 permissions:
   contents: write
