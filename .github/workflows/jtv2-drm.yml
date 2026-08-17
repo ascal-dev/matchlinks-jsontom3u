@@ -1,9 +1,6 @@
 name: jtv2
 
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *"   # runs every 1 hour
+
 
 permissions:
   contents: write
