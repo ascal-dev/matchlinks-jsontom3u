@@ -1141,7 +1141,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/News18PunjabHaryana_Thumbnail_5592540a-7d28-4c13-b06e-0ccb907dd236.png",
     "Language": "Punjabi",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "226",
