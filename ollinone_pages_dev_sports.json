@@ -53,9 +53,9 @@
     "id": 6,
     "name": "Willow by Cricbuzz",
     "logo": "https://static.toiimg.com/thumb/imgsize-23456,msid-108693639,width-600,resizemode-4/108693639.jpg",
-    "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/8kgmavmivc/out/v1/394cc62641f1452bb1f5919a9114a57a/cenc.mpd",
+    "streamUrl": "https://a96aivottlinear-a.akamaihd.net/OTTB/iad-nitro/live/clients/dash/enc/ww2lshzug5/out/v1/de6a9587a2a3473ab685fb93d1de0929/cenc.mpd",
     "clearKeys": {
-      "1d6d9c164f50d0c058c38ea2574b55ab": "007b6b520787fcc78a6a56fd6a149df2"
+      "70b921e2eae48d00b0a2249b0de197b4": "4b994f1b4666368565dd56a76975843e"
     },
     "cookieHeader": ""
   },
