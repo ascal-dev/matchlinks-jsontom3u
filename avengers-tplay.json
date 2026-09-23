@@ -3533,7 +3533,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/HareKrsna_Thumbnail-v1/HareKrsna_Thumbnail.png",
     "Language": "English",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "timeout of 8000ms exceeded"
   },
   {
     "channel_id": "435",
@@ -3549,7 +3549,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/KashishNews_Thumbnail_48c9b9a0-b8a7-4b6c-a2aa-55c92b071cfe.png",
     "Language": "Hindi",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "timeout of 8000ms exceeded"
   },
   {
     "channel_id": "840",
@@ -3589,7 +3589,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-57985-khvdchrs-v2/imageContent-57985-khvdchrs-m2.png",
     "Language": "Hindi",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "timeout of 8000ms exceeded"
   },
   {
     "channel_id": "865",
