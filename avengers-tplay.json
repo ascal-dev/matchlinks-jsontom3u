@@ -1997,7 +1997,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/MAMUR_Thumbnail-v2/MAMUR_Thumbnail.png",
     "Language": "Tamil",
     "status": "error",
-    "error": "socket hang up"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "399",
@@ -5029,7 +5029,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/MAHAMAX_Thumbnail-v2/MAHAMAX_Thumbnail.png",
     "Language": "Telugu",
     "status": "error",
-    "error": "socket hang up"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "1388",
