@@ -13,9 +13,11 @@
     "id": 2,
     "name": "Star Sports 2 HD Hindi",
     "logo": "https://img.media.jio.com/tvpimages/56/36/301229_1742214332015_l_medium.jpg",
-    "streamUrl": "",
-    "clearKeys": {},
-    "cookieHeader": ""
+    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd",
+    "clearKeys": {
+      "bd1ea6a1c1fb5dcdb709434e0826bbc0": "f57f22cba32739ce7beb1fab3f3d060b"
+    },
+    "cookieHeader": "__hdnea__=st=1776590894~exp=1776612494~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=4d638127eae153b37531f161620925648d8ac05b92540f70e746d293910c526d"
   },
   {
     "id": 3,
