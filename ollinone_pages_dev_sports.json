@@ -3,8 +3,10 @@
     "id": 1,
     "name": "Kayo",
     "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu3av7wTh6_Hi23aaDYDfDUJrqB8Udr6OZhQ&s",
-    "streamUrl": "",
-    "clearKeys": {},
+    "streamUrl": "https://dck1-fs-live.dtcdn.dazn.com/out/v1/814bffb9b389f652/38970a6e3f6f42b5a0ef07ad51a68d0c/index.mpd",
+    "clearKeys": {
+      "f1f97a734b1752ae9c3639310b105278": "57e0135e10a8ed3246b8306ada268954"
+    },
     "cookieHeader": ""
   },
   {
@@ -29,8 +31,10 @@
     "id": 4,
     "name": "Willow Sports",
     "logo": "https://mms.businesswire.com/media/20241011098963/en/2269728/4/Willow_Sports_Stacked_Logo_-_White_%281%29.jpg",
-    "streamUrl": "",
-    "clearKeys": {},
+    "streamUrl": "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/tll6uwepxa/out/v1/a7f67cbb33df46539312956427343886/cenc.mpd",
+    "clearKeys": {
+      "290e09c837da78d5cd961978d390515c": "b748836c71e6a4ca68ef5b5652db6247"
+    },
     "cookieHeader": ""
   },
   {
