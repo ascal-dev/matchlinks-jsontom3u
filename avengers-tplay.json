@@ -53,7 +53,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-9-j5f6oezc-v1/imageContent-9-j5f6oezc-m1.png",
     "Language": "Bengali",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "11",
@@ -4613,7 +4613,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/Rajya24_Thumbnail_7e9249b5-f02d-42ef-a16d-087e14334d10.png",
     "Language": "Odia",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "1212",
@@ -4781,7 +4781,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/ZeeKannadaNews_Thumbnail_14338d4f-bf0a-4b10-8a65-6b2e8f35b4f0.png",
     "Language": "Kannada",
     "status": "error",
-    "error": "timeout of 8000ms exceeded"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "1206",
