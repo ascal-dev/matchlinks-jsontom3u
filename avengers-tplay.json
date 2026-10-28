@@ -1029,7 +1029,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-879-j5mdmlqw-v1/imageContent-879-j5mdmlqw-m1.png",
     "Language": "Others",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "timeout of 8000ms exceeded"
   },
   {
     "channel_id": "220",
@@ -3357,7 +3357,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-47242-k1vmve74-v1/imageContent-47242-k1vmve74-m2.png",
     "Language": "Punjabi",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "timeout of 8000ms exceeded"
   },
   {
     "channel_id": "793",
@@ -4189,7 +4189,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-72254-l6dn8nco-v3/imageContent-72254-l6dn8nco-m4.png",
     "Language": "Hindi",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "timeout of 8000ms exceeded"
   },
   {
     "channel_id": "1033",
