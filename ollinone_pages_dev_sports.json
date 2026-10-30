@@ -23,11 +23,11 @@
     "id": 3,
     "name": "Star Sports 1 Hindi",
     "logo": "https://img.media.jio.com/tvpimages/5/6/301982_1749665314605_l_medium.jpg",
-    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/index.mpd",
+    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_Hindi_BTS/WDVLive/index.mpd",
     "clearKeys": {
-      "bd1ea6a1c1fb5dcdb709434e0826bbc0": "f57f22cba32739ce7beb1fab3f3d060b"
+      "a1ce6b9514f35174bda80ddd425bfd88": "5c5e158724eced92f92ca8286fb28fd9"
     },
-    "cookieHeader": "__hdnea__=st=1776590894~exp=1776612494~acl=/bpk-tv/StarSportsHD2Hin_BTS/WDVLive/*~hmac=4d638127eae153b37531f161620925648d8ac05b92540f70e746d293910c526d"
+    "cookieHeader": ""
   },
   {
     "id": 4,
@@ -43,19 +43,19 @@
     "id": 5,
     "name": "Star Sports 1",
     "logo": "https://img.media.jio.com/tvpimages/76/32/301981_1749665664018_l_medium.jpg",
-    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD2_BTS/WDVLive/index.mpd",
+    "streamUrl": "https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_HD1_BTS/WDVLive/index.mpd",
     "clearKeys": {
-      "9457eb90129456fa8ea95e10ba4ac51e": "e620a970cea474c491ac78ae71a4d764"
+      "45825561f4ef516691a9e16d1d35dd1d": "3951fe7fbf4b0b33e6246fc401f76797"
     },
-    "cookieHeader": "__hdnea__=st=1776590540~exp=1776612140~acl=/bpk-tv/Star_Sports_HD2_BTS/WDVLive/*~hmac=35ec6d5b52359bc1c0f0b164e2c3f5eb1feac6f069cca07dbfb530bd62f89d73"
+    "cookieHeader": "__hdnea__=st=1791292839~exp=1791314439~acl=/bpk-tv/Star_Sports_HD1_BTS/WDVLive/*~hmac=62e4546e280333946edbf2b6b983dac4a911ef436b1eb0c36f6fb69767da2d1e"
   },
   {
     "id": 6,
     "name": "Willow by Cricbuzz",
     "logo": "https://static.toiimg.com/thumb/imgsize-23456,msid-108693639,width-600,resizemode-4/108693639.jpg",
-    "streamUrl": "https://a96aivottlinear-a.akamaihd.net/OTTB/pdx-nitro/live/clients/dash/enc/n0mieq8c3c/out/v1/b346ac4cf7864dd39245d688e66d4b42/cenc.mpd",
+    "streamUrl": "https://a96aivottlinear-a.akamaihd.net/OTTB/pdx-nitro/live/clients/dash/enc/jorvx5qfk6/out/v1/6dbb07d5c15c4ffb8b51bdcdc0425548/cenc.mpd",
     "clearKeys": {
-      "b1ee06e6e306aa92e9a4658f739a1596": "b993e1f264c6a637cd28427242f5f967"
+      "6df39bfdcc3293c5018e97607998cae3": "794ada809851b50c0e8a7568f92971e0"
     },
     "cookieHeader": ""
   },
