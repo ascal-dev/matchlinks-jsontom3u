@@ -1717,7 +1717,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-35638-jruyxl0g-v4/imageContent-35638-jruyxl0g-m7.PNG",
     "Language": "Malayalam",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "334",
@@ -5053,7 +5053,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/LIVETIMES_Thumbnail-v2/LIVETIMES_Thumbnail.png",
     "Language": "Hindi",
     "status": "error",
-    "error": "Request failed with status code 404"
+    "error": "read ECONNRESET"
   },
   {
     "channel_id": "1400",
