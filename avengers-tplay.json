@@ -1757,7 +1757,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-826-j5m9kx5c-v1/imageContent-826-j5m9kx5c-m1.png",
     "Language": "English",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "355",
