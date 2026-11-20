@@ -1837,7 +1837,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-11418-j9jqpvxs-v1/imageContent-11418-j9jqpvxs-m1.png",
     "Language": "Telugu",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "370",
@@ -3717,7 +3717,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-62573-kop7duow-v6/imageContent-62573-kop7duow-m9.png",
     "Language": "Odia",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "866",
@@ -4685,7 +4685,7 @@
     "Channel_logo": "https://mediaready.videoready.tv/tatasky-epg/image/fetch/f_auto,fl_lossy,q_auto,h_250,w_250/https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/35MM_Thumbnail-v1/35MM_Thumbnail.png",
     "Language": "Hindi",
     "status": "error",
-    "error": "read ECONNRESET"
+    "error": "Request failed with status code 404"
   },
   {
     "channel_id": "1246",
